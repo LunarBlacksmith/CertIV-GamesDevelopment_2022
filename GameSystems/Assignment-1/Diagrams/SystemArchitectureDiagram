@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2022-03-31T05:04:34.616Z" agent="5.0 (Windows)" etag="SiDePtZtPXsqk2vjYWmz" version="17.3.0" type="github">
+<mxfile host="app.diagrams.net" modified="2022-03-31T05:05:41.004Z" agent="5.0 (Windows)" etag="vAWj-T3r7orL1MkVRqY8" version="17.3.0" type="github">
   <diagram id="hPOb96KIPv0EY-iiciC_" name="Page-1">
     <mxGraphModel dx="2188" dy="1145" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -34,7 +34,7 @@
         <mxCell id="goOKp6G6HPT73eE-axX9-19" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=13;strokeWidth=1;startArrow=none;" edge="1" parent="1" source="goOKp6G6HPT73eE-axX9-83" target="goOKp6G6HPT73eE-axX9-18">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="650" y="725" />
+              <mxPoint x="650" y="715" />
               <mxPoint x="650" y="690" />
             </Array>
           </mxGeometry>
@@ -71,9 +71,6 @@
         <mxCell id="lTqneXrZ_0n_mXFb3xbH-21" value="&lt;div&gt;Start Game&lt;/div&gt;&lt;div&gt;Hide Menus&lt;/div&gt;" style="rhombus;whiteSpace=wrap;html=1;fontSize=14;strokeWidth=3;fillColor=#f5f5f5;fontColor=#000000;strokeColor=#666666;" parent="1" vertex="1">
           <mxGeometry x="860" y="413.5" width="120" height="100" as="geometry" />
         </mxCell>
-        <mxCell id="lTqneXrZ_0n_mXFb3xbH-23" value="&lt;div&gt;Hide Post &lt;br&gt;&lt;/div&gt;&lt;div&gt;Game Menu&lt;/div&gt;&lt;div&gt;Show Main &lt;br&gt;&lt;/div&gt;&lt;div&gt;Menu&lt;br&gt;&lt;/div&gt;" style="rhombus;whiteSpace=wrap;html=1;fontSize=14;strokeWidth=3;fillColor=#f5f5f5;fontColor=#000000;strokeColor=#666666;" parent="1" vertex="1">
-          <mxGeometry x="660" y="313" width="150" height="120" as="geometry" />
-        </mxCell>
         <mxCell id="goOKp6G6HPT73eE-axX9-188" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.25;entryDx=0;entryDy=0;fontSize=13;strokeWidth=1;" edge="1" parent="1" source="lTqneXrZ_0n_mXFb3xbH-25" target="lTqneXrZ_0n_mXFb3xbH-7">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
@@ -108,7 +105,7 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="goOKp6G6HPT73eE-axX9-8" value="WordFactory class declares list of possible words with different lengths in the game" style="rounded=0;whiteSpace=wrap;html=1;fontSize=13;strokeColor=#000000;strokeWidth=1;fillColor=#FFFFFF;" vertex="1" parent="1">
-          <mxGeometry x="45" y="675" width="150" height="90" as="geometry" />
+          <mxGeometry x="45" y="685" width="150" height="90" as="geometry" />
         </mxCell>
         <mxCell id="goOKp6G6HPT73eE-axX9-31" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;fontSize=13;strokeWidth=1;" edge="1" parent="1" source="goOKp6G6HPT73eE-axX9-13" target="goOKp6G6HPT73eE-axX9-30">
           <mxGeometry relative="1" as="geometry" />
@@ -120,13 +117,13 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="goOKp6G6HPT73eE-axX9-16" value="GameManager class assigns difficulty variable value" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=13;" vertex="1" parent="1">
-          <mxGeometry x="850" y="743.57" width="140" height="65" as="geometry" />
+          <mxGeometry x="850" y="742.5" width="140" height="65" as="geometry" />
         </mxCell>
         <mxCell id="goOKp6G6HPT73eE-axX9-29" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=13;strokeWidth=1;" edge="1" parent="1" source="goOKp6G6HPT73eE-axX9-17" target="goOKp6G6HPT73eE-axX9-16">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="goOKp6G6HPT73eE-axX9-17" value="Read CSV save file" style="rounded=0;whiteSpace=wrap;html=1;fontSize=13;strokeColor=#000000;strokeWidth=1;fillColor=#E6E6E6;" vertex="1" parent="1">
-          <mxGeometry x="675" y="756.57" width="120" height="39" as="geometry" />
+          <mxGeometry x="675" y="755.5" width="120" height="39" as="geometry" />
         </mxCell>
         <mxCell id="goOKp6G6HPT73eE-axX9-21" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=13;strokeWidth=1;" edge="1" parent="1" source="goOKp6G6HPT73eE-axX9-18" target="goOKp6G6HPT73eE-axX9-17">
           <mxGeometry relative="1" as="geometry" />
@@ -399,11 +396,20 @@
         <mxCell id="goOKp6G6HPT73eE-axX9-197" value="Update TextElements array &amp;amp; Hangman graphic and display" style="rounded=0;whiteSpace=wrap;html=1;fontSize=13;strokeColor=#000000;strokeWidth=1;fillColor=#E6E6E6;" vertex="1" parent="1">
           <mxGeometry x="1091.78" y="761" width="137.44" height="64.13" as="geometry" />
         </mxCell>
-        <mxCell id="goOKp6G6HPT73eE-axX9-206" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=13;strokeWidth=1;" edge="1" parent="1" source="goOKp6G6HPT73eE-axX9-205" target="goOKp6G6HPT73eE-axX9-17">
+        <mxCell id="goOKp6G6HPT73eE-axX9-206" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=13;strokeWidth=1;startArrow=none;" edge="1" parent="1" source="lTqneXrZ_0n_mXFb3xbH-23" target="goOKp6G6HPT73eE-axX9-17">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="goOKp6G6HPT73eE-axX9-205" value="Retry / Replay (Post Game State)" style="rounded=1;whiteSpace=wrap;html=1;strokeWidth=2;fontSize=14;strokeColor=#009900;fillColor=#99FF99;" vertex="1" parent="1">
           <mxGeometry x="370" y="752.14" width="120" height="47.86" as="geometry" />
+        </mxCell>
+        <mxCell id="lTqneXrZ_0n_mXFb3xbH-23" value="&lt;div style=&quot;font-size: 11px;&quot;&gt;Hide Post &lt;br style=&quot;font-size: 11px;&quot;&gt;&lt;/div&gt;&lt;div style=&quot;font-size: 11px;&quot;&gt;Game Menu&lt;/div&gt;&lt;div style=&quot;font-size: 11px;&quot;&gt;Show Main &lt;br style=&quot;font-size: 11px;&quot;&gt;&lt;/div&gt;&lt;div style=&quot;font-size: 11px;&quot;&gt;Menu&lt;br style=&quot;font-size: 11px;&quot;&gt;&lt;/div&gt;" style="rhombus;whiteSpace=wrap;html=1;fontSize=11;strokeWidth=3;fillColor=#f5f5f5;fontColor=#000000;strokeColor=#666666;" parent="1" vertex="1">
+          <mxGeometry x="527.51" y="735" width="100" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="goOKp6G6HPT73eE-axX9-207" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=13;strokeWidth=1;endArrow=none;" edge="1" parent="1" source="goOKp6G6HPT73eE-axX9-205" target="lTqneXrZ_0n_mXFb3xbH-23">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="490" y="776.0699999999997" as="sourcePoint" />
+            <mxPoint x="675" y="776.0699999999999" as="targetPoint" />
+          </mxGeometry>
         </mxCell>
       </root>
     </mxGraphModel>
