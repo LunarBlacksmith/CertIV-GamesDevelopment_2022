@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2022-03-31T04:55:39.186Z" agent="5.0 (Windows)" etag="kUjIOQaM2tFRTCYSx9eo" version="17.3.0" type="github">
+<mxfile host="app.diagrams.net" modified="2022-03-31T04:56:49.732Z" agent="5.0 (Windows)" etag="2wKNWXiWUspnjHOE3WfY" version="17.3.0" type="github">
   <diagram id="hPOb96KIPv0EY-iiciC_" name="Page-1">
     <mxGraphModel dx="1896" dy="992" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -145,13 +145,6 @@
         </mxCell>
         <mxCell id="goOKp6G6HPT73eE-axX9-30" value="Passes word to GameManager class" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=13;" vertex="1" parent="1">
           <mxGeometry x="865" y="540" width="110" height="60" as="geometry" />
-        </mxCell>
-        <mxCell id="goOKp6G6HPT73eE-axX9-150" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;fontSize=13;strokeWidth=1;startArrow=none;" edge="1" parent="1" source="goOKp6G6HPT73eE-axX9-152" target="lTqneXrZ_0n_mXFb3xbH-13">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="1090" y="279" />
-            </Array>
-          </mxGeometry>
         </mxCell>
         <mxCell id="goOKp6G6HPT73eE-axX9-155" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;fontSize=13;strokeWidth=1;" edge="1" parent="1" source="goOKp6G6HPT73eE-axX9-34" target="goOKp6G6HPT73eE-axX9-152">
           <mxGeometry relative="1" as="geometry" />
@@ -336,6 +329,14 @@
         <mxCell id="goOKp6G6HPT73eE-axX9-145" value="Add index of word array" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;dashed=1;fontSize=13;" vertex="1" parent="1">
           <mxGeometry x="1130.0000000000002" y="403.25" width="95" height="26" as="geometry" />
         </mxCell>
+        <mxCell id="goOKp6G6HPT73eE-axX9-192" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=13;strokeWidth=1;" edge="1" parent="1" source="goOKp6G6HPT73eE-axX9-152" target="goOKp6G6HPT73eE-axX9-191">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1100" y="660" />
+              <mxPoint x="1100" y="259" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
         <mxCell id="goOKp6G6HPT73eE-axX9-152" value="Not equal" style="rounded=0;whiteSpace=wrap;html=1;dashed=1;fontSize=13;strokeColor=none;strokeWidth=1;fillColor=default;" vertex="1" parent="1">
           <mxGeometry x="1130" y="643.4300000000001" width="61" height="33.13" as="geometry" />
         </mxCell>
@@ -390,6 +391,12 @@
             <mxPoint x="1710" y="284.1300000000001" as="sourcePoint" />
             <mxPoint x="1000" y="170" as="targetPoint" />
           </mxGeometry>
+        </mxCell>
+        <mxCell id="goOKp6G6HPT73eE-axX9-193" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;fontSize=13;strokeWidth=1;" edge="1" parent="1" source="goOKp6G6HPT73eE-axX9-191" target="lTqneXrZ_0n_mXFb3xbH-13">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="goOKp6G6HPT73eE-axX9-191" value="Update TextElements array and display" style="rounded=0;whiteSpace=wrap;html=1;fontSize=13;strokeColor=#000000;strokeWidth=1;fillColor=#E6E6E6;" vertex="1" parent="1">
+          <mxGeometry x="1122.56" y="234.13" width="122.25" height="50" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
