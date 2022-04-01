@@ -1,0 +1,113 @@
+bool CompareLength(char1[ ], char2[ ])
+bool CompareLength(string1, char[ ])
+bool CompareLength(string1, string2)
+{
+	//compare if string1.Length == string2.Length, or string1.Length == char[ ].Length, or char1[ ].Length == char2[ ].Length
+	//if it is, return true
+	//else return false	
+}
+
+
+
+bool EvaluateWord(string1, string2)
+{
+	//convert strings to lower case
+	//compare string1 and string2
+	//if the same, return true
+	//else return false
+}
+
+
+void GetUserInput()
+{
+	//if user presses a key
+		//if that key is a letter in the alphabet or space
+			//add to playerInput string
+		//else if the key is the enter button
+			//check if playerInput is null
+			//If it is, display an error message to user saying that it cannot
+				be an empty guess
+			//else if playerInput is not null
+				//check if the length of the playerInput string is equal to the
+word length (CompareLength() )
+				//if it is, compare if they are the same (EvaluateWord() )
+					//if true, UpdateLettersOnScreen()
+//EndGame(playerWon = true)
+					//else if it isn’t the same
+						//UpdateLettersOnScreen()
+//if wrongGuessCount is not equal to
+totalWrongGuesses, 
+//clear playerInput string 
+//wrongGuesses++
+				//else if playerInput string has a length greater than 1
+					//wrongGuesses++
+				//else if playerInput is 1 in length (1 character)
+//check if EvaluateCharacter(playerInput, word)
+//if false, wrongGuesses++
+//if true
+	//UpdateLettersOnScreen()
+		//else display an error message to user saying that they cannot choose a
+		non-alphabetic character
+}
+
+
+int[ ] GetIndicesInWord(char1, char[ ]) 
+int[ ] GetIndicesInWord(char1, string2)
+int[ ] GetIndicesInWord(string1, char[ ])
+int[ ] GetIndicesInWord(string1, string2)
+{
+	//check for nulls in arguments first. If null, return null.
+	//temp int[ ] indicesArray
+	//temp char var1 = convert string1 (playerInput) to a char (ConvertToChar() )
+//if the using the string2 overload, convert it to char array
+	//int i2 = 0;
+	//make a for loop for char[ ] up to its length-1
+		//every loop, compare var1 to char[i]
+			//if they are the same, add the index value (i) to indicesArray[i2] and
+i2++
+			//else continue loop
+	//i2 = 0;
+	//return indicesArray[ ]
+}
+
+bool EvaluateCharacter(char1, char[ ])
+bool EvaluateCharacter(char1, string2)
+bool EvaluateCharacter(string1, string2)
+{
+	//check for null params and display error if one is
+	//convert first param to char
+	//convert second param to char[ ]
+	//run foreach loop through char[ ] 
+		//if char1 is equal to char[current index]
+			//return true
+		//else continue loop
+	//return false
+}
+
+
+
+
+void UpdateLettersOnScreen()
+{
+	//temp int[ ] positions
+	//positions = GetIndicesInWord(playerInput, word)
+	//if underscoreGraphicArray[ ] is not null
+		//loop through the array, grabbing the text on each textelement
+		//compare the index value of underscoreGraphicArray[ ] with the positions[ ]
+values (basically you want to fill the text on the textelement of each object in
+the graphic array where the object’s index in the graphic array is equal to the
+value of the next value in the positions[ ].
+I.E: if positions[ ] = positions[2, 4, 7], you want textelement text at
+underscoreGraphicArray[2],[4], and [7] to be the playerInput character.
+}
+
+DisplayLetterPlaces()
+{
+	//if underscoreGraphicArray [ ] is not null
+		//destroy all underscore sprites
+	//assign underscoreGraphicArray [ ] to:
+//instantiated underscore sprite prefabs (which have TextElements) on gameUI
+equal to wordLetterCount
+	//set text elements’ texts in underscoreGraphicArray [ ] to nothing using foreach
+loop
+}
