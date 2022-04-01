@@ -1,0 +1,1 @@
+This is assignment 2 for AI class at TAFE NSW.
