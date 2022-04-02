@@ -1,0 +1,243 @@
+fileFormatVersion: 2
+guid: 90896ea3ac9afcd4d85a3dd4cb0a5e0d
+ModelImporter:
+  serializedVersion: 23
+  fileIDToRecycleName:
+    100000: Bip001
+    100002: Bip001 Footsteps
+    100004: Bip001 Head
+    100006: Bip001 HeadNub
+    100008: Bip001 L Calf
+    100010: Bip001 L Clavicle
+    100012: Bip001 L Finger0
+    100014: Bip001 L Finger0Nub
+    100016: Bip001 L Finger1
+    100018: Bip001 L Finger1Nub
+    100020: Bip001 L Finger2
+    100022: Bip001 L Finger2Nub
+    100024: Bip001 L Foot
+    100026: Bip001 L Forearm
+    100028: Bip001 L Hand
+    100030: Bip001 L Thigh
+    100032: Bip001 L Toe0
+    100034: Bip001 L Toe0Nub
+    100036: Bip001 L UpperArm
+    100038: Bip001 Neck
+    100040: Bip001 Pelvis
+    100042: Bip001 Ponytail1
+    100044: Bip001 Ponytail1Nub
+    100046: Bip001 R Calf
+    100048: Bip001 R Clavicle
+    100050: Bip001 R Finger0
+    100052: Bip001 R Finger0Nub
+    100054: Bip001 R Finger1
+    100056: Bip001 R Finger1Nub
+    100058: Bip001 R Finger2
+    100060: Bip001 R Finger2Nub
+    100062: Bip001 R Foot
+    100064: Bip001 R Forearm
+    100066: Bip001 R Hand
+    100068: Bip001 R Thigh
+    100070: Bip001 R Toe0
+    100072: Bip001 R Toe0Nub
+    100074: Bip001 R UpperArm
+    100076: Bip001 Spine
+    100078: Bip001 Spine1
+    100080: Bone01
+    100082: Dummy01
+    100084: Dummy02
+    100086: ear_l
+    100088: ear_r
+    100090: //RootNode
+    100092: M21_01_stone
+    100094: M21_01_weapon
+    100096: M21_03
+    100098: Root
+    100100: Stone
+    100102: Weapon_band
+    100104: Weapon_Bone
+    100106: M21_01_stone001
+    100108: M21_01_weapon001
+    100110: Stone001
+    100112: Weapon_band001
+    100114: Weapon_Bone001
+    400000: Bip001
+    400002: Bip001 Footsteps
+    400004: Bip001 Head
+    400006: Bip001 HeadNub
+    400008: Bip001 L Calf
+    400010: Bip001 L Clavicle
+    400012: Bip001 L Finger0
+    400014: Bip001 L Finger0Nub
+    400016: Bip001 L Finger1
+    400018: Bip001 L Finger1Nub
+    400020: Bip001 L Finger2
+    400022: Bip001 L Finger2Nub
+    400024: Bip001 L Foot
+    400026: Bip001 L Forearm
+    400028: Bip001 L Hand
+    400030: Bip001 L Thigh
+    400032: Bip001 L Toe0
+    400034: Bip001 L Toe0Nub
+    400036: Bip001 L UpperArm
+    400038: Bip001 Neck
+    400040: Bip001 Pelvis
+    400042: Bip001 Ponytail1
+    400044: Bip001 Ponytail1Nub
+    400046: Bip001 R Calf
+    400048: Bip001 R Clavicle
+    400050: Bip001 R Finger0
+    400052: Bip001 R Finger0Nub
+    400054: Bip001 R Finger1
+    400056: Bip001 R Finger1Nub
+    400058: Bip001 R Finger2
+    400060: Bip001 R Finger2Nub
+    400062: Bip001 R Foot
+    400064: Bip001 R Forearm
+    400066: Bip001 R Hand
+    400068: Bip001 R Thigh
+    400070: Bip001 R Toe0
+    400072: Bip001 R Toe0Nub
+    400074: Bip001 R UpperArm
+    400076: Bip001 Spine
+    400078: Bip001 Spine1
+    400080: Bone01
+    400082: Dummy01
+    400084: Dummy02
+    400086: ear_l
+    400088: ear_r
+    400090: //RootNode
+    400092: M21_01_stone
+    400094: M21_01_weapon
+    400096: M21_03
+    400098: Root
+    400100: Stone
+    400102: Weapon_band
+    400104: Weapon_Bone
+    400106: M21_01_stone001
+    400108: M21_01_weapon001
+    400110: Stone001
+    400112: Weapon_band001
+    400114: Weapon_Bone001
+    2100000: 'Material #1'
+    2100002: 'Material #0'
+    2100004: 'Material #72'
+    2100006: 'Material #75'
+    2300000: //RootNode
+    3300000: //RootNode
+    4300000: M21_01_weapon
+    4300002: M21_01_stone
+    4300004: M21_03
+    4300006: M21_01_weapon001
+    4300008: M21_01_stone001
+    7400000: Take 001
+    9500000: //RootNode
+    13700000: M21_01_stone
+    13700002: M21_01_weapon
+    13700004: M21_03
+    13700006: M21_01_stone001
+    13700008: M21_01_weapon001
+    2186277476908879412: ImportLogs
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: 'Material #0'
+    second: {fileID: 2100000, guid: d5a51ac032b69694d8ffe66731dc1e37, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: 'Material #1'
+    second: {fileID: 2100000, guid: 7d0417e8f2c6ff84c8078c027d82ecf6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: 'Material #72'
+    second: {fileID: 2100000, guid: d5a51ac032b69694d8ffe66731dc1e37, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: 'Material #75'
+    second: {fileID: 2100000, guid: 7d0417e8f2c6ff84c8078c027d82ecf6, type: 2}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    previousCalculatedGlobalScale: 1
+    hasPreviousCalculatedGlobalScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

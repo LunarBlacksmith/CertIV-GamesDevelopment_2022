@@ -1,0 +1,12 @@
+Test
+Test
+Test
+Forward:W
+Backwards:S
+Left:A
+Right:D
+Jump:Space
+Crouch:LeftControl
+Sprint:LeftShift
+Interact:E
+Inventory:Tab
