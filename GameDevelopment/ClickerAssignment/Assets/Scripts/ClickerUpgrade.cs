@@ -10,11 +10,11 @@ public class ClickerUpgrade : MonoBehaviour
     public int Cost 
     {
         get { return _cost; }
-        set { _cost = value; }
+        set { _cost = (value >= 0) ? value : _cost; } //if the value trying to set cost to is less than 0, nothing happens (NO REFUNDS)
     }
 
     /// <summary>
-    /// Compares current inhabitants with the current cost of the next upgrade and increases the cost if true. Else sends console a message.
+    /// Decrease current inhabitants amount by the cost value. If cost is greater than population, prints a console message.
     /// </summary>
     public void Purchase()
     {
@@ -40,6 +40,11 @@ public class ClickerUpgrade : MonoBehaviour
         }
     }
 
+    #region Dev Cheats
+    /// <summary>
+    /// Decrease current inhabitants amount by the cost value and manually set the next cost amount by the value passed in.
+    /// </summary>
+    /// <param name="setCost_p"></param>
     public void Purchase(int setCost_p)
     {
         if (GameManager.inhabitants >= _cost)
@@ -54,5 +59,6 @@ public class ClickerUpgrade : MonoBehaviour
             Debug.Log("You need more inhabitants before you can afford this upgrade.");
         }
     }
+    #endregion
 }
 
