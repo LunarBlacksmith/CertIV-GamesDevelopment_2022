@@ -1292,7 +1292,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e47b371154821914ba29bb6446a5c82d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  costText: {fileID: 0}
+  costText: {fileID: 545655137}
 --- !u!114 &704195885
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1337,8 +1337,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: FingerUpgrade, Assembly-CSharp
+      - m_Target: {fileID: 704195884}
+        m_TargetAssemblyTypeName: LifeUpgrade, Assembly-CSharp
         m_MethodName: Purchase
         m_Mode: 1
         m_Arguments:
@@ -2691,7 +2691,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 136ce6f8943b58245964b191e61f845f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  accessibleHouseArraySize: 5
+  houseUpgrades: 5
   housingSprites:
   - {fileID: 21300000, guid: 6dc932493201c174fb8ff6d42eee2e32, type: 3}
   - {fileID: 21300000, guid: 7c560e8e311b90244a68db24cd893179, type: 3}

@@ -30,11 +30,12 @@ public class HouseUpgrade : MonoBehaviour
     [Tooltip("DO NOT CHANGE THIS VALUE. Use 'Accessible House Array Size' to change the size of the array.")]
     public Sprite[] housingSprites;
     public Text costText;
+    public GameManager gameManager;
     [Tooltip("The image object that the current house upgrade image will display through.")]
     public Image houseImage;
     private int _houseArraySize;
     private int _cost = 1000;
-    private int _housePurchases = 0;
+    private int _housePurchases = 0, _permanentPop = 0;
     private bool _isButtonDisabled = false;
     private bool _hasFinalHouse = false;
     public int Cost
@@ -56,6 +57,7 @@ public class HouseUpgrade : MonoBehaviour
             }
         } 
     }
+    public int PermanentPop { get; private set; }
 
     public void Start()
     {
@@ -160,27 +162,20 @@ public class HouseUpgrade : MonoBehaviour
         {
             //subtract cost value from current population value
             GameManager.inhabitants -= Cost;
-            Debug.Log("You purchased a House upgrade!");
+            gameManager.SendMessageToUser("You purchased a House upgrade!", 2);
             //If HousePurchases plus 1 is greater than our house array size, equals itself. Otherwise add 1.
             HousePurchases = ((HousePurchases+1) > HouseArraySize) ? HousePurchases : HousePurchases+1;
             
             //INCREASE COST of next purchase:
-            //check what our current number of house upgrades is
-            switch (HousePurchases)
+            switch (HousePurchases) //check what our current number of house upgrades is
             {
                 //don't need to set cost here since default is 1000
-                case 0:
-                    { break; }
-                case 1: //set the cost value based on the number of housing upgrades purchased
-                    { Cost = 3000; break; }
-                case 2:
-                    { Cost = 10000; break; }
-                case 3:
-                    { Cost = 25000; break; }
-                case 4:
-                    { Cost = 50000; break; }
-                case 5:
-                    { Cost = 110000; break; }
+                case 0: { break; }
+                case 1: { Cost = 3000; break; }//set the cost value based on the number of housing upgrades purchased
+                case 2: { Cost = 10000; break; }
+                case 3: { Cost = 25000; break; }
+                case 4: { Cost = 110000; break; }
+                case 5: { break; } //if we already have the last upgrade, we can't buy any more anyway, so don't set a new cost.
                 default:
                     {
                         Debug.Log($"Something's gone wrong with setting your HousePurchases if you're seeing this message." +
@@ -189,8 +184,9 @@ public class HouseUpgrade : MonoBehaviour
                     }
             }
             //if the costText reference isn't null
-            if (!costText)
+            if (costText)
             {
+                Debug.Log("Updating the button text.");
                 //Show UPGRADE [cost amount formatted to separate by comma in thousands] Population
                 costText.text = $"UPGRADE\n{Cost.ToString("N0")} Population";
             }
@@ -198,6 +194,7 @@ public class HouseUpgrade : MonoBehaviour
         else
         {
             Debug.Log("You need more inhabitants before you can afford this upgrade.");
+            gameManager.SendMessageToUser("You need more inhabitants before you can afford this upgrade.", 4);
         }
     }
 
