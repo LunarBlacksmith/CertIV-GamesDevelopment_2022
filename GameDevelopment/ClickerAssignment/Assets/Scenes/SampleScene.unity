@@ -310,12 +310,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27674669d6683ab4189599b294a819c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  housingSprites:
-  - {fileID: 21300000, guid: 6dc932493201c174fb8ff6d42eee2e32, type: 3}
-  - {fileID: 21300000, guid: 7c560e8e311b90244a68db24cd893179, type: 3}
-  - {fileID: 21300000, guid: 3f476a25c1840514ba000e7b49d68e58, type: 3}
-  - {fileID: 21300000, guid: 6a25e182243bf7a469adcf8d04d6dcc0, type: 3}
-  - {fileID: 21300000, guid: eada5912b71412743948f55f9df24eef, type: 3}
   cUpgrade: {fileID: 624430981}
   lifeUpgrade: {fileID: 704195884}
   houseUpgrade: {fileID: 1875164187}
@@ -827,7 +821,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.18900001}
   m_AnchorMax: {x: 1, y: 0.95800006}
-  m_AnchoredPosition: {x: 0, y: 0.5319004}
+  m_AnchoredPosition: {x: 0, y: 0.5318985}
   m_SizeDelta: {x: 0, y: -0.28950024}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &545655137
@@ -1298,6 +1292,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e47b371154821914ba29bb6446a5c82d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  costText: {fileID: 0}
 --- !u!114 &704195885
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1978,7 +1973,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.17773946}
   m_AnchorMax: {x: 1, y: 0.9605211}
-  m_AnchoredPosition: {x: 0, y: 1.9489}
+  m_AnchoredPosition: {x: 0, y: 1.9488983}
   m_SizeDelta: {x: 0, y: -0.13899994}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1108743014
@@ -2290,7 +2285,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.03836042, y: 0.75280625}
   m_AnchorMax: {x: 0.94686437, y: 0.90261245}
-  m_AnchoredPosition: {x: 1.5000153, y: -0.104003906}
+  m_AnchoredPosition: {x: 1.5, y: -0.104003906}
   m_SizeDelta: {x: 0.6068001, y: 0.14690018}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1398480439
@@ -2641,7 +2636,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.022000002, y: 0.020193812}
   m_AnchorMax: {x: 0.98100007, y: 0.15361238}
-  m_AnchoredPosition: {x: 0.47799683, y: -0.19110107}
+  m_AnchoredPosition: {x: 0.47799683, y: -0.19116211}
   m_SizeDelta: {x: -0.023895264, y: -0.79940796}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1875164185
@@ -2696,7 +2691,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 136ce6f8943b58245964b191e61f845f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  accessibleHouseArraySize: 5
+  housingSprites:
+  - {fileID: 21300000, guid: 6dc932493201c174fb8ff6d42eee2e32, type: 3}
+  - {fileID: 21300000, guid: 7c560e8e311b90244a68db24cd893179, type: 3}
+  - {fileID: 21300000, guid: 3f476a25c1840514ba000e7b49d68e58, type: 3}
+  - {fileID: 21300000, guid: 6a25e182243bf7a469adcf8d04d6dcc0, type: 3}
+  - {fileID: 21300000, guid: eada5912b71412743948f55f9df24eef, type: 3}
   costText: {fileID: 431617747}
+  houseImage: {fileID: 1441485926}
 --- !u!114 &1875164188
 MonoBehaviour:
   m_ObjectHideFlags: 0

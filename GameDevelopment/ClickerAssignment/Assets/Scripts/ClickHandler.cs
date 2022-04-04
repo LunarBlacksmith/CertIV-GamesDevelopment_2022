@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 
 public class ClickHandler : MonoBehaviour
 {
-    private Vector2 buttonStartPos = new Vector2();
+    //private Vector2 buttonStartPos = new Vector2();
     /// <summary>
     /// Inhabitants per click variable
     /// </summary>
@@ -22,21 +22,39 @@ public class ClickHandler : MonoBehaviour
 
     public void Start()
     {
+        /*
         if (gameObject.GetComponentInChildren<Text>())
         {
             buttonStartPos = gameObject.GetComponentInChildren<Text>().transform.position;
-        }
+        }*/
     }
 
     public void Update()
     {
+        #region Pressed/Unpressed Not Working
         //if the current gameobject has the tag Pressable Button
-        if (gameObject.tag == "PressableButton")
+        /*if (gameObject.tag == "PressableButton")
         {
-            Debug.Log("We made it?");
-            //moving the button text to its starting position
-            gameObject.GetComponentInChildren<Text>().transform.position = buttonStartPos;
-        }
+            switch (isPressed)
+            {
+                case true:
+                    {
+                        //moving the button text down relative to the world space (.down is just (0,-1) and we're multiplying that by 3)
+                        gameObject.GetComponentInChildren<Text>().transform.Translate(Vector2.down * 3);
+                        break;
+                    }
+                    case false:
+                    {
+                        Debug.Log("We made it?");
+                        //moving the button text to its starting position
+                        gameObject.GetComponentInChildren<Text>().transform.position = buttonStartPos;
+                        break;
+                    }
+            }
+            isPressed = false;
+
+        }*/
+        #endregion
     }
 
     /// <summary>
@@ -45,11 +63,10 @@ public class ClickHandler : MonoBehaviour
     public void Click()
     {
         //if the current gameobject has the tag Pressable Button
-        if (gameObject.tag == "PressableButton")
-        {
-            //moving the button text down relative to the world space (.down is just (0,-1) and we're multiplying that by 3)
-            gameObject.GetComponentInChildren<Text>().transform.Translate(Vector2.down * 3);
-        }
+        //if (gameObject.tag == "PressableButton")
+        //{
+        //    isPressed = true;
+        //}
         GameManager.inhabitants += ipclick;
         //Writes current inhabitants value in GameManager script to console.
         Debug.Log(GameManager.inhabitants);

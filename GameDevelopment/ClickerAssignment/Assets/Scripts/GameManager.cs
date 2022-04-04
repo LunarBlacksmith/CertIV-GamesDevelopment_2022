@@ -5,22 +5,6 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    private static int _houseArraySize;
-    /// <summary>
-    /// Property field to get or set the available housing array size. Value cannot be 0 or lower.
-    /// </summary>
-    public static int HouseArraySize
-    {
-        get { return _houseArraySize; }
-        set { _houseArraySize = (value > 0) ? value : _houseArraySize;
-            /*
-            above line same as the following if statement:
-            if (value > 0)
-            { _HouseArraySize = value; }
-            */
-        }
-    }
-    public Sprite[] housingSprites = new Sprite[HouseArraySize];
     public ClickerUpgrade cUpgrade;
     public LifeUpgrade lifeUpgrade;
     public HouseUpgrade houseUpgrade;
