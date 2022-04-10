@@ -8,31 +8,32 @@ public class GameManager : MonoBehaviour
     public ClickerUpgrade cUpgrade;
     public LifeUpgrade lifeUpgrade;
     public HouseUpgrade houseUpgrade;
-    public Text populationText, deathTollText, userMessageDisplay;
+    //so we can update these when needed for feedback to player
+    public Text userMessageDisplay, populationText, deathTollText, iPClickText, lifeTimerText, permanentPopText; 
     public static long inhabitants = 0, deathToll = 0, _markedForDeath = 2;
-    public static float lifeTimer = 2f;
-    private int _numberOfUpgrades = 0, _reaperMultiplier = 1;
-    private float _time = 0f;
-    private bool _timerIsActive = false;
+    public static float lifeTimer = 1f; //how often x amount of inhabitants are removed
+    private int _numberOfUpgrades = 0, _reaperMultiplier = 1; //reaperMult allows smoother difficulty curve for continuity
+    private bool _killingIsActive = false;  //manipulation prevents timer to run every frame
 
     public void Update()
     {
-        _time += Time.deltaTime;
-        if (_time >= lifeTimer)
-        {
-            KillHumans(_markedForDeath);
-            _time -= lifeTimer;
-        }
-
-        ThanosGlasses();
         //culls an amount of the population at a repeating amount of time
         //time based on our life timer
         //amount of population culled based on markedForDeath
-        //KillHumans(lifeTimer, _markedForDeath);
+        StartCoroutine(IKillHumans(lifeTimer, _markedForDeath));
+        ThanosGlasses();
         //Update the population text to reflect our current number of inhabitants, formatted by thousands.
         UpdateTextField(0);
         //Update death toll text to reflect current number of deaths, formatted by thousands.
         UpdateTextField(1);
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+        #if UNITY_EDITOR
+            UnityEditor.EditorApplication.ExitPlaymode();
+        #endif
+            Application.Quit();
+        }
 
         #region Dev Cheats
 #if UNITY_EDITOR
@@ -48,7 +49,6 @@ public class GameManager : MonoBehaviour
         cUpgrade.costText.text = $"UPGRADE\n{FormatMyLong(cUpgrade.Cost)} Population";
 #endif
         #endregion
-
     }
 
     /// <summary>
@@ -57,16 +57,32 @@ public class GameManager : MonoBehaviour
     /// </summary>
     /// <param name="secondsToWait_p"></param>
     /// <param name="amountOfHumans_p"></param>
-    public void KillHumans(long amountOfHumans_p)
+    public IEnumerator IKillHumans(float secondsToWait_p, long amountOfHumans_p)
     {
-        //TODO: UPDATE THE DEATHTOLL VARIABLE
-        Debug.Log($"Killing {_markedForDeath} humans");
-        //StartCoroutine(Timer(secondsToWait_p));
-        //check if removing the amount of the population would decrease it beyond the permanent population
-        if ((inhabitants - _markedForDeath) < houseUpgrade.PermanentPop)
-        { inhabitants = houseUpgrade.PermanentPop; } //set current population to only that of the permanent population
-        else 
-        { inhabitants -= _markedForDeath; } //entirely remove those marked for death from the current population
+        //mostly for the coroutine to not run every frame, we control it with a boolean
+        if (!_killingIsActive)
+        {
+            //once we've started, set it to true
+            _killingIsActive = true;
+            //check if removing the amount of the population would decrease it beyond the permanent population
+            if ((inhabitants - _markedForDeath) < houseUpgrade.PermanentPop)
+            {
+                //set current population to only that of the permanent population
+                inhabitants = houseUpgrade.PermanentPop; 
+                //we've already checked the remaining amount after removing markedForDeath, so the
+                //amount added to the death toll would be the permanent population subtracted from the inhabitants count
+                //since that remaining amount is what is being completely removed
+                deathToll += inhabitants - houseUpgrade.PermanentPop;
+            } 
+            else
+            { 
+                inhabitants -= _markedForDeath; //entirely remove those marked for death from the current population
+                deathToll += _markedForDeath; //add those that were removed to the death toll
+            } 
+            yield return new WaitForSeconds(secondsToWait_p);
+            //only set the boolean to false after we've finished waiting the amount of seconds
+            _killingIsActive = false;
+        }
     }
 
     /// <summary>
@@ -94,11 +110,10 @@ public class GameManager : MonoBehaviour
     /// <param name="number_p"></param>
     /// <returns></returns>
     public static string FormatMyLong(long number_p)
-    {
-        return number_p.ToString("N0");
-    }
+    { return number_p.ToString("N0"); }
+
     /// <summary>
-    /// Updates a text field. The field is dependant on the int passed in as an index: 0 = population, 1 = death toll.
+    /// Updates a text field. The field is dependant on the int passed in as an index: 0 = population, 1 = death toll, 2 = iPClick, 3 = life timer.
     /// </summary>
     /// <param name="indexOfTextField"></param>
     public void UpdateTextField(int indexOfTextField)
@@ -106,24 +121,23 @@ public class GameManager : MonoBehaviour
         switch (indexOfTextField)
         {
             case 0:
-                { 
-                    populationText.text = $"{FormatMyLong(inhabitants)} \nInhabitants";
-                    break;
-                }
+                { populationText.text = FormatMyLong(inhabitants); break; }
             case 1:
-                {
-                    deathTollText.text = $"{FormatMyLong(deathToll)} \nDeaths";
-                    break;
-                }
+                { deathTollText.text = FormatMyLong(deathToll); break; }
+            case 2:
+                { iPClickText.text = ClickHandler.ipclick.ToString("N0"); break; }
+            case 3:
+                { lifeTimerText.text = $"{lifeTimer.ToString("0.00")} \nseconds"; break; }
+            case 4:
+                { permanentPopText.text = houseUpgrade.PermanentPop.ToString("N0"); break; }
             default:
                 {
-        #if UNITY_EDITOR
+            #if UNITY_EDITOR
                     Debug.Log("Not a valid index for a text field, we only have 0 for Inhabitants and 1 for Deaths.");
                     SendMessageToUser("Not a valid index for a text field, we only have 0 for Inhabitants and 1 for Deaths.", 4f);
-        #endif
+            #endif
                     break;
                 }
-                
         }
     }
 
@@ -136,10 +150,7 @@ public class GameManager : MonoBehaviour
     {
         //as long as the string isn't null and the seconds to wait is greater than 0
         if (message_p != null && secondsDisplayed_p > 0) 
-        {
-            //call our coroutine to make the text display the message
-            StartCoroutine(ShowMessage(message_p, secondsDisplayed_p));
-        }
+        { StartCoroutine(ShowMessage(message_p, secondsDisplayed_p)); } //call our coroutine to make the text display the message
     }
     private IEnumerator ShowMessage(string message_p, float delay_p)
     {
@@ -147,10 +158,5 @@ public class GameManager : MonoBehaviour
         userMessageDisplay.enabled = true;
         yield return new WaitForSeconds(delay_p);
         userMessageDisplay.enabled = false;
-    }
-    private IEnumerator Timer(float seconds_p)
-    {
-
-        yield return new WaitForSeconds(seconds_p);
     }
 }

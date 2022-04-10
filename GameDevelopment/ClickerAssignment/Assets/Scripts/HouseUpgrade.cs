@@ -67,6 +67,7 @@ public class HouseUpgrade : MonoBehaviour
     #endif
         //set our house image sprite to the first house sprite in our array
         houseImage.sprite = housingSprites[0];
+        gameManager.UpdateTextField(4);
     }
 
     public void Update()
@@ -166,16 +167,17 @@ public class HouseUpgrade : MonoBehaviour
             gameManager.SendMessageToUser("You purchased a House upgrade!", 2f);
             //If HousePurchases plus 1 is greater than our house array size, equals itself. Otherwise add 1.
             HousePurchases = ((HousePurchases+1) > HouseArraySize) ? HousePurchases : HousePurchases+1;
-            
+            gameManager.UpdateTextField(4);
             //INCREASE COST of next purchase:
             switch (HousePurchases) //check what our current number of house upgrades is
             {
                 //don't need to set cost here since default is 1000
                 case 0: { break; }
-                case 1: { Cost = 3000; break; }//set the cost value based on the number of housing upgrades purchased
-                case 2: { Cost = 10000; break; }
-                case 3: { Cost = 25000; break; }
-                case 4: { Cost = 110000; break; }
+                //set the cost value based on the number of housing upgrades purchased and increase our permanent population
+                case 1: { Cost = 3000; PermanentPop = 1000; break; }
+                case 2: { Cost = 10000; PermanentPop = 5000; break; }
+                case 3: { Cost = 25000; PermanentPop = 10000; break; }
+                case 4: { Cost = 110000; PermanentPop = 50000; break; }
                 case 5: { break; } //if we already have the last upgrade, we can't buy any more anyway, so don't set a new cost.
                 default:
                     {
@@ -184,19 +186,15 @@ public class HouseUpgrade : MonoBehaviour
                         break;
                     }
             }
-            //if the costText reference isn't null
-            if (costText)
-            {
-                Debug.Log("Updating the button text.");
-                //Show UPGRADE [cost amount formatted to separate by comma in thousands] Population
-                costText.text = $"UPGRADE\n{Cost.ToString("N0")} Population";
-            }
+            //Show UPGRADE [cost amount formatted to separate by comma in thousands] Population
+            costText.text = $"UPGRADE HOUSING\n{Cost.ToString("N0")} Population";
         }
         else
         {
             Debug.Log("You need more inhabitants before you can afford this upgrade.");
             gameManager.SendMessageToUser("You need more inhabitants before you can afford this upgrade.", 4f);
         }
+        gameManager.UpdateTextField(4);
     }
 
     #region Dev Cheats

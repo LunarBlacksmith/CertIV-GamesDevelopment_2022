@@ -7,9 +7,10 @@ public class ClickerUpgrade : MonoBehaviour
 {
     [Tooltip("This is the Text relating to this specific Game Object.")]
     public Text costText;
-    int _cost = 100;
-    int _clickerGrowthVar = 1;
-    int _costGrowthVar = 1;
+    public GameManager gameManager;
+    private int _cost = 100; //initial cost of a cost upgrade
+    private int _clickerGrowthVar = 1, _costGrowthVar = 1; //despite what VS thinks, these are manipulated through properties in local methods
+    private bool _firstPurchase = true;
     public int Cost 
     {
         get { return _cost; }
@@ -17,6 +18,12 @@ public class ClickerUpgrade : MonoBehaviour
     }
     public int ClickerGrowthVar { get; private set; }
     public int CostGrowthVar { get; private set; }
+
+    public void Start()
+    {   
+        costText.text = $"UPGRADE POP/CLICK \n{Cost.ToString("N0")} Population"; //SUPPOSED TO update button text for upgrade
+        gameManager.UpdateTextField(2); //Updates the text displaying how many inhabitants per click the player has when game starts 
+    } 
 
     /// <summary>
     /// Decrease current inhabitants amount by the cost value. If cost is greater than population, prints a console message.
@@ -27,25 +34,34 @@ public class ClickerUpgrade : MonoBehaviour
         {
             //subtract cost value from current population value
             GameManager.inhabitants -= Cost;
-            Debug.Log("You purchased an upgrade!");
-            //increase the amount of inhabitants per click by 1 times our clicker growth variable
-            ClickHandler.ipclick += 2 * ClickerGrowthVar;
-            //increase the cost of next purchase by 100
-            Cost += 110 * CostGrowthVar;
-            //increment both growth variables by 1
-            ++ClickerGrowthVar;
-            ++CostGrowthVar;
-            //if the costText reference isn't null
-            if (costText)
+
+            //weird bug happening on first click of the button,
+            //using this to offset negative player repercussions
+            if (_firstPurchase)
             {
-                //Show UPGRADE [cost amount formatted to separate by comma in thousands] Population
-                costText.text = $"UPGRADE\n{Cost.ToString("N0")} Population";
+                ClickHandler.ipclick += 2;
+                gameManager.SendMessageToUser($"You now have {ClickHandler.ipclick} inhabitants per click!", 2f);
+                _firstPurchase = false;
             }
+            else
+            {
+                //increase the amount of inhabitants per click by 1 times our clicker growth variable
+                ClickHandler.ipclick += 2 * ClickerGrowthVar;
+                gameManager.SendMessageToUser($"You now have {ClickHandler.ipclick} inhabitants per click!", 2f);
+                //increase the cost of next purchase using a curved algorithm
+                Cost += 110 * CostGrowthVar;
+                //increment both growth variables by 1
+                ++ClickerGrowthVar;
+                ++CostGrowthVar;
+            }
+            //WHY DOESN'T UNITY REGISTER THIS??
+            costText.text = $"UPGRADE POP/CLICK \n{Cost.ToString("N0")} Population";
+            Debug.Log(costText.text); //READ THE CONSOLE, YOU'LL SEE WHAT I MEAN
         }
         else
-        {
-            Debug.Log("You need more inhabitants before you can afford this upgrade.");
-        }
+        { gameManager.SendMessageToUser($"You need more inhabitants before you can afford this upgrade.", 2f); }
+        //don't need to call this every frame since it's only affected when a new clicker upgrade is purchased
+        gameManager.UpdateTextField(2); 
     }
 
     #region Dev Cheats

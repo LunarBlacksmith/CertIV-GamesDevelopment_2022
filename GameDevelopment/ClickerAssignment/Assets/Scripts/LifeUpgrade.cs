@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class LifeUpgrade : MonoBehaviour
 {
+    public GameManager gameManager;
     public Text costText;
     public int Cost
     {
@@ -25,19 +26,19 @@ public class LifeUpgrade : MonoBehaviour
             }
         }
     }
-    private float[] _lifeUpgradeValues = new float[3] { 1, 2, 3 };
-    private int _cost = 0, _lifePurchases = 0;
+    private float[] _lifeUpgradeValues = new float[3] { 0.25f, 0.5f, 0.75f };
+    private int _cost = 800, _lifePurchases = 0;
     private bool _isButtonDisabled = false, _hasFinalUpgrade = false;
 
+    public void Start()
+    { gameManager.UpdateTextField(3); costText.text = $"UPGRADE LIFESPAN\n{Cost.ToString("N0")} Population"; }
 
     public void Update()
     {
         //check if we have the final life upgrade already
+        // and set our has final upgrade to true if purchases is the same as the array length, otherwise remain false
         if (!_hasFinalUpgrade)
-        {
-            //set our has final upgrade to true if purchases is the same as the array length, otherwise remain false
-            _hasFinalUpgrade = (LifePurchases == _lifeUpgradeValues.Length) ? true : false;
-        }
+        { _hasFinalUpgrade = (LifePurchases == _lifeUpgradeValues.Length) ? true : false; } 
         //check if we have already disabled the button
         else if (!_isButtonDisabled)
         { //and if we haven't then check if our life purchases is also as big as our life upgrades array (the number of available life upgrades)
@@ -68,23 +69,30 @@ public class LifeUpgrade : MonoBehaviour
     {
         if (GameManager.inhabitants >= Cost)
         {
-            //increase life timer on purchase, set index by the value of how many purchases we have
-            GameManager.lifeTimer += _lifeUpgradeValues[LifePurchases];
-            //subtract cost value from current population value
-            GameManager.inhabitants -= Cost;
-            //increment the amount of life purchases
-            ++LifePurchases;
-            Debug.Log("You purchased a Life Upgrade!");
-            //if the costText reference isn't null
-            if (costText)
+            if (LifePurchases < _lifeUpgradeValues.Length)
             {
-                //Show UPGRADE [cost amount formatted to separate by comma in thousands] Population
-                costText.text = $"UPGRADE\n{Cost.ToString("N0")} Population";
+                //increase life timer on purchase, set index by the value of how many purchases we have
+                GameManager.lifeTimer += _lifeUpgradeValues[LifePurchases];
+                GameManager.inhabitants -= Cost;
+                //increment the amount of life purchases
+                ++LifePurchases;
+                switch (LifePurchases)
+                {
+                    case 1: { Cost = 30000; break; }
+                    case 2: { Cost = 110000; break; }
+                    default:
+                        {
+                            Debug.Log($"Something's gone wrong with setting your HousePurchases if you're seeing this message." +
+                                $"\nHousePurchases: {LifePurchases}");
+                            break;
+                        }
+                }
+                gameManager.UpdateTextField(3);
+                gameManager.SendMessageToUser("You purchased a Life Upgrade!", 2f);
+                costText.text = $"UPGRADE LIFESPAN\n{Cost.ToString("N0")} Population";
             }
         }
         else
-        {
-            Debug.Log("You need more inhabitants before you can afford this upgrade.");
-        }
+        { gameManager.SendMessageToUser("You need more inhabitants before you can afford this upgrade.", 2f); }
     }
 }
