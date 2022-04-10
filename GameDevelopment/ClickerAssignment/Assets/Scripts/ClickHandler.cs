@@ -25,7 +25,7 @@ public class ClickHandler : MonoBehaviour
     {
         GameManager.inhabitants += ipclick;
         //Writes current inhabitants value in GameManager script to console.
-        Debug.Log(GameManager.inhabitants);
+        //Debug.Log(GameManager.inhabitants);
     }
     /// <summary>
     /// Increases inhabitants in GameManager using ipclick, and prints message arg to console with inhabitants value.

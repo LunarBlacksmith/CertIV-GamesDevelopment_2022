@@ -10,16 +10,25 @@ public class GameManager : MonoBehaviour
     public HouseUpgrade houseUpgrade;
     public Text populationText, deathTollText, userMessageDisplay;
     public static long inhabitants = 0, deathToll = 0, _markedForDeath = 2;
-    public static float lifeTimer = 1;
+    public static float lifeTimer = 2f;
     private int _numberOfUpgrades = 0, _reaperMultiplier = 1;
+    private float _time = 0f;
+    private bool _timerIsActive = false;
 
     public void Update()
     {
+        _time += Time.deltaTime;
+        if (_time >= lifeTimer)
+        {
+            KillHumans(_markedForDeath);
+            _time -= lifeTimer;
+        }
+
         ThanosGlasses();
         //culls an amount of the population at a repeating amount of time
         //time based on our life timer
         //amount of population culled based on markedForDeath
-        KillHumans(lifeTimer, _markedForDeath);
+        //KillHumans(lifeTimer, _markedForDeath);
         //Update the population text to reflect our current number of inhabitants, formatted by thousands.
         UpdateTextField(0);
         //Update death toll text to reflect current number of deaths, formatted by thousands.
@@ -48,19 +57,16 @@ public class GameManager : MonoBehaviour
     /// </summary>
     /// <param name="secondsToWait_p"></param>
     /// <param name="amountOfHumans_p"></param>
-    public void KillHumans(float secondsToWait_p, long amountOfHumans_p)
+    public void KillHumans(long amountOfHumans_p)
     {
         //TODO: UPDATE THE DEATHTOLL VARIABLE
-
-        if (secondsToWait_p > 0)
-        { 
-            Timer(secondsToWait_p);
-            //check if removing the amount of the population would decrease it beyond the permanent population
-            if ((inhabitants -= _markedForDeath) < houseUpgrade.PermanentPop)
-            { inhabitants -= houseUpgrade.PermanentPop; } //set current population to only that of the permanent population
-            else 
-            { inhabitants -= _markedForDeath; } //entirely remove those marked for death from the current population
-        }
+        Debug.Log($"Killing {_markedForDeath} humans");
+        //StartCoroutine(Timer(secondsToWait_p));
+        //check if removing the amount of the population would decrease it beyond the permanent population
+        if ((inhabitants - _markedForDeath) < houseUpgrade.PermanentPop)
+        { inhabitants = houseUpgrade.PermanentPop; } //set current population to only that of the permanent population
+        else 
+        { inhabitants -= _markedForDeath; } //entirely remove those marked for death from the current population
     }
 
     /// <summary>
@@ -68,6 +74,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void ThanosGlasses()
     {
+        Debug.Log($"Number of Upgrades: {_numberOfUpgrades}, Clicker Growth Var: {cUpgrade.ClickerGrowthVar}");
         //if the number of upgrades the player has does not equal the number of times ClickerGrowthVar is called (every upgrade)
         if (_numberOfUpgrades != cUpgrade.ClickerGrowthVar)
         {
@@ -134,15 +141,16 @@ public class GameManager : MonoBehaviour
             StartCoroutine(ShowMessage(message_p, secondsDisplayed_p));
         }
     }
-    private IEnumerator ShowMessage(string message_p, float delay)
+    private IEnumerator ShowMessage(string message_p, float delay_p)
     {
         userMessageDisplay.text = message_p;
         userMessageDisplay.enabled = true;
-        yield return new WaitForSeconds(delay);
+        yield return new WaitForSeconds(delay_p);
         userMessageDisplay.enabled = false;
     }
     private IEnumerator Timer(float seconds_p)
     {
+
         yield return new WaitForSeconds(seconds_p);
     }
 }

@@ -2699,6 +2699,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 6a25e182243bf7a469adcf8d04d6dcc0, type: 3}
   - {fileID: 21300000, guid: eada5912b71412743948f55f9df24eef, type: 3}
   costText: {fileID: 431617747}
+  gameManager: {fileID: 289118421}
   houseImage: {fileID: 1441485926}
 --- !u!114 &1875164188
 MonoBehaviour:

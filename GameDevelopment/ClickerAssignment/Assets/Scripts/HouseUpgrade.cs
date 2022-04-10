@@ -10,23 +10,7 @@ public class HouseUpgrade : MonoBehaviour
     [Tooltip("This changes the number of house upgrades available.")]
     public int houseUpgrades = 5;
 #endif
-    /// <summary>
-    /// Property field to get or set the available housing array size. Value cannot be 0 or lower.
-    /// </summary>
-    public int HouseArraySize
-    {
-        get { return _houseArraySize; }
-        set
-        {
-            _houseArraySize = (value > 0) ? value : _houseArraySize;
-            Debug.Log($"{_houseArraySize}");
-            /*
-            above line same as the following if statement:
-            if (value > 0)
-            { _HouseArraySize = value; }
-            */
-        }
-    }
+    
     [Tooltip("DO NOT CHANGE THIS VALUE. Use 'Accessible House Array Size' to change the size of the array.")]
     public Sprite[] housingSprites;
     public Text costText;
@@ -56,6 +40,23 @@ public class HouseUpgrade : MonoBehaviour
                 _housePurchases = 0;
             }
         } 
+    }
+    /// <summary>
+    /// Property field to get or set the available housing array size. Value cannot be 0 or lower.
+    /// </summary>
+    public int HouseArraySize
+    {
+        get { return _houseArraySize; }
+        set
+        {
+            _houseArraySize = (value > 0) ? value : _houseArraySize;
+            Debug.Log($"{_houseArraySize}");
+            /*
+            above line same as the following if statement:
+            if (value > 0)
+            { _HouseArraySize = value; }
+            */
+        }
     }
     public int PermanentPop { get; private set; }
 
@@ -162,7 +163,7 @@ public class HouseUpgrade : MonoBehaviour
         {
             //subtract cost value from current population value
             GameManager.inhabitants -= Cost;
-            gameManager.SendMessageToUser("You purchased a House upgrade!", 2);
+            gameManager.SendMessageToUser("You purchased a House upgrade!", 2f);
             //If HousePurchases plus 1 is greater than our house array size, equals itself. Otherwise add 1.
             HousePurchases = ((HousePurchases+1) > HouseArraySize) ? HousePurchases : HousePurchases+1;
             
@@ -194,7 +195,7 @@ public class HouseUpgrade : MonoBehaviour
         else
         {
             Debug.Log("You need more inhabitants before you can afford this upgrade.");
-            gameManager.SendMessageToUser("You need more inhabitants before you can afford this upgrade.", 4);
+            gameManager.SendMessageToUser("You need more inhabitants before you can afford this upgrade.", 4f);
         }
     }
 
