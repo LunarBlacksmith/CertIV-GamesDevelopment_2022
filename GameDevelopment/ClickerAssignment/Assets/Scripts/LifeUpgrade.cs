@@ -27,11 +27,11 @@ public class LifeUpgrade : MonoBehaviour
         }
     }
     private float[] _lifeUpgradeValues = new float[3] { 0.25f, 0.5f, 0.75f };
-    private int _cost = 0, _lifePurchases = 0;
+    private int _cost = 800, _lifePurchases = 0;
     private bool _isButtonDisabled = false, _hasFinalUpgrade = false;
 
     public void Start()
-    { gameManager.UpdateTextField(3); Debug.Log($"Cost Text for Life: {costText.text}"); }
+    { gameManager.UpdateTextField(3); costText.text = $"UPGRADE LIFESPAN\n{Cost.ToString("N0")} Population"; }
 
     public void Update()
     {
@@ -78,10 +78,8 @@ public class LifeUpgrade : MonoBehaviour
                 ++LifePurchases;
                 switch (LifePurchases)
                 {
-                    case 0: { break; }
-                    case 1: { Cost = 5000; break; }
-                    case 2: { Cost = 15000; break; }
-                    case 3: { Cost = 50000; break; }
+                    case 1: { Cost = 30000; break; }
+                    case 2: { Cost = 110000; break; }
                     default:
                         {
                             Debug.Log($"Something's gone wrong with setting your HousePurchases if you're seeing this message." +

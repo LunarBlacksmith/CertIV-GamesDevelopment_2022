@@ -5,11 +5,12 @@ using UnityEngine.UI;
 
 public class ClickerUpgrade : MonoBehaviour
 {
-    //[Tooltip("This is the Text relating to this specific Game Object.")]
+    [Tooltip("This is the Text relating to this specific Game Object.")]
     public Text costText;
     public GameManager gameManager;
-    int _cost = 100; //initial cost of a cost upgrade
-    int _clickerGrowthVar = 1, _costGrowthVar = 1; //despite what VS thinks, these are manipulated through properties in local methods
+    private int _cost = 100; //initial cost of a cost upgrade
+    private int _clickerGrowthVar = 1, _costGrowthVar = 1; //despite what VS thinks, these are manipulated through properties in local methods
+    private bool _firstPurchase = true;
     public int Cost 
     {
         get { return _cost; }
@@ -19,10 +20,9 @@ public class ClickerUpgrade : MonoBehaviour
     public int CostGrowthVar { get; private set; }
 
     public void Start()
-    {
-        Debug.Log($"Cost Text for Clicker: {costText.text}");
-        gameManager.UpdateTextField(2); //Updates the text displaying how many inhabitants per click the player has when game starts
-        costText.text = $"UPGRADE POP/CLICK\n{Cost.ToString("N0")} Population"; //update button text for upgrade
+    {   
+        costText.text = $"UPGRADE POP/CLICK \n{Cost.ToString("N0")} Population"; //SUPPOSED TO update button text for upgrade
+        gameManager.UpdateTextField(2); //Updates the text displaying how many inhabitants per click the player has when game starts 
     } 
 
     /// <summary>
@@ -34,15 +34,29 @@ public class ClickerUpgrade : MonoBehaviour
         {
             //subtract cost value from current population value
             GameManager.inhabitants -= Cost;
-            //increase the amount of inhabitants per click by 1 times our clicker growth variable
-            ClickHandler.ipclick += 2 * ClickerGrowthVar;
-            gameManager.SendMessageToUser($"You now have {ClickHandler.ipclick} inhabitants per click!", 2f);
-            //increase the cost of next purchase using a curved algorithm
-            Cost += 110 * CostGrowthVar;
-            //increment both growth variables by 1
-            ++ClickerGrowthVar;
-            ++CostGrowthVar;
-            costText.text = $"UPGRADE POP/CLICK\n{Cost.ToString("N0")} Population";
+
+            //weird bug happening on first click of the button,
+            //using this to offset negative player repercussions
+            if (_firstPurchase)
+            {
+                ClickHandler.ipclick += 2;
+                gameManager.SendMessageToUser($"You now have {ClickHandler.ipclick} inhabitants per click!", 2f);
+                _firstPurchase = false;
+            }
+            else
+            {
+                //increase the amount of inhabitants per click by 1 times our clicker growth variable
+                ClickHandler.ipclick += 2 * ClickerGrowthVar;
+                gameManager.SendMessageToUser($"You now have {ClickHandler.ipclick} inhabitants per click!", 2f);
+                //increase the cost of next purchase using a curved algorithm
+                Cost += 110 * CostGrowthVar;
+                //increment both growth variables by 1
+                ++ClickerGrowthVar;
+                ++CostGrowthVar;
+            }
+            //WHY DOESN'T UNITY REGISTER THIS??
+            costText.text = $"UPGRADE POP/CLICK \n{Cost.ToString("N0")} Population";
+            Debug.Log(costText.text); //READ THE CONSOLE, YOU'LL SEE WHAT I MEAN
         }
         else
         { gameManager.SendMessageToUser($"You need more inhabitants before you can afford this upgrade.", 2f); }

@@ -27,6 +27,14 @@ public class GameManager : MonoBehaviour
         //Update death toll text to reflect current number of deaths, formatted by thousands.
         UpdateTextField(1);
 
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+        #if UNITY_EDITOR
+            UnityEditor.EditorApplication.ExitPlaymode();
+        #endif
+            Application.Quit();
+        }
+
         #region Dev Cheats
 #if UNITY_EDITOR
         if (Input.GetKey(KeyCode.C))
