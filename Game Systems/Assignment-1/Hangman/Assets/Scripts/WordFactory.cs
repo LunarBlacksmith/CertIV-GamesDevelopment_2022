@@ -75,6 +75,11 @@ public class WordFactory : MonoBehaviour
         #endregion
     }
 
+
+
+    //All Evaluation methods will finish as soon as the first match is found, returning true
+    #region Evaluations
+
     /// <summary>
     /// Compares one string to another, both with and without whitespaces, and returns true if either condition is met.
     /// </summary>
@@ -82,31 +87,62 @@ public class WordFactory : MonoBehaviour
     /// <param name="word2_p"></param>
     /// <returns>True or False</returns>
     public bool EvaluateWord(string word1_p, string word2_p)
-    {
-        return (word1_p == word2_p) || (RemoveWhiteSpaces(word1_p) == RemoveWhiteSpaces(word2_p));
-    }
+    { return (word1_p == word2_p) || (RemoveWhiteSpaces(word1_p) == RemoveWhiteSpaces(word2_p)); }
 
-    
-
-    //All Evaluation methods will finish as soon as the first match is found, returning true
-    #region Evaluations
-    //compare a character, passed as a string, to all characters within a string
+    /// <summary>
+    /// Compares a character, passed as a string in the first arg, to all characters within the second string. Returns true on first match found.
+    /// </summary>
+    /// <param name="word1_p"></param>
+    /// <param name="word2_p"></param>
+    /// <returns>True or False</returns>
     public bool EvaluateCharacter(string word1_p, string word2_p)
     {
-        bool _isTheSame = false;
-        return _isTheSame;
+        // creating a temporary char so we only call this method once, not every loop
+        // removing all whitespace from the first word and then assigning its first character in the string to our tempChar
+        char tempChar = RemoveWhiteSpaces(word1_p)[0];
+        // loop through the second string as individual characters
+        foreach (char character in word2_p.ToCharArray())
+        // return true if the first character in the first word (without any whitespace)
+        // is the same as the current character in the second string
+        { if (tempChar == character) { return true; } } 
+
+        //else if we have never returned true, aka: character doesn't exist in the second string
+        return false;
     }
-    //compare a character to all characters in a string
+
+    /// <summary>
+    /// Compares a character in the first arg, to all characters within the second string. Returns true on first match found.
+    /// </summary>
+    /// <param name="character_p"></param>
+    /// <param name="word_p"></param>
+    /// <returns>True or False</returns>
     public bool EvaluateCharacter(char character_p, string word_p)
     {
-        bool _isTheSame = false;
-        return _isTheSame;
+        foreach (char character in word_p.ToCharArray())
+        { if (character_p == character) { return true; } } //return true if the character param is in the string param
+
+        //else if we have never returned true, aka: character doesn't exist in the string
+        return false;
     }
-    //compare a character, passed as a string, to all characters in a character array
-    public bool EvaluateCharacter(string word1_p, char[] charArray_p)
+
+    /// <summary>
+    /// Compares a character, passed as a string in the first arg, to all characters within the character array. Returns true on first match found.
+    /// </summary>
+    /// <param name="word_p"></param>
+    /// <param name="charArray_p"></param>
+    /// <returns>True or False</returns>
+    public bool EvaluateCharacter(string word_p, char[] charArray_p)
     {
-        bool _isTheSame = false;
-        return _isTheSame;
+        // creating a temporary char so we only call this method once, not every loop
+        // removing all whitespace from the first word and then assigning its first character in the string to our tempChar
+        char tempChar = RemoveWhiteSpaces(word_p)[0];
+        foreach (char character in charArray_p)
+        // return true if the first character in the word (without any whitespace)
+        // is the same as the current character in the character array
+        { if (tempChar == character) { return true; } } 
+
+        //else if we have never returned true, aka: character doesn't exist in the string
+        return false;
     }
     #endregion
 
@@ -190,7 +226,7 @@ public class WordFactory : MonoBehaviour
                         { tempList.Add(word); }
                     }
                 }
-                if (tempList != null) //if our temp list of words isn't empty
+                if (tempList.Count > 0) //if our temp list of words isn't empty
                 {
                     //get a random index with a limit of our new temporary list's count total
                     int tempIndex = _randomObj.Next(tempList.Count);
@@ -202,21 +238,21 @@ public class WordFactory : MonoBehaviour
                 else //if our temp list is empty
                 {
                     Debug.Log($"There were no words with the provided length of: {wordLength_p}.");
-                    throw new System.NullReferenceException();
+                    throw new EntryPointNotFoundException($"There were no words with the provided length of: {wordLength_p}.");
                 }
             }
             //if the try block code doesn't work
-            catch (System.IndexOutOfRangeException indexE) //a specific exception catch if there is an index out of range
+            catch (IndexOutOfRangeException indexE) //a specific exception catch if there is an index out of range
             { throw indexE; }
-            catch (System.Exception e) //a general exception catch
+            catch (Exception e) //a general exception catch
             {
                 //preserves original exception error by using the new keyword
-                throw new System.Exception($"An error ocurred getting the word in the list, within the dictionary.\n{e}");
+                throw new Exception($"An error ocurred getting the word in the list, within the dictionary.\n{e}");
             }
         }
         else //if the word length argument is less than or equal to 1
         {
-            throw new System.ArgumentException($"The word length of, {wordLength_p}, has to be greater than 1.");
+            throw new ArgumentException($"The word length of, {wordLength_p}, has to be greater than 1.");
         }
         
     }
@@ -252,16 +288,16 @@ public class WordFactory : MonoBehaviour
                 _convertedToWord = false;
                 return GeneratedWord; //returning the word we've generated
             }
-            catch (System.IndexOutOfRangeException indexE) //a specific exception catch if there is an index out of range
+            catch (IndexOutOfRangeException indexE) //a specific exception catch if there is an index out of range
             { throw indexE; }
-            catch (System.Exception e) //a general exception catch
+            catch (Exception e) //a general exception catch
             {
                 //preserves original exception error by using the new keyword
-                throw new System.Exception($"An error ocurred getting the word in the list, with the dictionary key of {difficultyKey_p}: {e}");
+                throw new Exception($"An error ocurred getting the word in the list, with the dictionary key of {difficultyKey_p}: {e}");
             }
         }
         else //if the method argument is not a valid dictionary key
-        { throw new System.ArgumentException("The difficulty key passed to the method is not valid."); }
+        { throw new ArgumentException("The difficulty key passed to the method is not valid."); }
     }
     #endregion
 
