@@ -35,15 +35,10 @@ public class WordFactory : MonoBehaviour
     #region Properties
     public string GeneratedWord { get; private set; } //public property for accessing its variable outside the class
     public char[] GenWordCharArray { get; private set; } //public property for accessing the array outside the class
-    //property for lettercount to allow verification on setting of letter count
-    public int LetterCount 
+    public int LetterCount //property for lettercount to allow verification on setting of letter count
     {
         get { return _letterCount; }
-        private set 
-        {
-            if (value >= 0)
-            { _letterCount = value; }
-        }
+        private set { _letterCount = (value >= 0) ? value : _letterCount; } //set lettercount to value if its greater than or equal to 0, otherwise set to self
     }
     #endregion
 
@@ -146,26 +141,36 @@ public class WordFactory : MonoBehaviour
     }
     #endregion
 
-    //All compare methods indlude whitespace as a valid character
+    // All Compare methods indlude whitespace as a valid character
     #region Length Comparisons
-    //returns true if length of char array1 is equal to char array2
+
+    /// <summary>
+    /// Compares the length of the first character array to the second and returns true if they are equal.
+    /// </summary>
+    /// <param name="charArray1_p"></param>
+    /// <param name="charArray2_p"></param>
+    /// <returns>True or False</returns>
     public bool CompareLength(char[] charArray1_p, char[] charArray2_p)
-    {
-        bool _isTheSame = false;
-        return _isTheSame;
-    }
-    //returns true if length of the string is equal to the length of char array
+    { return (charArray1_p.Length == charArray2_p.Length); }
+
+    /// <summary>
+    /// Compares the length of the first character array to the second and returns true if they are equal.
+    /// </summary>
+    /// <param name="word_p"></param>
+    /// <param name="charArray_p"></param>
+    /// <returns>True or False</returns>
     public bool CompareLength(string word_p, char[] charArray_p)
-    {
-        bool _isTheSame = false;
-        return _isTheSame;
-    }
-    //returns true if both string parameters' lengths are equal
+    { return (word_p.Length == charArray_p.Length); }
+
+    /// <summary>
+    /// Compares the length of the first character array to the second and returns true if they are equal.
+    /// </summary>
+    /// <param name="word1_p"></param>
+    /// <param name="word2_p"></param>
+    /// <returns>True or False</returns>
     public bool CompareLength(string word1_p, string word2_p)
-    {
-        bool _isTheSame = false;
-        return _isTheSame;
-    }
+    { return (word1_p.Length == word2_p.Length); }
+
     #endregion
 
     #region Word Generations
@@ -324,7 +329,7 @@ public class WordFactory : MonoBehaviour
     /// Removes all whitespace values from the string. (Includes space, tab, return, & newline)
     /// </summary>
     /// <param name="word_p"></param>
-    /// <returns></returns>
+    /// <returns>String argument without whitespaces</returns>
     public string RemoveWhiteSpaces(string word_p)
     { // passing the string arg through multiple methods that eventually return it after the operations are carried out
         // and then we return that value back to the method caller

@@ -215,6 +215,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1601041450}
+  - component: {fileID: 1601041451}
   m_Layer: 0
   m_Name: SoundManager
   m_TagString: Untagged
@@ -236,6 +237,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1601041451
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1601041449}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7a4d3215159b964f935025d3895b004, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1789353161
 GameObject:
   m_ObjectHideFlags: 0
@@ -265,6 +278,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19e944e30ff20cb4b8f9dabfa607c2c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  wordFactory: {fileID: 1803932399}
+  soundManager: {fileID: 1601041451}
 --- !u!4 &1789353163
 Transform:
   m_ObjectHideFlags: 0
@@ -277,7 +292,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1803932398
 GameObject:
@@ -308,9 +323,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89afebcd1e41e2b40a20360528780b77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _easyWords: []
-  _moderateWords: []
-  _hardWords: []
+  _easyWords:
+  - Frog
+  - Pillow
+  - Dog
+  _moderateWords:
+  - Bedroom
+  - Cookie
+  - Chairman
+  _hardWords:
+  - Quadrouple
+  - Affixiation
 --- !u!4 &1803932400
 Transform:
   m_ObjectHideFlags: 0
@@ -323,5 +346,5 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
