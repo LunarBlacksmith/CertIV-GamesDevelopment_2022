@@ -1,18 +1,23 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class WordFactory : MonoBehaviour
 {
+    #region Private Variables
     private string _generatedWord = ""; //used to store the word generated for the current level
-    private char[] _genWordCharArray; //used to convert generated word to a character array for individual character manipulation
+    //used to convert generated word to a character array for individual character manipulation
+    private char[] _genWordCharArray = new char[0]; 
     //permanent difficulty keys for accessing different words in our dictionary of stored lists.
-    private string _diffKeyEasy = "easy", _diffKeyModerate = "moderate", _diffKeyHard = "hard";
+    private const string _diffKeyEasy = "easy", _diffKeyModerate = "moderate", _diffKeyHard = "hard";
     private int _letterCount = 0; //used to count the amount of letters in the generated word
     //instantiating System object "Random" for random number generation
     //have to distinguish between System and UnityEngine Random()
-    private System.Random _randomObj = new System.Random(); 
-
+    private System.Random _randomObj = new System.Random();
+    private bool _convertedToWord = false; //used to control when any generated word is converted to the _genWordCharArray
+    
+        #region Lists & Dictionaries
     //used to store the permanent list of words in the game.
     //each list stores different difficulty words (shorter or longer, or less or more complex)
     [SerializeField] private List<string> _easyWords;
@@ -23,7 +28,11 @@ public class WordFactory : MonoBehaviour
     //used to store separate lists of words that are categorised by difficulty setting, which is determined by the Dictionary's key (i.e: "easy", "moderate", "hard")
     //having this Dictionary helps to decouple the code.
     private Dictionary<string, List<string>> _wordListDictionary = new Dictionary<string, List<string>>();
+        #endregion
 
+    #endregion
+
+    #region Properties
     public string GeneratedWord { get; private set; } //public property for accessing its variable outside the class
     public char[] GenWordCharArray { get; private set; } //public property for accessing the array outside the class
     //property for lettercount to allow verification on setting of letter count
@@ -36,69 +45,100 @@ public class WordFactory : MonoBehaviour
             { _letterCount = value; }
         }
     }
-
+    #endregion
 
     void Start()
     {
-        //sorting the lists of words by length, from shortest to longest using the System's CompareTo() method
-        _easyWords.Sort((a, b) => a.Length.CompareTo(b.Length));
-        _moderateWords.Sort((a, b) => a.Length.CompareTo(b.Length));
-        _hardWords.Sort((a, b) => a.Length.CompareTo(b.Length));
+        // loop through each string list in the dictionary
+        // and sort the lists of words by length, from shortest to longest using the System's CompareTo() method
+        foreach (List<string> list in _wordListDictionary.Values)
+        { list.Sort((a, b) => a.Length.CompareTo(b.Length)); }
+
         //adding the lists of differing difficulty words to our dictionary of lists,
         //each list is assigned to the keys declared as variables, for modularity. (i.e: diffKeyEasy = "easy")
         _wordListDictionary.Add(_diffKeyEasy, _easyWords);
         _wordListDictionary.Add(_diffKeyModerate, _moderateWords);
         _wordListDictionary.Add(_diffKeyHard, _hardWords);
+
     }
     void Update()
     {
-        
+        #region Char Array Manipulation
+        //if GeneratedWord isn't empty AND we haven't converted our word to a char array yet, OR the word isn null 
+        if ((GeneratedWord != string.Empty && !_convertedToWord) || GeneratedWord != null)
+        {   //check if we have previously assigned value to our char array
+            if (GenWordCharArray.Length > 0) 
+            { Array.Clear(GenWordCharArray, 0, GeneratedWord.Length); } //if so, clear its values
+            GenWordCharArray = GeneratedWord.ToCharArray(); //convert our word to a char array
+            _convertedToWord = (GenWordCharArray.Length > 0) ? true : false; //we have converted our word if our char array isn't empty
+        }
+        #endregion
     }
 
+    /// <summary>
+    /// Compares one string to another, both with and without whitespaces, and returns true if either condition is met.
+    /// </summary>
+    /// <param name="word1_p"></param>
+    /// <param name="word2_p"></param>
+    /// <returns>True or False</returns>
     public bool EvaluateWord(string word1_p, string word2_p)
     {
-        bool _isTheSame = false;
-        return _isTheSame;
+        return (word1_p == word2_p) || (RemoveWhiteSpaces(word1_p) == RemoveWhiteSpaces(word2_p));
     }
 
+    
+
+    //All Evaluation methods will finish as soon as the first match is found, returning true
+    #region Evaluations
+    //compare a character, passed as a string, to all characters within a string
     public bool EvaluateCharacter(string word1_p, string word2_p)
     {
         bool _isTheSame = false;
         return _isTheSame;
     }
+    //compare a character to all characters in a string
     public bool EvaluateCharacter(char character_p, string word_p)
     {
         bool _isTheSame = false;
         return _isTheSame;
     }
+    //compare a character, passed as a string, to all characters in a character array
     public bool EvaluateCharacter(string word1_p, char[] charArray_p)
     {
         bool _isTheSame = false;
         return _isTheSame;
     }
+    #endregion
 
+    //All compare methods indlude whitespace as a valid character
+    #region Length Comparisons
+    //returns true if length of char array1 is equal to char array2
     public bool CompareLength(char[] charArray1_p, char[] charArray2_p)
     {
         bool _isTheSame = false;
         return _isTheSame;
     }
+    //returns true if length of the string is equal to the length of char array
     public bool CompareLength(string word_p, char[] charArray_p)
     {
         bool _isTheSame = false;
         return _isTheSame;
     }
+    //returns true if both string parameters' lengths are equal
     public bool CompareLength(string word1_p, string word2_p)
     {
         bool _isTheSame = false;
         return _isTheSame;
     }
+    #endregion
 
+    #region Word Generations
     /// <summary>
     /// Gets a random word from the entire collection of words available, regardless of difficulty.
     /// </summary>
     /// <returns></returns>
-    /// <exception cref="System.IndexOutOfRangeException">
-    /// </exception><exception cref="System.Exception"></exception> 
+    /// <exception cref="IndexOutOfRangeException">
+    /// </exception><exception cref="Exception"></exception> 
     public string GenerateWord()
     {
         try
@@ -110,22 +150,20 @@ public class WordFactory : MonoBehaviour
             {
                 //for each list in our dictionary, loop through that list's values (in this case, words)
                 foreach (string word in list)
-                {
-                    //add each word to our temporary list
-                    tempList.Add(word);
-                }
+                { tempList.Add(word); }//add each word to our temporary list
             }
             int tempIndex = _randomObj.Next(tempList.Count); //get a random index with a limit of our new temporary list's count total
             //assign our generated word variable to the word at the random index of our temp list
             GeneratedWord = tempList[tempIndex];
+            _convertedToWord = false; //since we just re-assigned a new word, we haven't converted it yet
             return GeneratedWord; //return the word to the caller
         }
-        catch (System.IndexOutOfRangeException indexE) //a specific exception catch if there is an index out of range
+        catch (IndexOutOfRangeException indexE) //a specific exception catch if there is an index out of range
         { throw indexE; }
-        catch (System.Exception e) //a general exception catch
+        catch (Exception e) //a general exception catch
         {
             //preserves original exception error by using the new keyword
-            throw new System.Exception($"An error ocurred getting the word in the list, within the dictionary.\n{e}");
+            throw new Exception($"An error ocurred getting the word in the list, within the dictionary.\n{e}");
         }
     }
     /// <summary>
@@ -133,27 +171,23 @@ public class WordFactory : MonoBehaviour
     /// </summary>
     /// <param name="wordLength_p"></param>
     /// <returns></returns>
-    /// <exception cref="System.Exception"></exception>
-    /// <exception cref="System.IndexOutOfRangeException"></exception>
-    /// <exception cref="System.NullReferenceException"></exception>
-    /// <exception cref="System.ArgumentException"></exception>
+    /// <exception cref="Exception"></exception>
+    /// <exception cref="IndexOutOfRangeException"></exception>
+    /// <exception cref="NullReferenceException"></exception>
+    /// <exception cref="ArgumentException"></exception>
     public string GenerateWord(int wordLength_p)
     {
         if (wordLength_p > 1)
         {
             try
             {
-                //instantiating a temporary list of strings
                 List<string> tempList = new List<string>();
-                //looping through our dictionary Values, which are lists of type string
                 foreach (List<string> list in _wordListDictionary.Values)
                 {
-                    //for each list in our dictionary, loop through that list's values (in this case, words)
                     foreach (string word in list)
                     {
-                        //if the word at the current index has a length equal to the word length argument
                         if (word.Length == wordLength_p)
-                        { tempList.Add(word); } //add the word to our temporary list of words
+                        { tempList.Add(word); }
                     }
                 }
                 if (tempList != null) //if our temp list of words isn't empty
@@ -162,6 +196,7 @@ public class WordFactory : MonoBehaviour
                     int tempIndex = _randomObj.Next(tempList.Count);
                     //assign our generated word variable to the word at the random index of our temp list
                     GeneratedWord = tempList[tempIndex];
+                    _convertedToWord = false;
                     return GeneratedWord; //return the word to the caller
                 }
                 else //if our temp list is empty
@@ -214,6 +249,7 @@ public class WordFactory : MonoBehaviour
                 /*assigning the _generatedWord string to the string value of the list item at our temprary index
                 *the list accessed is also determined by the key passed into the method*/
                 GeneratedWord = _wordListDictionary[difficultyKey_p][tempIndex];
+                _convertedToWord = false;
                 return GeneratedWord; //returning the word we've generated
             }
             catch (System.IndexOutOfRangeException indexE) //a specific exception catch if there is an index out of range
@@ -225,12 +261,11 @@ public class WordFactory : MonoBehaviour
             }
         }
         else //if the method argument is not a valid dictionary key
-        {
-            throw new System.ArgumentException("The difficulty key passed to the method is not valid.");
-        }
-        
+        { throw new System.ArgumentException("The difficulty key passed to the method is not valid."); }
     }
+    #endregion
 
+    #region Index Retrievals In Words
     public int[] GetIndicesInWord(string word1_p, string word2_p)
     {
         return null;
@@ -246,5 +281,21 @@ public class WordFactory : MonoBehaviour
     public int[] GetIndicesInWord(char character_p, char[] charArray_p)
     {
         return null;
+    }
+    #endregion
+
+    /// <summary>
+    /// Removes all whitespace values from the string. (Includes space, tab, return, & newline)
+    /// </summary>
+    /// <param name="word_p"></param>
+    /// <returns></returns>
+    public string RemoveWhiteSpaces(string word_p)
+    { // passing the string arg through multiple methods that eventually return it after the operations are carried out
+        // and then we return that value back to the method caller
+        return word_p
+            .Replace(" ", "")   // first,   replacing spaces with nothing
+            .Replace("\t", "")  // second,  replacing tab spaces with nothing 
+            .Replace("\r", "")  // third,   replacing return spaces with nothing
+            .Replace("\n", ""); // fourth,  replacing newline spaces with nothing
     }
 }
