@@ -52,8 +52,6 @@ public class KeyBinds : MonoBehaviour
             PlayerPrefs.SetString(keyEntry.Key, keyEntry.Value.ToString());
         }
         PlayerPrefs.Save();*/
-
-
     }
     public void ChangeKey(GameObject clickedKey_p)
     {
