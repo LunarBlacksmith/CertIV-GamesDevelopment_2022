@@ -5,40 +5,79 @@ using UnityEngine;
 
 public class WordFactory : MonoBehaviour
 {
+    //TODO: remember to set _assignedLetterCount to false again on new word generation!
+
     #region Private Variables
-    private string _generatedWord = ""; //used to store the word generated for the current level
-    //used to convert generated word to a character array for individual character manipulation
-    private char[] _genWordCharArray = new char[0]; 
-    //permanent difficulty keys for accessing different words in our dictionary of stored lists.
+    private string _generatedWord = "";         // used to store the word generated for the current level
+    private int _letterCount = 0;               // used to count the amount of letters in the generated word (includes whitespace)
+    private int[] _indicesOfChar = new int[0];  // used to store which indices a character is in a string or array
+    private bool _convertedToWord = false;      // used to control when any generated word is converted to the _genWordCharArray
+    private bool _assignedLetterCount = false;  // used to control when any generated word's length has been retrieved
+
+    // permanent difficulty keys for accessing different words in our dictionary of stored lists.
     private const string _diffKeyEasy = "easy", _diffKeyModerate = "moderate", _diffKeyHard = "hard";
-    private int _letterCount = 0; //used to count the amount of letters in the generated word
-    //instantiating System object "Random" for random number generation
-    //have to distinguish between System and UnityEngine Random()
+
+    // used to convert generated word to a character array for individual character manipulation
+    private char[] _genWordCharArray = new char[0];
+
+    // instantiating System object "Random" for random number generation
+    // have to distinguish between System and UnityEngine Random()
     private System.Random _randomObj = new System.Random();
-    private bool _convertedToWord = false; //used to control when any generated word is converted to the _genWordCharArray
-    
-        #region Lists & Dictionaries
-    //used to store the permanent list of words in the game.
-    //each list stores different difficulty words (shorter or longer, or less or more complex)
+
+    #region Lists & Dictionaries
+
+    // used to store the permanent list of words in the game.
+    // each list stores different difficulty words (shorter or longer, or less or more complex)
     [SerializeField] private List<string> _easyWords;
     [SerializeField] private List<string> _moderateWords;
     [SerializeField] private List<string> _hardWords;
-    //used to store the words we've already used.
+
+    // used to store the words we've already used.
     private Dictionary<int, string> _wordsUsed = new Dictionary<int,string>();
-    //used to store separate lists of words that are categorised by difficulty setting, which is determined by the Dictionary's key (i.e: "easy", "moderate", "hard")
-    //having this Dictionary helps to decouple the code.
+
+    // used to store separate lists of words that are categorised by difficulty setting, which is determined by the Dictionary's key (i.e: "easy", "moderate", "hard")
+    // having this Dictionary helps to decouple the code.
     private Dictionary<string, List<string>> _wordListDictionary = new Dictionary<string, List<string>>();
-        #endregion
+    #endregion
 
     #endregion
 
     #region Properties
-    public string GeneratedWord { get; private set; } //public property for accessing its variable outside the class
-    public char[] GenWordCharArray { get; private set; } //public property for accessing the array outside the class
-    public int LetterCount //property for lettercount to allow verification on setting of letter count
+
+    /// <summary>
+    /// Stores the generated word just after the generation methods are called, and is accessible outside its class.
+    /// </summary>
+    public string GeneratedWord { get; private set; } //public property
+
+    /// <summary>
+    /// Stores the generated word's characters in an array, and is accessible outside its class.
+    /// </summary>
+    public char[] GenWordCharArray { get; private set; }
+
+    /// <summary>
+    /// Stores the number of letters in the current word and verifies values passed in aren't less than 0. NOTE: Includes whitespaces.
+    /// </summary>
+    public int LetterCount
     {
         get { return _letterCount; }
         private set { _letterCount = (value >= 0) ? value : _letterCount; } //set lettercount to value if its greater than or equal to 0, otherwise set to self
+    }
+
+    /// <summary>
+    /// Stores the indices that the last character searched for is at within an array, accessible outside of its class.
+    /// </summary>
+    public int[] IndicesOfChar 
+    { 
+        get { return _indicesOfChar; }
+        // set out indices array to the value passed as long as its length is greater than 0, or the value isn't null
+        private set 
+        {
+            // check if whatever is trying to set the value of our entire array is not equal in length to our indices array
+            // aka: our indices of char array needs to be resized so there are no inaccurate or missing elements in it
+            if (_indicesOfChar.Length != value.Length && (value.Length >= 0) || (value != null))
+            // resize the array to the size of the passed array, and make our array elements equal the passed array elements
+            { Array.Resize(ref _indicesOfChar, value.Length); _indicesOfChar = value; }
+        } 
     }
     #endregion
 
@@ -59,17 +98,21 @@ public class WordFactory : MonoBehaviour
     void Update()
     {
         #region Char Array Manipulation
-        //if GeneratedWord isn't empty AND we haven't converted our word to a char array yet, OR the word isn null 
-        if ((GeneratedWord != string.Empty && !_convertedToWord) || GeneratedWord != null)
-        {   //check if we have previously assigned value to our char array
-            if (GenWordCharArray.Length > 0) 
+        //if we haven't converted our word to a char array yet, AND GeneratedWord is NOT null or empty
+        if (!_convertedToWord && !string.IsNullOrEmpty(GeneratedWord))
+        {   //check if we have previously assigned value to our char array (it would have a length > 0 if it had)
+            if (!IsNullOrEmpty(GenWordCharArray))
             { Array.Clear(GenWordCharArray, 0, GeneratedWord.Length); } //if so, clear its values
             GenWordCharArray = GeneratedWord.ToCharArray(); //convert our word to a char array
             _convertedToWord = (GenWordCharArray.Length > 0) ? true : false; //we have converted our word if our char array isn't empty
         }
         #endregion
-    }
 
+        // if we haven't got our current word's letter count, AND the generated word's character array isn't null or empty
+        if (!_assignedLetterCount && !IsNullOrEmpty(GenWordCharArray))
+        // assign number of letters in word to the number of characters in the array of the generated word
+        { LetterCount = GenWordCharArray.Length; _assignedLetterCount = true; }
+    }
 
 
     //All Evaluation methods will finish as soon as the first match is found, returning true
@@ -307,9 +350,47 @@ public class WordFactory : MonoBehaviour
     #endregion
 
     #region Index Retrievals In Words
+
+    // get all indices the character is at in the word
     public int[] GetIndicesInWord(string word1_p, string word2_p)
     {
-        return null;
+        // currWordIndex for keeping track of the number of the loop in the foreach
+        // intArrSize for keeping track of which index in our character indices array to store the next index of the found character in the word
+        int currWordIndex = 0, intArrSize = 0, currIndexStorerIndex = 0;
+
+        // cannot pass a property as an out or ref value for resizing our array, to making a temp variable of our property
+        int[] indicesArray = IndicesOfChar;
+
+        // removing the whitespaces in the first string so we can accurately get the first valid character in the word
+        char tempChar = RemoveWhiteSpaces(word1_p)[0];
+
+        // here we loop through the word and increment our intArrSize, so we can set our Property array to the correct size
+        foreach (char character in word2_p.ToCharArray())
+        { if (tempChar == character) { ++intArrSize; } }
+
+        // if we didn't find the character in the word
+        if (intArrSize == 0)
+        { return null; } // return null (no value)
+        // else, continue the method code
+
+        // resizing our index array so we don't assign a value at an out of bounds index
+        Array.Resize(ref indicesArray, intArrSize);
+
+        // re-assigning our Property array to the temporary array for correct size
+        IndicesOfChar = indicesArray;
+
+        // looping through the word again
+        foreach (char character in word2_p.ToCharArray())
+        {
+            if (tempChar == character) //if we find the character in the word
+            {
+                // this time adding the character's index value within the word to our array of stored index values
+                IndicesOfChar[currIndexStorerIndex] = word2_p.ToCharArray()[currWordIndex];
+                ++currIndexStorerIndex; // incrementing this to get the next place in our Property array to store the next char index found
+            }
+            ++currWordIndex; // incrementing this to keep track of the current index of the character in the word
+        }
+        return IndicesOfChar; // return our Property array that holds the index values
     }
     public int[] GetIndicesInWord(string word_p, char[] charArray_p)
     {
@@ -339,4 +420,13 @@ public class WordFactory : MonoBehaviour
             .Replace("\r", "")  // third,   replacing return spaces with nothing
             .Replace("\n", ""); // fourth,  replacing newline spaces with nothing
     }
+
+    /// <summary>
+    /// This takes any array as a parameter, that matches the type defined in < > when called, and returns true if it is null or empty.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="array_p"></param>
+    /// <returns>True or False</returns>
+    public static bool IsNullOrEmpty<T>(T[] array_p)
+    { return (array_p == null) || (array_p.Length == 0); }
 }
