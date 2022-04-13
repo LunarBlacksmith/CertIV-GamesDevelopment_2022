@@ -10,9 +10,9 @@ public class WordFactory : MonoBehaviour
     #region Private Variables
     private string _generatedWord = "";         // used to store the word generated for the current level
     private int _letterCount = 0;               // used to count the amount of letters in the generated word (includes whitespace)
-    private int[] _indicesOfChar = new int[0];  // used to store which indices a character is in a string or array
     private bool _convertedToWord = false;      // used to control when any generated word is converted to the _genWordCharArray
     private bool _assignedLetterCount = false;  // used to control when any generated word's length has been retrieved
+    private List<int> _indicesOfChar = new List<int>();  // used to store which indices a character is in a string or array
 
     // permanent difficulty keys for accessing different words in our dictionary of stored lists.
     private const string _diffKeyEasy = "easy", _diffKeyModerate = "moderate", _diffKeyHard = "hard";
@@ -64,19 +64,20 @@ public class WordFactory : MonoBehaviour
     }
 
     /// <summary>
-    /// Stores the indices that the last character searched for is at within an array, accessible outside of its class.
+    /// Stores the indices that the last character searched for is at within a list, accessible outside of its class.
     /// </summary>
-    public int[] IndicesOfChar 
+    public List<int> IndicesOfChar 
     { 
         get { return _indicesOfChar; }
-        // set out indices array to the value passed as long as its length is greater than 0, or the value isn't null
+        // set our indices list to the value passed as long as its size is greater than 0, or the value isn't null
+        // though the private variable initialises an empty list, the list will be utilised elsewhere and the check is a failsafe
         private set 
         {
-            // check if whatever is trying to set the value of our entire array is not equal in length to our indices array
-            // aka: our indices of char array needs to be resized so there are no inaccurate or missing elements in it
-            if (_indicesOfChar.Length != value.Length && (value.Length >= 0) || (value != null))
-            // resize the array to the size of the passed array, and make our array elements equal the passed array elements
-            { Array.Resize(ref _indicesOfChar, value.Length); _indicesOfChar = value; }
+            // check if the caller's size is not equal to our indices list
+            // aka: our indices of char list needs to be resized so there are no inaccurate or missing elements in it
+            if (_indicesOfChar.Count != value.Count && (value.Count >= 0) || (value != null))
+            // resize the list to the size of the passed array, and make our list elements equal the passed list elements
+            { _indicesOfChar = value; }
         } 
     }
     #endregion
@@ -351,59 +352,86 @@ public class WordFactory : MonoBehaviour
 
     #region Index Retrievals In Words
 
-    // get all indices the character is at in the word
-    public int[] GetIndicesInWord(string word1_p, string word2_p)
+    /// <summary>
+    /// Returns a list of integers containing the index value(s) of the letter in question, in the first arg, within the word in the second arg. Returns an empty list if the letter is not found in the word.
+    /// </summary>
+    /// <param name="word1_p"></param>
+    /// <param name="word2_p"></param>
+    /// <returns></returns>
+    public List<int> GetIndicesInWord(string word1_p, string word2_p)
     {
-        // currWordIndex for keeping track of the number of the loop in the foreach
-        // intArrSize for keeping track of which index in our character indices array to store the next index of the found character in the word
-        int currWordIndex = 0, intArrSize = 0, currIndexStorerIndex = 0;
+        IndicesOfChar.Clear();      // clearing our list property of indices stored
+        int startPositionIndex = 0; // setting a start position for our IndexOf() search
 
-        // cannot pass a property as an out or ref value for resizing our array, to making a temp variable of our property
-        int[] indicesArray = IndicesOfChar;
+        // setting a temp char variable to the first character of the string passed in after removing all whitespace
+        char letterInQuestion = RemoveWhiteSpaces(word1_p)[0];
 
-        // removing the whitespaces in the first string so we can accurately get the first valid character in the word
-        char tempChar = RemoveWhiteSpaces(word1_p)[0];
-
-        // here we loop through the word and increment our intArrSize, so we can set our Property array to the correct size
-        foreach (char character in word2_p.ToCharArray())
-        { if (tempChar == character) { ++intArrSize; } }
-
-        // if we didn't find the character in the word
-        if (intArrSize == 0)
-        { return null; } // return null (no value)
-        // else, continue the method code
-
-        // resizing our index array so we don't assign a value at an out of bounds index
-        Array.Resize(ref indicesArray, intArrSize);
-
-        // re-assigning our Property array to the temporary array for correct size
-        IndicesOfChar = indicesArray;
-
-        // looping through the word again
-        foreach (char character in word2_p.ToCharArray())
+        // the code block runs if we find the letter in the word - IndexOf() returns -1 if nothing is found
+        // we start searching from the beginning of the word at first
+        while (word2_p.IndexOf(letterInQuestion, startPositionIndex) > 0)
         {
-            if (tempChar == character) //if we find the character in the word
-            {
-                // this time adding the character's index value within the word to our array of stored index values
-                IndicesOfChar[currIndexStorerIndex] = word2_p.ToCharArray()[currWordIndex];
-                ++currIndexStorerIndex; // incrementing this to get the next place in our Property array to store the next char index found
-            }
-            ++currWordIndex; // incrementing this to keep track of the current index of the character in the word
+            // add the index value of the letter in the word to our list of indices
+            IndicesOfChar.Add(word2_p.IndexOf(letterInQuestion, startPositionIndex));
+
+            // assigning our next starting index in the word to the last found index value + 1 to avoid infinite loop
+            startPositionIndex = IndicesOfChar[IndicesOfChar.Count-1] + 1;
         }
-        return IndicesOfChar; // return our Property array that holds the index values
+        return IndicesOfChar;
+
+        #region Old Way
+        //// currWordIndex for keeping track of the number of the loop in the foreach
+        //// intArrSize for keeping track of which index in our character indices array to store the next index of the found character in the word
+        //int currWordIndex = 0, intArrSize = 0, currIndexStorerIndex = 0;
+
+        //// cannot pass a property as an out or ref value for resizing our array, to making a temp variable of our property
+        //int[] indicesArray = IndicesOfChar;
+
+        //// removing the whitespaces in the first string so we can accurately get the first valid character in the word
+        //char tempChar = RemoveWhiteSpaces(word1_p)[0];
+
+        //// here we loop through the word and increment our intArrSize, so we can set our Property array to the correct size
+        //foreach (char character in word2_p.ToCharArray())
+        //{ if (tempChar == character) { ++intArrSize; } }
+
+        //// if we didn't find the character in the word
+        //if (intArrSize == 0)
+        //{ return null; } // return null (no value)
+        //// else, continue the method code
+
+        //// resizing our index array so we don't assign a value at an out of bounds index
+        //Array.Resize(ref indicesArray, intArrSize);
+
+        //// re-assigning our Property array to the temporary array for correct size
+        //IndicesOfChar = indicesArray;
+
+        //// looping through the word again
+        //foreach (char character in word2_p.ToCharArray())
+        //{
+        //    if (tempChar == character) //if we find the character in the word
+        //    {
+        //        // this time adding the character's index value within the word to our array of stored index values
+        //        IndicesOfChar[currIndexStorerIndex] = word2_p.ToCharArray()[currWordIndex];
+        //        ++currIndexStorerIndex; // incrementing this to get the next place in our Property array to store the next char index found
+        //    }
+        //    ++currWordIndex; // incrementing this to keep track of the current index of the character in the word
+        //}
+        //return IndicesOfChar; // return our Property array that holds the index values
+        #endregion
     }
-    public int[] GetIndicesInWord(string word_p, char[] charArray_p)
-    {
-        return null;
-    }
-    public int[] GetIndicesInWord(char character_p, string word_p)
-    {
-        return null;
-    }
-    public int[] GetIndicesInWord(char character_p, char[] charArray_p)
-    {
-        return null;
-    }
+
+    // -- OVER ENGINEERING (KISS!), FOR ADDITION AT LATER TIME --
+    //public int[] GetIndicesInWord(string word_p, char[] charArray_p)
+    //{
+    //    return null;
+    //}
+    //public int[] GetIndicesInWord(char character_p, string word_p)
+    //{
+    //    return null;
+    //}
+    //public int[] GetIndicesInWord(char character_p, char[] charArray_p)
+    //{
+    //    return null;
+    //}
     #endregion
 
     /// <summary>

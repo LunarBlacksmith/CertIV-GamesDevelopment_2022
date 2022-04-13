@@ -17,6 +17,18 @@ public class GameManager : MonoBehaviour
     
     void Update()
     {
-        
+        // when activating game objects using the indices of the letters
+        IterateThroughList(wordFactory.IndicesOfChar);
+    }
+
+    private void IterateThroughList<T>(List<T> list)
+    {
+        if (list.Count > 0)
+        {
+            foreach (var index in list)
+            {
+                // Activate game object at the index value
+            }
+        }
     }
 }
