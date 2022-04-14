@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class WordFactory : MonoBehaviour
 {
-    //TODO: 
+    //TODO: STOP FIXING WHAT AIN'T BROKE
 
     #region Private Variables
 
@@ -109,14 +109,6 @@ public class WordFactory : MonoBehaviour
         if (!_assignedLetterCount)
         // assign number of letters in word to the number of characters in the array of the generated word
         { LetterCount = GeneratedWord.Length; _assignedLetterCount = true; }
-
-        // check if our total word list has expanded
-        if (CheckIfWordListExpanded
-            (GetStringListFromDictionary(_wordListDictionary),  // getting a total list of words in the game
-            TotalWordCount))    // passing in our previously calculated total count of words)
-        // set our total word count to our new exapanded list count value
-        { TotalWordCount = GetStringListFromDictionary(_wordListDictionary).Count; }
-        // I wrote this at 3am 0_o idk if this is sound logic anymore
     }
 
 
@@ -497,26 +489,4 @@ public class WordFactory : MonoBehaviour
     /// <returns>True or False</returns>
     public static bool IsNullOrEmpty<T>(T[] array_p)
     { return (array_p == null) || (array_p.Length == 0); }
-
-    /// <summary>
-    /// Returns true if the count of total words in the list passed in is a different total to what it was previously. (If true, the list has expanded.)
-    /// </summary>
-    /// <param name="listOfWords_p"></param>
-    /// <param name="lastCalculatedWordTotal_p"></param>
-    /// <returns></returns>
-    public bool CheckIfWordListExpanded(List<string> listOfWords_p, int lastCalculatedWordTotal_p) 
-    { return listOfWords_p.Count != lastCalculatedWordTotal_p;}
-
-    /// <summary>
-    /// Returns a list of all the words within every list in the dictionary passed in.
-    /// </summary>
-    /// <param name="dictionary_p"></param>
-    /// <returns></returns>
-    public List<string> GetStringListFromDictionary(Dictionary<string,List<string>> dictionary_p) 
-    {
-        _totalWordList.Clear();
-        foreach (List<string> listOfWords in dictionary_p.Values)   // loop through dictionary
-        { _totalWordList.AddRange(listOfWords); } // add elements of each list in the dictionary to total word list
-        return _totalWordList;    // return our list containing all words in game
-    }
 }
