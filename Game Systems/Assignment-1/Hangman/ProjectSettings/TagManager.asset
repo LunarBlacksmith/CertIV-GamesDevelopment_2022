@@ -7,6 +7,7 @@ TagManager:
   - PlayerInput
   - Placeholder
   - GuessesNumber
+  - Menu
   layers:
   - Default
   - TransparentFX
