@@ -683,13 +683,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1085625901}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
+      - m_Target: {fileID: 1085625902}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: MainMenu
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -1520,13 +1520,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1085625901}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
+      - m_Target: {fileID: 1085625902}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: NewGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -1992,13 +1992,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1085625901}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
+      - m_Target: {fileID: 1085625902}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: MainMenu
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -3447,13 +3447,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1085625901}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
+      - m_Target: {fileID: 1085625902}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: Resume
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -3580,13 +3580,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1085625901}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
+      - m_Target: {fileID: 1085625902}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: ExitGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -3741,7 +3741,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.6366608, y: 0.19900002}
   m_AnchorMax: {x: 0.84844977, y: 0.36780506}
-  m_AnchoredPosition: {x: -1.335, y: 0.10376}
+  m_AnchoredPosition: {x: -1.3349915, y: 0.103759766}
   m_SizeDelta: {x: 2.669983, y: -0.20748901}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1043698592
@@ -3788,13 +3788,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1085625901}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
+      - m_Target: {fileID: 1085625902}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: CreditsScreen
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -4098,13 +4098,36 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   wordFactory: {fileID: 1722525833}
   soundManager: {fileID: 1112730685}
-  playerInputField: {fileID: 0}
-  alphabetPanel: {fileID: 0}
-  underscoredWord: {fileID: 0}
-  guessesLeftNumberText: {fileID: 0}
-  endGameTitle: {fileID: 0}
-  gallowsImage: {fileID: 0}
-  hangmanImage: {fileID: 0}
+  playerInputField: {fileID: 1317861365}
+  gamePanel: {fileID: 111543450}
+  alphabetPanel: {fileID: 451997803}
+  pauseMenuPanel: {fileID: 1139533007}
+  mainMenuPanel: {fileID: 704614536}
+  endGameMenuPanel: {fileID: 1140310063}
+  creditsPanel: {fileID: 1511045497}
+  underscoredWord: {fileID: 1534223574}
+  guessesLeftNumberText: {fileID: 714547361}
+  endGameTitle: {fileID: 2143287573}
+  gallowsImage: {fileID: 1069213803}
+  hangmanImage: {fileID: 1179959345}
+  gallowsSprites:
+  - {fileID: 21300000, guid: dd47027e6254ead4e86c905ed66e0e60, type: 3}
+  - {fileID: 21300000, guid: db4b7380abb2d904581b2d17c0be7d6d, type: 3}
+  - {fileID: 21300000, guid: 5809a8040c01757428a9059e3c95bc49, type: 3}
+  - {fileID: 21300000, guid: ae240de1828a3534ca52dd8ed55bec46, type: 3}
+  - {fileID: 21300000, guid: e2e78fc494d921546b912055d5ec62f4, type: 3}
+  - {fileID: 21300000, guid: 16f17961ac3cea84184c12d7ff0029c7, type: 3}
+  - {fileID: 21300000, guid: 0a03bfc58f3c2d14aa18b5519ef43753, type: 3}
+  hangmanSprites:
+  - {fileID: 21300000, guid: 5e80125d586934149ab62d45fa252551, type: 3}
+  - {fileID: 21300000, guid: eb1f589a8ee132844a06085a89ecd228, type: 3}
+  - {fileID: 21300000, guid: 1e6749dca7198ec4ba3ca5512e082538, type: 3}
+  - {fileID: 21300000, guid: d951f90d0379f9444ad76099d044a0bf, type: 3}
+  - {fileID: 21300000, guid: bbc264298b57ec449a2177cd6c7f0130, type: 3}
+  - {fileID: 21300000, guid: acdb09f762411bf498ab6c2df14d2c0b, type: 3}
+  easyMode: 0
+  mediumMode: 0
+  hardMode: 0
 --- !u!4 &1085625903
 Transform:
   m_ObjectHideFlags: 0
@@ -4708,13 +4731,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1085625901}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
+      - m_Target: {fileID: 1085625902}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: ExitGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -5143,13 +5166,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1085625901}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
+      - m_Target: {fileID: 1085625902}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: ExitGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -5603,7 +5626,7 @@ GameObject:
   - component: {fileID: 1534223575}
   - component: {fileID: 1534223574}
   m_Layer: 5
-  m_Name: Text
+  m_Name: UnderscoredWordText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5831,13 +5854,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1085625901}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
+      - m_Target: {fileID: 1085625902}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: NewGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -6302,13 +6325,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1085625901}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
+      - m_Target: {fileID: 1085625902}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: CreditsScreen
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -7896,13 +7919,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1085625901}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
+      - m_Target: {fileID: 1085625902}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: MainMenu
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
