@@ -384,6 +384,30 @@ public class WordFactory : MonoBehaviour
 
     #region Index Retrievals In Words
 
+    
+    /// <summary>
+    /// Returns a list of integers containing the index value(s) of the letter in question, in the first arg, within the word in the second arg. Returns an empty list if the letter is not found in the word.
+    /// </summary>
+    /// <param name="letter_p"></param>
+    /// <param name="word_p"></param>
+    /// <returns></returns>
+    public List<int> GetIndicesInWord(char letter_p, string word_p)
+    {
+        IndicesOfChar.Clear();      // clearing our list property of indices stored
+        int startPositionIndex = 0; // setting a start position for our IndexOf() search
+
+        // the code block runs if we find the letter in the word - IndexOf() returns -1 if nothing is found
+        // we start searching from the beginning of the word at first
+        while (word_p.IndexOf(letter_p, startPositionIndex) > 0)
+        {
+            // add the index value of the letter in the word to our list of indices
+            IndicesOfChar.Add(word_p.IndexOf(letter_p, startPositionIndex));
+
+            // assigning our next starting index in the word to the last found index value + 1 to avoid infinite loop
+            startPositionIndex = IndicesOfChar[IndicesOfChar.Count - 1] + 1;
+        }
+        return IndicesOfChar;
+    }
     /// <summary>
     /// Returns a list of integers containing the index value(s) of the letter in question, in the first arg, within the word in the second arg. Returns an empty list if the letter is not found in the word.
     /// </summary>
@@ -406,7 +430,7 @@ public class WordFactory : MonoBehaviour
             IndicesOfChar.Add(word2_p.IndexOf(letterInQuestion, startPositionIndex));
 
             // assigning our next starting index in the word to the last found index value + 1 to avoid infinite loop
-            startPositionIndex = IndicesOfChar[IndicesOfChar.Count-1] + 1;
+            startPositionIndex = IndicesOfChar[IndicesOfChar.Count - 1] + 1;
         }
         return IndicesOfChar;
 
@@ -450,13 +474,8 @@ public class WordFactory : MonoBehaviour
         //return IndicesOfChar; // return our Property array that holds the index values
         #endregion
     }
-
     // -- OVER ENGINEERING (KISS!), FOR ADDITION AT LATER TIME --
     //public int[] GetIndicesInWord(string word_p, char[] charArray_p)
-    //{
-    //    return null;
-    //}
-    //public int[] GetIndicesInWord(char character_p, string word_p)
     //{
     //    return null;
     //}
