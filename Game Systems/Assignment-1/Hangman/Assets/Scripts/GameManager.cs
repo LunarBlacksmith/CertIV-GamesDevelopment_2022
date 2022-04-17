@@ -7,6 +7,8 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     /* TODO:
+        * Need to make comparisons change characters to lower case otherwise logic will fail
+        * InputField not working for input - Change to regular text field for now
         * Change graphics depending on guesses left
         * Have a BodyCondition enum state for Audio later on
     */
@@ -29,7 +31,7 @@ public class GameManager : MonoBehaviour
     private int _characterLimit = 1;    // used to assign the character limit in the player input field
     private int _wrongGuessesLeft = 6;  // controls how many guesses the player can get wrong before losing
     private bool _haveReset = true;     // to control times the reset code block functions
-    private enum GameState              // enum to define the different states of the game
+    public enum GameState              // enum to define the different states of the game
     { 
         Playing,
         PreGame,
@@ -40,7 +42,7 @@ public class GameManager : MonoBehaviour
 
     // state to control method execution that control the game flow and variable setting
     // set to PreGame state at the start of the game launch
-    private GameState _gameState = GameState.PreGame;
+    public GameState gameState = GameState.PreGame;
 
     // used to store the list of indices the letter is at in the word
     private List<int> _letterPositionIndices = new List<int>();
@@ -83,7 +85,7 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         // checking the current state of the game to run code specific to that state
-        switch (_gameState)
+        switch (gameState)
         {
             case GameState.Playing:
                 {
@@ -151,7 +153,7 @@ public class GameManager : MonoBehaviour
                         {
                             // if the word they entered is the correct word
                             if (wordFactory.EvaluateWord(sInput, _wordGuessing))
-                            { _gameState = GameState.Won; } // tell the game the player Won
+                            { gameState = GameState.Won; } // tell the game the player Won
                             else
                             { _wrongGuessesLeft--; }   // if incorrect guess, decrement the number of wrong guesses left
                         }
@@ -159,7 +161,7 @@ public class GameManager : MonoBehaviour
                         // check if underscored word (without spaces) equals the generated word (without spaces)
                         // if it does, set game state to 'Won'
                         if (underscoredWord.text == _wordGuessing)
-                        { _gameState = GameState.Won; } // tell the game the player Won
+                        { gameState = GameState.Won; } // tell the game the player Won
                     }
 
                     // label to jump to if the player enters a word they've guessed before
@@ -167,11 +169,11 @@ public class GameManager : MonoBehaviour
 
                     // if the player has no more incorrect guesses left
                     if (_wrongGuessesLeft == 0)
-                    { _gameState = GameState.Lost; }    // tell the game they Lost
+                    { gameState = GameState.Lost; }    // tell the game they Lost
 
                     // if player presses Escape key
                     if (Input.GetKeyDown(KeyCode.Escape))
-                    { _gameState = GameState.Paused; }  // tell the game we're in the paused state
+                    { gameState = GameState.Paused; }  // tell the game we're in the paused state
 
                     break;
                 }
@@ -255,7 +257,7 @@ public class GameManager : MonoBehaviour
                     if (!_haveReset)
                     {
                         _haveReset = true;
-                        _gameState = GameState.PreGame; // setting the state back to pregame
+                        gameState = GameState.PreGame; // setting the state back to pregame
                     }
                     break; 
                 }
@@ -266,7 +268,7 @@ public class GameManager : MonoBehaviour
     public void Resume()
     {
         pauseMenuPanel.SetActive(false);    // deactivate the pause menu
-        _gameState = GameState.Playing;     // tell the game we're playing the game
+        gameState = GameState.Playing;     // tell the game we're playing the game
     }
 
     public void NewGame()
@@ -278,6 +280,8 @@ public class GameManager : MonoBehaviour
         { _wordGuessing = wordFactory.GenerateWord("moderate"); }
         if (hardMode)
         { _wordGuessing = wordFactory.GenerateWord("hard"); }
+        else
+        { _wordGuessing = wordFactory.GenerateWord(); } // set our local word variable to a newly generated word
 
         // if it's empty here, we ran out of words to generate or something went wrong in the factory
         if (_wordGuessing == string.Empty)
@@ -305,7 +309,7 @@ public class GameManager : MonoBehaviour
         gamePanel.SetActive(true);          // activate our game
         endGameMenuPanel.SetActive(false);  // deactivate the end game panel
         mainMenuPanel.SetActive(false);     // deactivate the main menu panel
-        _gameState = GameState.Playing;     // set our game state to play
+        gameState = GameState.Playing;     // set our game state to play
         return;
 #endif
         // set our local word variable to a newly generated word
@@ -335,7 +339,7 @@ public class GameManager : MonoBehaviour
         gamePanel.SetActive(true);          // activate our game
         endGameMenuPanel.SetActive(false);  // deactivate the end game panel
         mainMenuPanel.SetActive(false);     // deactivate the main menu panel
-        _gameState = GameState.Playing;     // set our game state to play
+        gameState = GameState.Playing;     // set our game state to play
     }
 
     public void Retry()
@@ -351,7 +355,7 @@ public class GameManager : MonoBehaviour
 
         gamePanel.SetActive(true);          // activate our game
         endGameMenuPanel.SetActive(false);  // deactivate the end game panel
-        _gameState = GameState.Playing;     // set our game state to play
+        gameState = GameState.Playing;     // set our game state to play
     }
 
     public void ExitGame()
@@ -368,7 +372,7 @@ public class GameManager : MonoBehaviour
         gamePanel.SetActive(false);         // deactivate our game
         endGameMenuPanel.SetActive(false);  // deactivate the end game panel
         creditsPanel.SetActive(false);      // deactivate credits panel
-        _gameState = GameState.PreGame;     // set our game state to pregame
+        gameState = GameState.PreGame;     // set our game state to pregame
     }  
 
     public void CreditsScreen()

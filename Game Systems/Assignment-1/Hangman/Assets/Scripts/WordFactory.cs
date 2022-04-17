@@ -14,6 +14,7 @@ public class WordFactory : MonoBehaviour
     private int _totalWordCount = 0;            // used to keep track of the total amount of words in the word dictionary
     private bool _convertedToWord = false;      // used to control when any generated word is converted to the _genWordCharArray
     private bool _assignedLetterCount = false;  // used to control when any generated word's length has been retrieved
+    private bool _gameHasBegun = false;         // used to control when we assign letter count
     private List<int> _indicesOfChar = new List<int>();  // used to store which indices a character is in a string or array
 
     // permanent difficulty keys for accessing different words in our dictionary of stored lists.
@@ -105,8 +106,8 @@ public class WordFactory : MonoBehaviour
     }
     void Update()
     {
-        // if we haven't got our current word's letter count, AND the generated word's character array isn't null or empty
-        if (!_assignedLetterCount)
+        // if we haven't got our current word's letter count, AND the game hasn't begun
+        if (!_assignedLetterCount && _gameHasBegun)
         // assign number of letters in word to the number of characters in the array of the generated word
         { LetterCount = GeneratedWord.Length; _assignedLetterCount = true; }
     }
