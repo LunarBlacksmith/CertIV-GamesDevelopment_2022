@@ -132,11 +132,13 @@ public class WordFactory : MonoBehaviour
         // removing all whitespace from the first word and then assigning its first character in the string to our tempChar
         char tempChar = RemoveWhiteSpaces(word1_p)[0];
 
+        Debug.Log(tempChar);
+
         // loop through the second string as individual characters
         foreach (char character in word2_p.ToCharArray())
         // return true if the first character in the first word (without any whitespace)
         // is the same as the current character in the second string
-        { if (tempChar == character) { return true; } } 
+        { if (tempChar == character) { Debug.Log("Character has been found."); return true; } } 
 
         // else if we have never returned true, aka: character doesn't exist in the second string
         return false;
@@ -402,10 +404,14 @@ public class WordFactory : MonoBehaviour
 
         // the code block runs if we find the letter in the word - IndexOf() returns -1 if nothing is found
         // we start searching from the beginning of the word at first
-        while (word_p.IndexOf(letter_p, startPositionIndex) > 0)
+        while (word_p.IndexOf(letter_p, startPositionIndex) >= 0)
         {
+            Debug.Log("Start position index when looking for the letter: " + startPositionIndex);
+
             // add the index value of the letter in the word to our list of indices
             IndicesOfChar.Add(word_p.IndexOf(letter_p, startPositionIndex));
+
+            Debug.Log("Index of letter: " + word_p.IndexOf(letter_p, startPositionIndex));
 
             // assigning our next starting index in the word to the last found index value + 1 to avoid infinite loop
             startPositionIndex = IndicesOfChar[IndicesOfChar.Count - 1] + 1;
@@ -428,7 +434,7 @@ public class WordFactory : MonoBehaviour
 
         // the code block runs if we find the letter in the word - IndexOf() returns -1 if nothing is found
         // we start searching from the beginning of the word at first
-        while (word2_p.IndexOf(letterInQuestion, startPositionIndex) > 0)
+        while (word2_p.IndexOf(letterInQuestion, startPositionIndex) >= 0)
         {
             // add the index value of the letter in the word to our list of indices
             IndicesOfChar.Add(word2_p.IndexOf(letterInQuestion, startPositionIndex));
@@ -490,7 +496,7 @@ public class WordFactory : MonoBehaviour
     #endregion
 
     /// <summary>
-    /// Removes all whitespace values from the string. (Includes space, tab, return, & newline)
+    /// Removes all whitespace values from the string. Returns an empty string if the string passed contains only whitespaces. (Includes space, tab, return, & newline)
     /// </summary>
     /// <param name="word_p"></param>
     /// <returns>String argument without whitespaces</returns>

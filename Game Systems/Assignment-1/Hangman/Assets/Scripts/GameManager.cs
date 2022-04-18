@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -31,6 +32,7 @@ public class GameManager : MonoBehaviour
     private int _characterLimit = 1;    // used to assign the character limit in the player input field
     private int _wrongGuessesLeft = 6;  // controls how many guesses the player can get wrong before losing
     private bool _haveReset = true;     // to control times the reset code block functions
+    private bool _haveSetGraphic;
     private enum GameState              // enum to define the different states of the game
     { 
         Playing,
@@ -112,6 +114,63 @@ public class GameManager : MonoBehaviour
 
                     guessesLeftNumberText.text = _wrongGuessesLeft.ToString();
 
+                    if (!_haveSetGraphic)
+                    {
+                        // depending on how many incorrect guesses the player has left
+                        switch (_wrongGuessesLeft)
+                        {
+                            // set the graphics to different versions
+                            // later on will also set to play different sounds
+                            case 5:
+                                {
+                                    // setting our gallows graphic to its next version
+                                    gallowsImage.sprite = gallowsSprites[1];
+
+                                    // setting our hangman graphic to its next version
+                                    hangmanImage.sprite = hangmanSprites[1];
+
+                                    // tell the game we have reset the graphics so it doesn't execute every frame
+                                    _haveSetGraphic = true;
+                                    break;
+                                }
+                            case 4:
+                                {
+                                    gallowsImage.sprite = gallowsSprites[2];
+                                    hangmanImage.sprite = hangmanSprites[2];
+                                    _haveSetGraphic = true;
+                                    break;
+                                }
+                            case 3:
+                                {
+                                    gallowsImage.sprite = gallowsSprites[3];
+                                    hangmanImage.sprite = hangmanSprites[3];
+                                    _haveSetGraphic = true;
+                                    break;
+                                }
+                            case 2:
+                                {
+                                    gallowsImage.sprite = gallowsSprites[4];
+                                    hangmanImage.sprite = hangmanSprites[4];
+                                    _haveSetGraphic = true;
+                                    break;
+                                }
+                            case 1:
+                                {
+                                    gallowsImage.sprite = gallowsSprites[5];
+                                    hangmanImage.sprite = hangmanSprites[5];
+                                    _haveSetGraphic = true;
+                                    break;
+                                }
+                            case 0:
+                                {
+                                    gallowsImage.sprite = gallowsSprites[6];
+                                    _haveSetGraphic = true;
+                                    break; 
+                                }
+                            default:
+                                break;
+                        }
+                    }
                     break;
                 }
             case GameState.PreGame:
@@ -120,7 +179,9 @@ public class GameManager : MonoBehaviour
                     {
                         mainMenuPanel.SetActive(true);  // activate the main menu panel
                         gamePanel.SetActive(false);     // deactivate the game
+                        pauseMenuPanel.SetActive(false);// deactivate the pause menu
                         ResetGraphicsAndVariables();    // reset main graphics and variables
+                        ResetAlphabetObjects();         // deactivate all letter objects in alphabet panel
                     }
                     break; 
                 }
@@ -129,61 +190,65 @@ public class GameManager : MonoBehaviour
                     _haveReset = false;
                     if (!pauseMenuPanel.active)         // if Pause Menu isn't active already
                     { pauseMenuPanel.SetActive(true); } // enable Pause Menu 
+
+                    // set the game to not be interactable while you're paused
+                    gamePanel.GetComponent<CanvasGroup>().interactable = false;
                     break;
                 }
             case GameState.Won:
                 {
                     _haveReset = false;
                     endGameTitle.text = "You Won!";         // set title on end screen to show game result to player
-                    if (!endGameMenuPanel.active)           // if End Game Menu isn't active already
+
+                    StartCoroutine(WaitTwoSeconds());
+
+                    // if End Game Menu AND the credits menu isn't active
+                    if (!endGameMenuPanel.activeInHierarchy && !creditsPanel.activeInHierarchy)           
                     { endGameMenuPanel.SetActive(true); }   // enable End Game Menu
 
-                    if (gamePanel.active)                   // if the main game panel is active
+                    // if our game is still interactable, reset things specific to this state
+                    if (gamePanel.GetComponent<CanvasGroup>().interactable)
                     { 
-                        gamePanel.SetActive(false); // disable the game panel
+                        ResetAlphabetObjects();     // deactivate all letter objects in alphabet panel
                         _wrongGuessesLeft = 6;      // reset number of incorrect guesses the player has left
 
-                        // disable all alphabet letters
-                        foreach (Text letterObject in alphabetPanel.GetComponents<Text>())
-                        { letterObject.enabled = false; }
-
-                        // setting our gallows graphic to the 'Empty' version
-                        gallowsImage.sprite = gallowsSprites[0];
-
-                        // setting our hangman graphic to the 'full body of hangman' version
-                        hangmanImage.sprite = hangmanSprites[0];
                         sInput = string.Empty;                      // reset the stored input
                         playerInputField.text = string.Empty;       // reset the player InputField's text
                         _wordGuessing = string.Empty;               // reset the word being guessed
                         underscoredWord.text = string.Empty;        // reset the underscored word the player can see
                     }
+
+                    // set the game to not be interactable while you're in the end game menu
+                    gamePanel.GetComponent<CanvasGroup>().interactable = false;
                     break; 
                 }
             case GameState.Lost:
                 {
                     _haveReset = false;
                     endGameTitle.text = "You Lost";         // set title on end screen to show game result to player
-                    if (!endGameMenuPanel.active)           // if End Game Menu isn't active already
+
+                    // set the game to not be interactable while you're in the end game menu
+                    gamePanel.GetComponent<CanvasGroup>().interactable = false;
+
+                    StartCoroutine(WaitTwoSeconds());
+
+                    // if End Game Menu isn't active already AND the credits menu isn't active
+                    if (!endGameMenuPanel.active && !creditsPanel.activeInHierarchy)
                     { endGameMenuPanel.SetActive(true); }   // enable End Game Menu
 
-                    if (gamePanel.active)                   // if the main game panel is active
+                    // if our game is still interactable, reset things specific to this state
+                    if (gamePanel.GetComponent<CanvasGroup>().interactable)
                     {
-                        gamePanel.SetActive(false); // disable the game panel
+                        ResetAlphabetObjects();     // deactivate all letter objects in alphabet panel
                         _wrongGuessesLeft = 6;      // reset number of incorrect guesses the player has left
 
-                        // disable all alphabet letters
-                        foreach (Text letterObject in alphabetPanel.GetComponents<Text>())
-                        { letterObject.enabled = false; }
-
-                        // setting our gallows graphic to the 'Empty' version
-                        gallowsImage.sprite = gallowsSprites[0];
-
-                        // setting our hangman graphic to the 'full body of hangman' version
-                        hangmanImage.sprite = hangmanSprites[0];
                         sInput = string.Empty;                      // reset the stored input
                         playerInputField.text = string.Empty;       // reset the player InputField's text
                         underscoredWord.text = string.Empty;        // reset the underscored word the player can see
                     }
+
+                    // set the game to not be interactable while you're in the end game menu
+                    gamePanel.GetComponent<CanvasGroup>().interactable = false;
                     break; 
                 }
             default:
@@ -193,7 +258,8 @@ public class GameManager : MonoBehaviour
 
                     if (!_haveReset)
                     {
-                        _haveReset = true;
+                        _haveReset = false;
+                        gamePanel.GetComponent<CanvasGroup>().interactable = false;
                         _gameState = GameState.PreGame; // setting the state back to pregame
                     }
                     break; 
@@ -204,40 +270,68 @@ public class GameManager : MonoBehaviour
 
     public void OnInputEnter()
     {
+        Debug.Log("OnInputEnter method has been executed.");
+
         // if we're still playing the game and not in a menu
         if (_gameState == GameState.Playing)
         {
-            // assigning our input to the text the player enters without the whitespaces
-            sInput = wordFactory.RemoveWhiteSpaces(playerInputField.text);
+            // assigning our input to the text the player enters without the whitespaces and in lowercase
+            sInput = wordFactory.RemoveWhiteSpaces(playerInputField.text).ToLower();
 
-            // if the player entered 1 character
-            if (sInput.Length == 1)
+            // if the player's input does not contain anything but alphabet characters
+            if (!Regex.IsMatch(sInput, "^[a-z]+$"))
+            { playerInputField.text = ""; return; } // set the input field to nothing and exit the method.
+
+            // exit the method if the player didn't enter anything
+            if (sInput.Length == 0){ return; }
+            else if (sInput.Length == 1)    // else if the player entered 1 character
             {
-                // get the first character from their input without whitespaces
-                _currLetter = wordFactory.RemoveWhiteSpaces(sInput)[0];
+                // get the first character from their input, in lower case, without whitespaces
+                _currLetter = wordFactory.RemoveWhiteSpaces(sInput).ToLower()[0];
 
-                // new Text array same size as number of enabled alphabet objects
-                Text[] enabledLetters = new Text[alphabetPanel.GetComponentsInChildren<Text>(false).Length];
+                Debug.Log("_currLetter is: " + _currLetter);
 
-                // store all the enabled alphabet letters (letters used before)
-                enabledLetters = alphabetPanel.GetComponentsInChildren<Text>(false);
+                // new List of type Text object same size as number of alphabet Text component objects in hierarchy
+                List<Text> letterTextObjects = new List<Text>(alphabetPanel.GetComponentsInChildren<Text>().Length);
 
-                // loop through our enabled letters
-                for (int i = 0; i < enabledLetters.Length; i++)
+                // store all the Text component alphabet letters (entire alphabet in hierarchy)
+                letterTextObjects.AddRange(alphabetPanel.GetComponentsInChildren<Text>());
+
+                Debug.Log("Size of letterTextObjects (T.O) list: " + letterTextObjects.Count);
+
+                // loop through the alphabet panel letters
+                for (int i = 0; i < letterTextObjects.Count; i++)
                 {
-                    // if we find the current letter guessed in the already-enabled array
-                    if (enabledLetters[i].text.ToString() == _currLetter.ToString())
-                    { return; }  // exit the method immediately
+                    // if the current letter's gameobject is active (visable in the scene)
+                    if (!letterTextObjects[i].gameObject.activeSelf)
+                    { letterTextObjects.RemoveAt(i); i--; }
+                }
+
+                // loop through our active letters
+                for (int i = 0; i < letterTextObjects.Count; i++)
+                {
+                    // if we find the current letter guessed in the already-active list
+                    if (letterTextObjects[i].text.ToLower() == _currLetter.ToString())
+                    {
+                        // if the current letter isn't 'i', change the letter back to uppercase, else if it is 'i', keep it lowercase
+                        letterTextObjects[i].text = (_currLetter != 'i') ? letterTextObjects[i].text.ToUpper() : _currLetter.ToString();
+                        Debug.Log("Letter has already been guessed.");  
+                        return; // exit the method immediately
+                    }
                 }
 
                 // if the letter is not in the word the player is guessing (they guessed wrong)
                 if (!wordFactory.EvaluateCharacter(_currLetter, _wordGuessing))
                 {
-                    _wrongGuessesLeft--;    // decrement wrong guesses left
+                    Debug.Log("Wrong guess, letter not found in word.");
+                    _wrongGuessesLeft--;        // decrement wrong guesses left
+                    _haveSetGraphic = false;    // tell the game to update the graphics
 
                     // this enables the letter object at the same index of the character in the alphbet
                     // to show they have guessed the current letter
                     EnableLetter(alphabetPanel, GetAlphabetIndex(_currLetter));
+
+                    Debug.Log("Alphabet index of letter " + GetAlphabetIndex(_currLetter));
                 }
                 else // if they didn't guess the letter wrong
                 {
@@ -247,6 +341,14 @@ public class GameManager : MonoBehaviour
                     //  and get the new index(s) position(s) of it in the word
                     _letterPositionIndices = wordFactory.GetIndicesInWord(_currLetter, _wordGuessing);
 
+                    string debug = "";
+                    foreach (int index in _letterPositionIndices)
+                    {
+                        debug += index.ToString() + ", ";
+                    }
+                    Debug.Log("Indices in list: " + debug);
+
+                    Debug.Log("Word guessing: " + _wordGuessing);
                     // assign new string to word with underscores at index positions replaced with letter
                     string tempUnderscoreWord = ReplaceUnderscoreWithLetter(_wordGuessing, _currLetter);
 
@@ -267,18 +369,24 @@ public class GameManager : MonoBehaviour
                 if (wordFactory.EvaluateWord(sInput, _wordGuessing))
                 { _gameState = GameState.Won; } // tell the game the player Won
                 else
-                { _wrongGuessesLeft--; }   // if incorrect guess, decrement the number of wrong guesses left
+                // if incorrect guess, decrement the number of wrong guesses left and tell the game to update the graphics
+                { _wrongGuessesLeft--; _haveSetGraphic = false; }   
             }
 
             // check if underscored word (without spaces) equals the generated word (without spaces)
             // if it does, set game state to 'Won'
-            if (underscoredWord.text == _wordGuessing)
-            { _gameState = GameState.Won; } // tell the game the player Won
+            if (wordFactory.RemoveWhiteSpaces(underscoredWord.text) == _wordGuessing)
+            {
+                StartCoroutine(WaitTwoSeconds());   // wait two seconds to let the player absorb their visual victory
+                _gameState = GameState.Won;         // tell the game the player Won
+            } 
         }
     }
 
     public void Resume()
     {
+        // set the game to be interactable when you play the game
+        gamePanel.GetComponent<CanvasGroup>().interactable = true;
         pauseMenuPanel.SetActive(false);    // deactivate the pause menu
         _gameState = GameState.Playing;     // tell the game we're playing the game
     }
@@ -286,6 +394,8 @@ public class GameManager : MonoBehaviour
     public void NewGame()
     {
 #if UNITY_EDITOR
+        ResetGraphicsAndVariables();
+
         if (easyMode && !mediumMode && !hardMode)
         { _wordGuessing = wordFactory.GenerateWord("easy"); }
         if (mediumMode && !easyMode && !hardMode)
@@ -304,9 +414,8 @@ public class GameManager : MonoBehaviour
             Application.Quit();
         }
 
-        // disable all alphabet letters
-        foreach (Text letterObject in alphabetPanel.GetComponentsInChildren<Text>())
-        { letterObject.enabled = false; }
+        // deactivate all alphabet letter objects
+        ResetAlphabetObjects();
 
         string unityGeneratedUnderscores = "";
         Debug.Log(wordFactory.LetterCount);
@@ -322,6 +431,10 @@ public class GameManager : MonoBehaviour
         Debug.Log(unityGeneratedUnderscores);
 
         _characterLimit = wordFactory.LetterCount;          // setting the max number of characters player can input (to assist)
+        playerInputField.characterLimit = _characterLimit;  // applying it to the InputField
+
+        // set the game to be interactable when you play the game
+        gamePanel.GetComponent<CanvasGroup>().interactable = true;
 
         gamePanel.SetActive(true);          // activate our game
         endGameMenuPanel.SetActive(false);  // deactivate the end game panel
@@ -329,6 +442,11 @@ public class GameManager : MonoBehaviour
         _gameState = GameState.Playing;     // set our game state to play
         return;
 #endif
+
+// IF NOT IN UNITY EDITOR:
+
+        ResetGraphicsAndVariables();
+
         // set our local word variable to a newly generated word
         _wordGuessing = wordFactory.GenerateWord();
 
@@ -341,9 +459,8 @@ public class GameManager : MonoBehaviour
             Application.Quit();
         }
 
-        // disable all alphabet letters
-        foreach (Text letterObject in alphabetPanel.GetComponents<Text>())
-        { letterObject.enabled = false; }
+        // make all alphabet letter objects not active
+        ResetAlphabetObjects();
 
         string generatedUnderscores = "";
 
@@ -353,7 +470,13 @@ public class GameManager : MonoBehaviour
 
         // put whitespace between every letter for presentation
         // and assign our visable text field to the returned string value
-        underscoredWord.text = AddSpacesBetweenLetters(generatedUnderscores);    
+        underscoredWord.text = AddSpacesBetweenLetters(generatedUnderscores);
+
+        _characterLimit = wordFactory.LetterCount;          // setting the max number of characters player can input (to assist)
+        playerInputField.characterLimit = _characterLimit;  // applying it to the InputField
+
+        // set the game to be interactable when you play the game
+        gamePanel.GetComponent<CanvasGroup>().interactable = true;
 
         gamePanel.SetActive(true);          // activate our game
         endGameMenuPanel.SetActive(false);  // deactivate the end game panel
@@ -363,6 +486,12 @@ public class GameManager : MonoBehaviour
 
     public void Retry()
     {
+        // resetting our gallows graphic
+        gallowsImage.sprite = gallowsSprites[0];
+
+        // resetting our hangman graphic
+        hangmanImage.sprite = hangmanSprites[0];
+
         _wordGuessing = wordFactory.GeneratedWord;
         string generatedUnderscores = "";
 
@@ -373,6 +502,12 @@ public class GameManager : MonoBehaviour
         // put whitespace between every letter for presentation
         // and assign our visable text field to the returned string value
         underscoredWord.text = AddSpacesBetweenLetters(generatedUnderscores);
+
+        _characterLimit = wordFactory.LetterCount;          // setting the max number of characters player can input (to assist)
+        playerInputField.characterLimit = _characterLimit;  // applying it to the InputField
+
+        // set the game to be interactable when you play the game
+        gamePanel.GetComponent<CanvasGroup>().interactable = true;
 
         gamePanel.SetActive(true);          // activate our game
         endGameMenuPanel.SetActive(false);  // deactivate the end game panel
@@ -397,11 +532,18 @@ public class GameManager : MonoBehaviour
     }  
 
     public void CreditsScreen()
-    { creditsPanel.SetActive(true); }   // activate the credits panel
+    {
+        creditsPanel.SetActive(true);
+
+        // if we accessed credits screen through end game menu
+        if (endGameMenuPanel.activeInHierarchy)
+        { endGameMenuPanel.SetActive(false); }  // deactivate the end game menu
+
+    }
 
     // enables a Text object at an index in a Text array 
-    public void EnableLetter(GameObject alphabetObject_p, int index_p)
-    { alphabetObject_p.GetComponentsInChildren<Text>(true)[index_p].enabled = true; }
+    public void EnableLetter(GameObject lettersParentObject_p, int index_p)
+    { lettersParentObject_p.GetComponentsInChildren<Text>(true)[index_p].gameObject.SetActive(true); }
 
     // returns the index of the letter in the alphabet
     public int GetAlphabetIndex(char letter_p)
@@ -424,10 +566,12 @@ public class GameManager : MonoBehaviour
     public string ReplaceUnderscoreWithLetter(string word_p, char letter_p)
     {
         word_p = wordFactory.RemoveWhiteSpaces(underscoredWord.text);
+        Debug.Log($"Underscored word after spaces removed: {word_p}");
         string halfWord1 = "", halfWord2 = "";
         Debug.Log("Number of times letter is in word: " + _letterPositionIndices.Count);
         foreach (int indexOfLetter in _letterPositionIndices)
         {
+            Debug.Log($"Current index of letter: {indexOfLetter}");
             if (indexOfLetter == 0)        // if the index is the first letter
             {
                 halfWord2 = word_p.Substring(1);// get the word from after the letter to replace
@@ -435,7 +579,7 @@ public class GameManager : MonoBehaviour
                 word_p += letter_p;             // add the letter to replace to the word to return
                 word_p += halfWord2;            // append the rest of the word to the replaced letter, to the word returning
             }
-            else if (indexOfLetter == _letterPositionIndices.Count-1)   // if the index is the last letter
+            else if (indexOfLetter == word_p.Length-1)   // if the index is the last letter
             {
                 halfWord1 = word_p.Substring(0, indexOfLetter);         // get word before letter position
 
@@ -445,6 +589,8 @@ public class GameManager : MonoBehaviour
             }
             else
             {
+                Debug.Log($"Letter at {indexOfLetter}: {word_p.ToCharArray()[indexOfLetter]}.");
+
                 // split the word just before the index of the letter position
                 halfWord1 = word_p.Substring(0, indexOfLetter); // half of word before letter position
                 halfWord2 = word_p.Substring(indexOfLetter + 1);// half of word after letter position
@@ -496,4 +642,20 @@ public class GameManager : MonoBehaviour
         _wrongGuessesLeft = 6;          // reset number of incorrect guesses the player has left
         _haveReset = true;
     }
+
+    public void ResetAlphabetObjects()
+    {
+        // new List of type Text object same size as number of alphabet Text component objects in hierarchy
+        List<Text> letterTextObjects = new List<Text>(alphabetPanel.GetComponentsInChildren<Text>().Length);
+
+        // store all the Text component alphabet letters (entire alphabet in hierarchy)
+        letterTextObjects.AddRange(alphabetPanel.GetComponentsInChildren<Text>());
+
+        // loop through the alphabet panel letters
+        for (int i = 0; i < letterTextObjects.Count; i++)
+        { letterTextObjects[i].gameObject.SetActive(false); }   // deactivate every letter object
+    }
+
+    public IEnumerator WaitTwoSeconds()
+    { yield return new WaitForSecondsRealtime(2f); }
 }
