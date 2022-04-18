@@ -6508,18 +6508,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _generatedWord: 
   _easyWords:
-  - frog
+  - parrot
   - pillow
   - controller
-  - wepeon
+  - beansprout
+  - cupboard
   _moderateWords:
+  - charming
   - container
-  - vacuum
-  - chairmanh
-  - arowr
+  - vampire
+  - sorrow
+  - archery
   _hardWords:
   - quadrouple
-  - qffixiation
+  - asphixiation
+  - qualification
+  - mustang
+  - hallucinogen
 --- !u!4 &1722525834
 Transform:
   m_ObjectHideFlags: 0
