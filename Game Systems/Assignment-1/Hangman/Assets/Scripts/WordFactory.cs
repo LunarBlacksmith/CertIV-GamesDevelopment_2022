@@ -9,12 +9,10 @@ public class WordFactory : MonoBehaviour
 
     #region Private Variables
 
-    private string _generatedWord = "";         // used to store the word generated for the current level
+    [SerializeField]private string _generatedWord = "";         // used to store the word generated for the current level
     private int _letterCount = 0;               // used to count the amount of letters in the generated word (includes whitespace)
     private int _totalWordCount = 0;            // used to keep track of the total amount of words in the word dictionary
-    private bool _convertedToWord = false;      // used to control when any generated word is converted to the _genWordCharArray
     private bool _assignedLetterCount = false;  // used to control when any generated word's length has been retrieved
-    private bool _gameHasBegun = false;         // used to control when we assign letter count
     private List<int> _indicesOfChar = new List<int>();  // used to store which indices a character is in a string or array
 
     // permanent difficulty keys for accessing different words in our dictionary of stored lists.
@@ -47,7 +45,7 @@ public class WordFactory : MonoBehaviour
     /// <summary>
     /// Stores the generated word just after the generation methods are called, and is accessible outside its class.
     /// </summary>
-    public string GeneratedWord { get; private set; }   // public property    
+    public string GeneratedWord { get{return _generatedWord;} private set{_generatedWord = value;} }   // public property
 
     /// <summary>
     /// Stores the number of letters in the current word and verifies values passed in aren't less than 0. NOTE: Includes whitespaces.
@@ -106,10 +104,7 @@ public class WordFactory : MonoBehaviour
     }
     void Update()
     {
-        // if we haven't got our current word's letter count, AND the game hasn't begun
-        if (!_assignedLetterCount && _gameHasBegun)
-        // assign number of letters in word to the number of characters in the array of the generated word
-        { LetterCount = GeneratedWord.Length; _assignedLetterCount = true; }
+        
     }
 
 
@@ -269,10 +264,15 @@ public class WordFactory : MonoBehaviour
 
             // assign our generated word variable to the word at the random index of our temp list
             GeneratedWord = tempList[tempIndex];
-            _convertedToWord = false;       // since we just re-assigned a new word, we haven't converted it yet
             _assignedLetterCount = false;   // need to tell our update function to re-assign our LetterCount variable with the new word
 
             WordsUsed.Add(GeneratedWord);   // add the generated word to our list of words used
+
+            // if we haven't got our current word's letter count, AND the generated word has at least 1 letter
+            if (!_assignedLetterCount && GeneratedWord.Length > 0)
+            // assign number of letters in word to the number of characters in the array of the generated word
+            { LetterCount = GeneratedWord.Length; _assignedLetterCount = true; }
+
             return GeneratedWord;           // return the generated word to the caller
         }
         catch (IndexOutOfRangeException indexE) //a specific exception catch if there is an index out of range
@@ -312,7 +312,6 @@ public class WordFactory : MonoBehaviour
 
                     // assign our generated word variable to the word at the random index of our temp list
                     GeneratedWord = tempList[tempIndex];
-                    _convertedToWord = false;
                     _assignedLetterCount = false;
                     return GeneratedWord;
                 }
@@ -357,17 +356,22 @@ public class WordFactory : MonoBehaviour
             try
             {
                 /* creating a local scope int to store the random index (tempIndex)
-                *using the Random() class instantiation to access rng capability
-                *accessing our list through our dictionary of lists (to avoid coupling), passing in the string arg as a key
-                *then using the .Count property of a list to return the maximum value the 
-                *random number can return so that we don't access an item outside the bounds of the list */
+                * using the Random() class instantiation to access rng capability
+                * accessing our list through our dictionary of lists (to avoid coupling), passing in the string arg as a key
+                * then using the .Count property of a list to return the maximum value the 
+                * random number can return so that we don't access an item outside the bounds of the list */
                 int tempIndex = _randomObj.Next(_wordListDictionary[difficultyKey_p].Count);
 
                 /* assigning the _generatedWord string to the string value of the list item at our temprary index
-                *the list accessed is also determined by the key passed into the method */
+                * the list accessed is also determined by the key passed into the method */
                 GeneratedWord = _wordListDictionary[difficultyKey_p][tempIndex];
-                _convertedToWord = false;
                 _assignedLetterCount = false;
+
+                // if we haven't got our current word's letter count, AND the generated word has at least 1 letter
+                if (!_assignedLetterCount && GeneratedWord.Length > 0)
+                // assign number of letters in word to the number of characters in the array of the generated word
+                { LetterCount = GeneratedWord.Length; _assignedLetterCount = true; }
+
                 return GeneratedWord;
             }
             catch (IndexOutOfRangeException indexE) // a specific exception catch if there is an index out of range
@@ -385,7 +389,6 @@ public class WordFactory : MonoBehaviour
 
     #region Index Retrievals In Words
 
-    
     /// <summary>
     /// Returns a list of integers containing the index value(s) of the letter in question, in the first arg, within the word in the second arg. Returns an empty list if the letter is not found in the word.
     /// </summary>
