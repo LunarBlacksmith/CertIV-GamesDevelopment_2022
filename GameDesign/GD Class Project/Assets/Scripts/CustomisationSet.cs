@@ -30,11 +30,16 @@ public class CustomisationSet : MonoBehaviour {
     public string characterName = "Adventurer";
     #endregion
 
-    public Vector2 scr;
     #region Start
     //in start we need to set up the following
     private void Start()
     {
+        if (GameManager.scr.x != Screen.width/16)
+        {
+            GameManager.scr.x = Screen.width / 16;
+            GameManager.scr.y = Screen.width / 9;
+        }
+
         #region for loop to pull textures from file
         //for loop looping from 0 to less than the max amount of skin textures we need
         for (int i = 0; i < skinMax; i++)
@@ -158,7 +163,7 @@ public class CustomisationSet : MonoBehaviour {
                     index = hairIndex;
                     max = hairMax;
                     textures = hair.ToArray();
-                    matIndex = 2;
+                    matIndex = 4;
                     break;
                 }
             case "Mouth":
@@ -174,7 +179,7 @@ public class CustomisationSet : MonoBehaviour {
                     index = eyesIndex;
                     max = eyesMax;
                     textures = eyes.ToArray();
-                    matIndex = 4;
+                    matIndex = 2;
                     break;
                 }
             case "Clothes":
@@ -182,7 +187,7 @@ public class CustomisationSet : MonoBehaviour {
                     index = clothesIndex;
                     max = clothesMax;
                     textures = clothes.ToArray();
-                    matIndex = 4;
+                    matIndex = 5;
                     break;
                 }
             case "Armour":
@@ -190,7 +195,7 @@ public class CustomisationSet : MonoBehaviour {
                     index = armourIndex;
                     max = armourMax;
                     textures = armour.ToArray();
-                    matIndex = 5;
+                    matIndex = 6;
                     break;
                 }
             #endregion
@@ -266,28 +271,28 @@ public class CustomisationSet : MonoBehaviour {
         //move down the screen with the int using ++ each grouping of GUI elements are moved using this
         int i = 0;
 
-        if (GUI.Button(new Rect(0.25f*scr.x, scr.y+i*(0.5f*scr.y), 0.5f*scr.x, 0.5f*scr.y),"<"))
+        if (GUI.Button(new Rect(0.25f*GameManager.scr.x, GameManager.scr.y+i*(0.5f*GameManager.scr.y), 0.5f*GameManager.scr.x, 0.5f*GameManager.scr.y),"<"))
         {
             SetTexture("Skin", -1);
         }
 
-        GUI.Box(new Rect(0.75f * scr.x, scr.y + i * (0.5f * scr.y), 0.5f * scr.x, 0.5f * scr.y), "Skin");
+        GUI.Box(new Rect(0.75f * GameManager.scr.x, GameManager.scr.y + i * (0.5f * GameManager.scr.y), GameManager.scr.x, 0.5f * GameManager.scr.y), "Skin");
 
-        if (GUI.Button(new Rect(1.75f * scr.x, scr.y + i * (0.5f * scr.y), 0.5f * scr.x, 0.5f * scr.y), "<"))
+        if (GUI.Button(new Rect(1.75f * GameManager.scr.x, GameManager.scr.y + i * (0.5f * GameManager.scr.y), 0.5f * GameManager.scr.x, 0.5f * GameManager.scr.y), "<"))
         {
             SetTexture("Skin", 1);
         }
         i++;
         #endregion
         #region Hair
-        if (GUI.Button(new Rect(0.25f * scr.x, scr.y + i * (0.5f * scr.y), 0.5f * scr.x, 0.5f * scr.y), "<"))
+        if (GUI.Button(new Rect(0.25f * GameManager.scr.x, GameManager.scr.y + i * (0.5f * GameManager.scr.y), 0.5f * GameManager.scr.x, 0.5f * GameManager.scr.y), "<"))
         {
             SetTexture("Hair", -1);
         }
 
-        GUI.Box(new Rect(0.75f * scr.x, scr.y + i * (0.5f * scr.y), 0.5f * scr.x, 0.5f * scr.y), "Skin");
+        GUI.Box(new Rect(0.75f * GameManager.scr.x, GameManager.scr.y + i * (0.5f * GameManager.scr.y), GameManager.scr.x, 0.5f * GameManager.scr.y), "Hair");
 
-        if (GUI.Button(new Rect(1.75f * scr.x, scr.y + i * (0.5f * scr.y), 0.5f * scr.x, 0.5f * scr.y), "<"))
+        if (GUI.Button(new Rect(1.75f * GameManager.scr.x, GameManager.scr.y + i * (0.5f * GameManager.scr.y), 0.5f * GameManager.scr.x, 0.5f * GameManager.scr.y), "<"))
         {
             SetTexture("Hair", 1);
         }
@@ -300,14 +305,14 @@ public class CustomisationSet : MonoBehaviour {
         //move down the screen with the int using ++ each grouping of GUI elements are moved using this
         #endregion
         #region Mouth
-        if (GUI.Button(new Rect(0.25f * scr.x, scr.y + i * (0.5f * scr.y), 0.5f * scr.x, 0.5f * scr.y), "<"))
+        if (GUI.Button(new Rect(0.25f * GameManager.scr.x, GameManager.scr.y + i * (0.5f * GameManager.scr.y), 0.5f * GameManager.scr.x, 0.5f * GameManager.scr.y), "<"))
         {
             SetTexture("Mouth", -1);
         }
 
-        GUI.Box(new Rect(0.75f * scr.x, scr.y + i * (0.5f * scr.y), 0.5f * scr.x, 0.5f * scr.y), "Skin");
+        GUI.Box(new Rect(0.75f * GameManager.scr.x, GameManager.scr.y + i * (0.5f * GameManager.scr.y), GameManager.scr.x, 0.5f * GameManager.scr.y), "Mouth");
 
-        if (GUI.Button(new Rect(1.75f * scr.x, scr.y + i * (0.5f * scr.y), 0.5f * scr.x, 0.5f * scr.y), "<"))
+        if (GUI.Button(new Rect(1.75f * GameManager.scr.x, GameManager.scr.y + i * (0.5f * GameManager.scr.y), 0.5f * GameManager.scr.x, 0.5f * GameManager.scr.y), "<"))
         {
             SetTexture("Mouth", 1);
         }
@@ -320,14 +325,14 @@ public class CustomisationSet : MonoBehaviour {
         //move down the screen with the int using ++ each grouping of GUI elements are moved using this
         #endregion
         #region Eyes
-        if (GUI.Button(new Rect(0.25f * scr.x, scr.y + i * (0.5f * scr.y), 0.5f * scr.x, 0.5f * scr.y), "<"))
+        if (GUI.Button(new Rect(0.25f * GameManager.scr.x, GameManager.scr.y + i * (0.5f * GameManager.scr.y), 0.5f * GameManager.scr.x, 0.5f * GameManager.scr.y), "<"))
         {
             SetTexture("Eyes", -1);
         }
 
-        GUI.Box(new Rect(0.75f * scr.x, scr.y + i * (0.5f * scr.y), 0.5f * scr.x, 0.5f * scr.y), "Skin");
+        GUI.Box(new Rect(0.75f * GameManager.scr.x, GameManager.scr.y + i * (0.5f * GameManager.scr.y), GameManager.scr.x, 0.5f * GameManager.scr.y), "Eyes");
 
-        if (GUI.Button(new Rect(1.75f * scr.x, scr.y + i * (0.5f * scr.y), 0.5f * scr.x, 0.5f * scr.y), "<"))
+        if (GUI.Button(new Rect(1.75f * GameManager.scr.x, GameManager.scr.y + i * (0.5f * GameManager.scr.y), 0.5f * GameManager.scr.x, 0.5f * GameManager.scr.y), "<"))
         {
             SetTexture("Eyes", 1);
         }
@@ -340,28 +345,28 @@ public class CustomisationSet : MonoBehaviour {
         //move down the screen with the int using ++ each grouping of GUI elements are moved using this
         #endregion
         #region Clothes
-        if (GUI.Button(new Rect(0.25f * scr.x, scr.y + i * (0.5f * scr.y), 0.5f * scr.x, 0.5f * scr.y), "<"))
+        if (GUI.Button(new Rect(0.25f * GameManager.scr.x, GameManager.scr.y + i * (0.5f * GameManager.scr.y), 0.5f * GameManager.scr.x, 0.5f * GameManager.scr.y), "<"))
         {
             SetTexture("Clothes", -1);
         }
 
-        GUI.Box(new Rect(0.75f * scr.x, scr.y + i * (0.5f * scr.y), 0.5f * scr.x, 0.5f * scr.y), "Skin");
+        GUI.Box(new Rect(0.75f * GameManager.scr.x, GameManager.scr.y + i * (0.5f * GameManager.scr.y), GameManager.scr.x, 0.5f * GameManager.scr.y), "Clothes");
 
-        if (GUI.Button(new Rect(1.75f * scr.x, scr.y + i * (0.5f * scr.y), 0.5f * scr.x, 0.5f * scr.y), "<"))
+        if (GUI.Button(new Rect(1.75f * GameManager.scr.x, GameManager.scr.y + i * (0.5f * GameManager.scr.y), 0.5f * GameManager.scr.x, 0.5f * GameManager.scr.y), "<"))
         {
             SetTexture("Clothes", 1);
         }
         i++;
         #endregion
         #region Armour
-        if (GUI.Button(new Rect(0.25f * scr.x, scr.y + i * (0.5f * scr.y), 0.5f * scr.x, 0.5f * scr.y), "<"))
+        if (GUI.Button(new Rect(0.25f * GameManager.scr.x, GameManager.scr.y + i * (0.5f * GameManager.scr.y), 0.5f * GameManager.scr.x, 0.5f * GameManager.scr.y), "<"))
         {
             SetTexture("Armour", -1);
         }
 
-        GUI.Box(new Rect(0.75f * scr.x, scr.y + i * (0.5f * scr.y), 0.5f * scr.x, 0.5f * scr.y), "Skin");
+        GUI.Box(new Rect(0.75f * GameManager.scr.x, GameManager.scr.y + i * (0.5f * GameManager.scr.y), GameManager.scr.x, 0.5f * GameManager.scr.y), "Armour");
 
-        if (GUI.Button(new Rect(1.75f * scr.x, scr.y + i * (0.5f * scr.y), 0.5f * scr.x, 0.5f * scr.y), "<"))
+        if (GUI.Button(new Rect(1.75f * GameManager.scr.x, GameManager.scr.y + i * (0.5f * GameManager.scr.y), 0.5f * GameManager.scr.x, 0.5f * GameManager.scr.y), "<"))
         {
             SetTexture("Armour", 1);
         }
@@ -373,10 +378,43 @@ public class CustomisationSet : MonoBehaviour {
         //Random will feed a random amount to the direction 
         //reset will set all to 0 both use SetTexture
         //move down the screen with the int using ++ each grouping of GUI elements are moved using this
+        if (GUI.Button(new Rect(0.25f * GameManager.scr.x, GameManager.scr.y + i * (0.5f * GameManager.scr.y), 0.5f * GameManager.scr.x, 0.5f * GameManager.scr.y), "<"))
+        {
+            skinIndex = Random.Range(0, skinMax);
+            hairIndex = Random.Range(0, hairMax);
+            eyesIndex = Random.Range(0, eyesMax);
+            mouthIndex = Random.Range(0, mouthMax);
+            clothesIndex = Random.Range(0, clothesMax);
+            armourIndex = Random.Range(0, armourMax);
+            SetTexture("Skin", 0);
+            SetTexture("Hair", 0);
+            SetTexture("Eyes", 0);
+            SetTexture("Mouth", 0);
+            SetTexture("Clothes", 0);
+            SetTexture("Armour", 0);
+        }
+        if (GUI.Button(new Rect(0.25f * GameManager.scr.x, GameManager.scr.y + i * (0.5f * GameManager.scr.y), 0.5f * GameManager.scr.x, 0.5f * GameManager.scr.y), "<"))
+        {
+            SetTexture("Skin", skinMax);
+            SetTexture("Hair", hairMax = 0);
+            SetTexture("Eyes", eyesMax);
+            SetTexture("Mouth", mouthMax);
+            SetTexture("Clothes", clothesMax);
+            SetTexture("Armour", armourMax);
+        }
+        i++;
         #endregion
         #region Character Name and Save & Play
         //name of our character equals a GUI TextField that holds our character name and limit of characters
         //move down the screen with the int using ++ each grouping of GUI elements are moved using this
+        characterName = GUI.TextField(new Rect(
+            0.25f * GameManager.scr.x,                          // x
+            GameManager.scr.y + i * (0.5f * GameManager.scr.y), // y
+            2 * GameManager.scr.x,                              // width
+            0.5f * GameManager.scr.y),                          // height
+            characterName,                                      // text in TextField            
+            12);                                                // maxLength of TextField
+        i++;
 
         //GUI Button called Save and Play
         //this button will run the save function and also load into the game level
