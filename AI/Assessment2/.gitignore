@@ -1,6 +1,28 @@
-# This .gitignore file should be placed at the root of your Unity project directory
+# Microsoft temp files
 #
-# Get latest from https://github.com/github/gitignore/blob/main/Unity.gitignore
+# Temp files
+*.tmp
+
+# Word temporary
+~$*.doc*
+
+# Word Auto Backup File
+Backup of *.doc*
+
+# Excel temporary
+~$*.xls*
+
+# Excel Backup File
+*.xlk
+
+# PowerPoint temporary
+~$*.ppt*
+
+# Visio autosave temporary files
+*.~vsd*
+
+
+# This .gitignore file should be placed at the root of your Unity project directory
 #
 /[Ll]ibrary/
 /[Tt]emp/
