@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
 
 public class SeekerStateMachine : StateBase
 {
@@ -95,17 +94,19 @@ public class SeekerStateMachine : StateBase
     {
         Debug.Log("Search State: Enter");
 
+        // TODO: Search using A* algorithm for nearest pickup and store in variable
+
         while (currentState == State.Search)
         {
             // if there are no pickups left
             if (pickups.Count <= 0)
             { currentState = State.Escape; }
 
-            // move to the nearest pickup
-            aiMovement.AIMove(aiMovement.pickups[aiMovement.pickupIndex]);
+            // TODO: make the move goal the position of the pickup fetched from the search algorithm
+            aiMovement.AIMove(pickups[aiMovement.pickupIndex].transform);
 
-            // 
-            aiMovement.WaypointUpdate();
+            // check if the agent is at the pickup and add it if they are
+            aiMovement.PickupUpdate();
 
             // TODO: change this to check with Raycasts if the hunter is in line of sight with Seeker
             bool _hunterInSight = Vector2.Distance(transform.position, aiMovement.hunter.position) <= chaseDist;
@@ -122,8 +123,6 @@ public class SeekerStateMachine : StateBase
     private IEnumerator EscapeState()
     {
         // TODO: get to the end of the maze
-
-            // wait until gate is open if it is not open
 
         // if the hunter is within sight, change state to Flee
 
