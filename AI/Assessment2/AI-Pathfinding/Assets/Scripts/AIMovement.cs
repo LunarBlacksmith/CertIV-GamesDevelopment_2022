@@ -20,24 +20,12 @@ public class AIMovement : MonoBehaviour
     #endregion
 
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void AIMove(Transform goal)
     {
         Vector3 aiPosition = transform.position;
         Vector3 goalPosition = goal.position;
 
-        // if we're not near the goal
+        // if we're not within minumum distance of the goal
         if (Vector2.Distance(aiPosition, goalPosition) > minGoalDist)
         {
             Vector2 dirToGoal = goalPosition - transform.position;

@@ -55,8 +55,10 @@ public class SeekerStateMachine : StateBase
         Debug.Log("Flee State: Enter");
         while (currentState == State.Flee)
         {
-            // TODO: change this to check with Raycasts if the hunter is in line of sight with Seeker
-            bool _hunterInSight = Vector2.Distance(transform.position, aiMovement.hunter.position) <= chaseDist;
+            // TODO: change this to check if the hunter is within safeDist of Seekers
+            bool _hunterInSight = Vector2.Distance(
+                transform.position, 
+                aiMovement.hunter.position) <= safeDist;
 
             // if we're fleeing and we haven't run the full Flee Distance away
             while (aiMovement.distanceCovered != aiMovement.fleeDist)
@@ -66,13 +68,15 @@ public class SeekerStateMachine : StateBase
                     case false:
                         {
                             // TODO: keep running 1.5 more units
-                            // switch back to Search state
-                            
+                            currentState = State.Search;    // switch back to Search state
                             break;
                         }
                     case true:
                         {
-                            // TODO: keep running in a random direction that isn't towards the hunter until distanceCovered == fleeDist
+                            if (aiMovement.distanceCovered != aiMovement.fleeDist)
+                            {
+                                // TODO: keep running in a random direction that isn't towards the hunter
+                            }
 
                             break;
                         }
@@ -80,8 +84,8 @@ public class SeekerStateMachine : StateBase
             }
             if (aiMovement.distanceCovered == aiMovement.fleeDist)
             {
-                // stop for a few seconds
-                // switch to Search state
+                yield return new WaitForSeconds(3f);// stop for a few seconds
+                currentState = State.Search;        // switch to Search state
             }
 
             yield return null;
@@ -106,10 +110,10 @@ public class SeekerStateMachine : StateBase
             // check if the agent is at the pickup and add it if they are
             aiMovement.PickupUpdate();
 
-            // TODO: change this to check with Raycasts if the hunter is in line of sight with Seeker
+            // TODO: change this to check if the hunter is within safeDist of Seekers
             bool _hunterInSight = Vector2.Distance(
                 transform.position, 
-                aiMovement.hunter.position) <= chaseDist;
+                aiMovement.hunter.position) <= safeDist;
             
             if (_hunterInSight)             // if we can see the hunter
             { currentState = State.Flee; }  // we are no longer searching, we are fleeing

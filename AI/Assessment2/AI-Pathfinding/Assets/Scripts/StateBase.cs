@@ -11,5 +11,4 @@ public class StateBase : MonoBehaviour
     {
         aiMovement = GetComponent<AIMovement>();
     }
-
 }
