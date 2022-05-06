@@ -1,8 +1,5 @@
-Test
-Test
-Test
 Forward:W
-Backwards:S
+Backward:S
 Left:A
 Right:D
 Jump:Space

@@ -20,18 +20,39 @@ public static class ItemData
             #region Food 0-99
             case 0:
                 {
-                    _name = "Banana";
-                    _description = "This is a banana";
-                    _icon = "Food/Banana";
-                    _mesh = "Food/banana";
-                    _value = 3;
-                    _amount = 5;
-                    _heal = 15;
+                    _name = "Apple";
+                    _description = "This is an Apple";
+                    _icon = "Food/Apple";
+                    _mesh = "Food/Apple";
+                    _value = 1;
+                    _amount = 1;
+                    _heal = 10;
                     _type = ItemTypes.Food;
+                
                     break;
                 }
+            case 1:
+                _name = "Banana";
+                _description = "This is a banana";
+                _icon = "Food/Banana";
+                _mesh = "Food/banana";
+                _value = 3;
+                _amount = 5;
+                _heal = 15;
+                _type = ItemTypes.Food;
+                break ;
             #endregion
             #region Weapons 100-199
+            case 100:
+                _name = "Axe";
+                _description = "This is an Axe";
+                _icon = "Weapon/Axe";
+                _mesh = "Weapon/Axe";
+                _value = 3;
+                _amount = 5;
+                _heal = 15;
+                _type = ItemTypes.Weapon;
+                break;
             #endregion
             #region Apparel 200-299
             #endregion
@@ -49,6 +70,7 @@ public static class ItemData
             #endregion
             default:
                 {
+                    itemId_p = 0;
                     _name = "Apple";
                     _description = "This is an Apple";
                     _icon = "Food/Apple";

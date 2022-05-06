@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Inventory.NPC
+namespace Inventory.Shop
 {
     public class Inventory : MonoBehaviour
     {

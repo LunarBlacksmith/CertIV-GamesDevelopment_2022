@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+
     public static GamePlayStates gamePlayStates;
     public static Vector2 scr;
 
@@ -13,13 +14,13 @@ public class GameManager : MonoBehaviour
         scr.x = Screen.width / 16;
         scr.y = Screen.height / 9;
         gamePlayStates = GamePlayStates.Game;
-  
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(Screen.width/16 != scr.x)
+        if (Screen.width / 16 != scr.x)
         {
             scr.x = Screen.width / 16;
             scr.y = Screen.height / 9;
@@ -59,10 +60,10 @@ public class GameManager : MonoBehaviour
                     Cursor.lockState = CursorLockMode.Locked;
                 }
 
-               
+
                 break;
-                //default is your else
-                //it gets anything that you didnt state above
+            //default is your else
+            //it gets anything that you didnt state above
             default:
                 if (!Cursor.visible)
                 {
@@ -72,26 +73,24 @@ public class GameManager : MonoBehaviour
                 break;
         }
 
-       /* void CursorToggle()
-        {
-            if (Cursor.visible)
-            {
-                Cursor.visible = false;
-                Cursor.lockState = CursorLockMode.None;
-            }
-            if (Cursor.visible)
-            {
-                Cursor.visible = true;
-                Cursor.lockState = CursorLockMode.Locked;
-            }
-            
-
-        }
-       */
+         //void CursorToggle()
+         //{
+         //    if (Cursor.visible)
+         //    {
+         //        Cursor.visible = false;
+         //        Cursor.lockState = CursorLockMode.None;
+         //    }
+         //    if (Cursor.visible)
+         //    {
+         //        Cursor.visible = true;
+         //        Cursor.lockState = CursorLockMode.Locked;
+         //    }
+         //}
+        
 
     }
 
-
+}
 
     public enum GamePlayStates
 {
@@ -99,5 +98,4 @@ public class GameManager : MonoBehaviour
     Game,
     MenuPause,
     PostGame
-}
 }
