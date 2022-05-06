@@ -58,7 +58,7 @@ public class SeekerStateMachine : StateBase
             // TODO: change this to check with Raycasts if the hunter is in line of sight with Seeker
             bool _hunterInSight = Vector2.Distance(transform.position, aiMovement.hunter.position) <= chaseDist;
 
-            //if we're fleeing and we haven't run the full Flee Distance away
+            // if we're fleeing and we haven't run the full Flee Distance away
             while (aiMovement.distanceCovered != aiMovement.fleeDist)
             {
                 switch (_hunterInSight)
@@ -94,22 +94,22 @@ public class SeekerStateMachine : StateBase
     {
         Debug.Log("Search State: Enter");
 
-        // TODO: Search using A* algorithm for nearest pickup and store in variable
-
         while (currentState == State.Search)
         {
             // if there are no pickups left
             if (pickups.Count <= 0)
             { currentState = State.Escape; }
 
-            // TODO: make the move goal the position of the pickup fetched from the search algorithm
+            // TODO: make the move goal the position of the pickup
             aiMovement.AIMove(pickups[aiMovement.pickupIndex].transform);
 
             // check if the agent is at the pickup and add it if they are
             aiMovement.PickupUpdate();
 
             // TODO: change this to check with Raycasts if the hunter is in line of sight with Seeker
-            bool _hunterInSight = Vector2.Distance(transform.position, aiMovement.hunter.position) <= chaseDist;
+            bool _hunterInSight = Vector2.Distance(
+                transform.position, 
+                aiMovement.hunter.position) <= chaseDist;
             
             if (_hunterInSight)             // if we can see the hunter
             { currentState = State.Flee; }  // we are no longer searching, we are fleeing

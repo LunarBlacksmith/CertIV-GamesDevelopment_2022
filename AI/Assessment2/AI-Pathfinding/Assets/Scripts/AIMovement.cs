@@ -5,6 +5,7 @@ using UnityEngine.AI;
 
 public class AIMovement : MonoBehaviour
 {
+    #region Public Variables
     public Transform hunter;        // bad guy of the maze
     public List<Transform> pickups; // "waypoints" to get to
     public int pickupIndex = 0;     // which pickup currently searching for
@@ -13,8 +14,10 @@ public class AIMovement : MonoBehaviour
     public float fleeSpeed = 8f;        // max speed to flee at
     public float fleeDist = 10f;        // max distance to run away
     public float distanceCovered = 0f;  // current amount of distance covered while fleeing
-    public float minGoalDist = 0.25f;   // minimum radius around the goal an agent needs to be before classified as 'arrived'
 
+    // minimum radius around the goal an agent needs to be before classified as 'arrived'
+    public float minGoalDist = 0.25f;   
+    #endregion
 
 
     // Start is called before the first frame update
