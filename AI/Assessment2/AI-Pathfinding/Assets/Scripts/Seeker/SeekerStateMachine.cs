@@ -14,7 +14,7 @@ public class SeekerStateMachine : StateBase
 
     public State currentState;
     public Transform tHunter;
-    public List<GameObject> pickups;
+    //public List<GameObject> pickups;
 
     protected override void Start()
     {
@@ -68,9 +68,7 @@ public class SeekerStateMachine : StateBase
             else
             {
                 // keep running in a random direction that isn't towards the hunter
-                // for a couple seconds
                 aiMovement.FleeMove(tHunter);
-                yield return new WaitForSeconds(2f);
                 currentState = State.Search;    // switch back to Search state
             }
 
@@ -86,24 +84,32 @@ public class SeekerStateMachine : StateBase
 
         while (currentState == State.Search)
         {
-            // if there are no pickups left
-            if (pickups.Count <= 0)
-            { currentState = State.Escape; }
+            Debug.Log("Entered while loop");
 
-            // TODO: make the move goal the position of the pickup
-            aiMovement.AIMove(pickups[aiMovement.pickupIndex].transform);
+            if (aiMovement.pickups.Count <= 0)                  // if there are no pickups left
+            { currentState = State.Escape; yield return null; } // go straight to the escape state
 
-            // check if the agent is at the pickup and add it if they are
-            aiMovement.PickupUpdate();
+            Transform goal = aiMovement.pickups[aiMovement.pickupIndex].transform;
 
-            // TODO: change this to check if the hunter is within safeDist of Seekers
+            // if we're able to get to the currently assigned pickup
+            if (aiMovement.CanMoveTo(goal))
+            {
+                Debug.Log("We can move to the pickup.");
+                aiMovement.AIMove(goal);    // make the move goal the position of the pickup
+                aiMovement.PickupUpdate();  // check if the agent is at the pickup and add it if they are
+            }
+
+            
+
+            // check if the hunter is within safeDist of Seekers
             bool _hunterInSight = Vector2.Distance(
                 transform.position, 
-                aiMovement.agentTransform.position) <= safeDist;
+                hunter.transform.position) <= safeDist;
             
             if (_hunterInSight)             // if we can see the hunter
             { currentState = State.Flee; }  // we are no longer searching, we are fleeing
 
+            Debug.Log("Hit yield return null in Search");
             yield return null;
         }
         Debug.Log("Search State: Exit");
@@ -112,6 +118,7 @@ public class SeekerStateMachine : StateBase
 
     private IEnumerator EscapeState()
     {
+        Debug.Log("Entered EscapeState.");
         // TODO: get to the end of the maze
 
         // if the hunter is within sight, change state to Flee

@@ -6514,9 +6514,9 @@ GameObject:
   m_Component:
   - component: {fileID: 543450651973159314}
   - component: {fileID: 5866666020146336744}
-  - component: {fileID: 919132147701306153}
   - component: {fileID: 919132147701306154}
   - component: {fileID: 919132147701306155}
+  - component: {fileID: 919132147701306153}
   m_Layer: 0
   m_Name: Paladin
   m_TagString: Player
@@ -6564,10 +6564,6 @@ MonoBehaviour:
   safeDist: 0
   currentState: 1
   tHunter: {fileID: 0}
-  pickups:
-  - {fileID: 502307466}
-  - {fileID: 1162643196}
-  - {fileID: 485747843}
 --- !u!114 &919132147701306155
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6580,8 +6576,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3bc1496d48521f14caa007971b39ea19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  meshAgent: {fileID: 0}
-  agentTransform: {fileID: 543450651973159314}
+  meshAgent: {fileID: 919132147701306153}
   pickups:
   - {fileID: 502307467}
   - {fileID: 1162643197}

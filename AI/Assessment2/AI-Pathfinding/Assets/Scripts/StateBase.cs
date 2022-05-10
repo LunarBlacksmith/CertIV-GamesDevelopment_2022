@@ -12,7 +12,9 @@ public class StateBase : MonoBehaviour
     {
         aiMovement = GetComponent<AIMovement>();
         hunter = FindObjectOfType<HunterStateMachine>().gameObject;
-        safeDist = 10.0f;
-        chaseDist = 8.0f;
+        safeDist = 5.0f;
+        chaseDist = 4.0f;
+
+        Debug.Log(hunter.name);
     }
 }

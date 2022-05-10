@@ -7,8 +7,7 @@ using UnityEngine.AI;
 public class AIMovement : MonoBehaviour
 {
     #region Public Variables
-    public NavMeshAgent meshAgent;      // the AI agent that will be utilising the NavMeshSurfaces, etc
-    public Transform agentTransform;    // transform of the AI agent depending on instance
+    public NavMeshAgent meshAgent;      // the AI agent that will be utilising the NavMeshSurfaces, etcs
     public List<Transform> pickups;     // "waypoints" to get to
     public int pickupIndex = 0;         // which pickup currently searching for
 
@@ -21,7 +20,7 @@ public class AIMovement : MonoBehaviour
     public float minGoalDist = 0.2f;
     #endregion
 
-    private float _mapXBounds = 40f, _mapZBounds = 80f, _mapYBounds = 15f;
+    private float _mapXBounds = 20f, _mapZBounds = 40f, _mapYBounds = 5f;
 
     public void Start()
     {
@@ -31,11 +30,10 @@ public class AIMovement : MonoBehaviour
     public void AIMove(Transform goal)
     {
         Vector3 aiPosition = transform.position;
-        Vector3 goalPosition = goal.position;
 
         // setting the Destination of the agent will allow it to use the NavMesh to move
         // towards the position given
-        meshAgent.SetDestination(goalPosition);
+        meshAgent.SetDestination(goal.position);
 
         // if we can't reach the goal
         if (meshAgent.pathStatus != NavMeshPathStatus.PathComplete)
@@ -50,16 +48,67 @@ public class AIMovement : MonoBehaviour
     /// </summary>
     public void PickupUpdate()
     {
-        Vector3 aiPosition = transform.position;
-        Vector3 pickupPosition = pickups[pickupIndex].transform.position;
+        if (pickups.Count == 0)             // if there are no pickups
+        { return; }                         // exit the method
+        else if (pickups.Count == 1)        // if there is 1 pickup left
+        { 
+            pickupIndex = 0;                // assign the index to that pickup
 
-        // if we get within minimum distance of the pickup
-        if (Vector2.Distance(aiPosition, pickupPosition) > minGoalDist)
+            Vector3 aiPosition = transform.position;
+            Vector3 currPickupPos = pickups[pickupIndex].transform.position;
+
+            // if we get within minimum distance of the pickup
+            if (Vector2.Distance(aiPosition, currPickupPos) <= minGoalDist)
+            {
+                // add pickup as child of Seeker and disable
+                pickups[pickupIndex].transform.parent = gameObject.transform;
+
+                // remove the last pickup from the list
+                pickups.RemoveAt(pickupIndex);
+            }
+        }                
+        else                                // else..
         {
-            // TODO: add pickup as child of Seeker and disable
-                // also take pickup off list of pickups in StateMachine
+            Debug.Log("We're in PickupUpdate() 'else'.");
 
-            pickupIndex++;  // next pickup
+            Vector3 aiPosition = transform.position;
+            Vector3 currPickupPos = pickups[pickupIndex].transform.position;
+
+            pickupIndex = 0;
+
+            // for every pickup in the list
+            for (int i = 1; i < pickups.Count; i++)
+            {
+                Debug.Log($"meshAgent path corners length: {meshAgent.path.corners.Length}");
+
+                Vector3[] corners1 = meshAgent.path.corners;
+                meshAgent.SetDestination(pickups[i].transform.position);
+                Vector3[] corners2 = meshAgent.path.corners;
+
+                if (corners1.Length == 1 && Vector3.Distance(aiPosition, currPickupPos) > minGoalDist)
+                { pickupIndex = i; }
+                // if the path to the current pickup is longer than the alternative path
+                else if (corners1.Length > corners2.Length)
+                // use the alternative pickup's path
+                { pickupIndex = i; }
+                // if the 2 pickups' paths are equidistant from the seeker
+                else if (corners1.Length == corners2.Length)
+                {
+                    pickupIndex = 0;
+                    continue; 
+                }   
+            }
+
+            // if we get within minimum distance of the current, closest pickup
+            if (Vector2.Distance(aiPosition, currPickupPos) <= minGoalDist)
+            {
+                // add pickup as child of Seeker
+                pickups[pickupIndex].transform.parent = gameObject.transform;
+
+                // also take the pickup off list of pickups
+                pickups.RemoveAt(pickupIndex);
+            }
+
         }
     }
 
@@ -92,7 +141,7 @@ public class AIMovement : MonoBehaviour
     public void FleeMove(Transform fleeingFromObject_p)
     {
         bool _dirNotAwayFromEnemy = true;
-        float _agentX = agentTransform.position.x, _agentZ = agentTransform.position.z;
+        float _agentX = transform.position.x, _agentZ = transform.position.z;
         float _hunterX = fleeingFromObject_p.position.x, _hunterZ = fleeingFromObject_p.position.z;
         Vector3 newPosition; // declare variable for random position outside of do/while scope
 
