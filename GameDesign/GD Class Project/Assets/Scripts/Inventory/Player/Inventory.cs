@@ -17,7 +17,7 @@ namespace Inventory.Player
         public Vector2  scrollPos;
         public string   sortType = "All";
         public string[] enumTypesForItems = 
-            {"Food","Weapon","Apparel","Crafting","Ingredient","Potion", "Scroll","Quest","Money" };
+            {"Food","Weapon","Apparel","Crafting","Ingredient","Potion", "Scroll","Quest" };
 
         // Equipment and Dropping
         public Transform dropLocation;
@@ -26,7 +26,7 @@ namespace Inventory.Player
         {
             public string slotName;
             public Transform equipmentLocation;
-            public GameObject currentShop;
+            public GameObject currentItem;
         }
         public Equipment[] equipmentSlots;
 
@@ -40,44 +40,44 @@ namespace Inventory.Player
         // Start is called before the first frame update
         void Start()
         {
-#if UNITY_EDITOR
-            playerInv.Add(ItemData.CreateItem(0));
-            playerInv.Add(ItemData.CreateItem(1));
-            playerInv.Add(ItemData.CreateItem(100));
-            playerInv.Add(ItemData.CreateItem(101));
-            playerInv.Add(ItemData.CreateItem(200));
-            playerInv.Add(ItemData.CreateItem(201));
-            playerInv.Add(ItemData.CreateItem(202));
-            playerInv.Add(ItemData.CreateItem(300));
-            playerInv.Add(ItemData.CreateItem(301));
-            playerInv.Add(ItemData.CreateItem(500));
-            playerInv.Add(ItemData.CreateItem(501));
-            playerInv.Add(ItemData.CreateItem(100));
-            playerInv.Add(ItemData.CreateItem(601));
-#endif
+//#if UNITY_EDITOR
+//            playerInv.Add(ItemData.CreateItem(0));
+//            playerInv.Add(ItemData.CreateItem(1));
+//            playerInv.Add(ItemData.CreateItem(100));
+//            playerInv.Add(ItemData.CreateItem(101));
+//            playerInv.Add(ItemData.CreateItem(200));
+//            playerInv.Add(ItemData.CreateItem(201));
+//            playerInv.Add(ItemData.CreateItem(202));
+//            playerInv.Add(ItemData.CreateItem(300));
+//            playerInv.Add(ItemData.CreateItem(301));
+//            playerInv.Add(ItemData.CreateItem(500));
+//            playerInv.Add(ItemData.CreateItem(501));
+//            playerInv.Add(ItemData.CreateItem(100));
+//            playerInv.Add(ItemData.CreateItem(601));
+//#endif
         }
 
         // Update is called once per frame
         void Update()
         {
-        #if UNITY_EDITOR
-            if (Input.GetKeyDown(KeyCode.KeypadPlus))
-            {
-                playerInv.Add(ItemData.CreateItem(0));
-                playerInv.Add(ItemData.CreateItem(1));
-                playerInv.Add(ItemData.CreateItem(100));
-                playerInv.Add(ItemData.CreateItem(101));
-                playerInv.Add(ItemData.CreateItem(200));
-                playerInv.Add(ItemData.CreateItem(201));
-                playerInv.Add(ItemData.CreateItem(202));
-                playerInv.Add(ItemData.CreateItem(300));
-                playerInv.Add(ItemData.CreateItem(301));
-                playerInv.Add(ItemData.CreateItem(500));
-                playerInv.Add(ItemData.CreateItem(501));
-                playerInv.Add(ItemData.CreateItem(600));
-                playerInv.Add(ItemData.CreateItem(601));
-            }
-        #endif
+        //#if UNITY_EDITOR
+        //    if (Input.GetKeyDown(KeyCode.KeypadPlus))
+        //    {
+        //        playerInv.Add(ItemData.CreateItem(0));
+        //        playerInv.Add(ItemData.CreateItem(1));
+        //        playerInv.Add(ItemData.CreateItem(100));
+        //        playerInv.Add(ItemData.CreateItem(101));
+        //        playerInv.Add(ItemData.CreateItem(200));
+        //        playerInv.Add(ItemData.CreateItem(201));
+        //        playerInv.Add(ItemData.CreateItem(202));
+        //        playerInv.Add(ItemData.CreateItem(300));
+        //        playerInv.Add(ItemData.CreateItem(301));
+        //        playerInv.Add(ItemData.CreateItem(500));
+        //        playerInv.Add(ItemData.CreateItem(501));
+        //        playerInv.Add(ItemData.CreateItem(600));
+        //        playerInv.Add(ItemData.CreateItem(601));
+        //    }
+        //#endif
 
             // if inventory key is pressed
             // toggle both show inventory and game state 
@@ -234,7 +234,169 @@ namespace Inventory.Player
             GUI.Box(new Rect(4f * screenSize.x, 0.75f * screenSize.y, 3.5f * screenSize.x, 7f * screenSize.y), "");
             GUI.Box(new Rect(4.25f * screenSize.x, 1f * screenSize.y, 3 * screenSize.x, 3f * screenSize.y), selectedItem.Icon);
             GUI.Box(new Rect(4.55f * screenSize.x, 4f * screenSize.y, 2.5f * screenSize.x, 0.5f * screenSize.y), selectedItem.Name);
+            switch (selectedItem.Type)
+            {
+                case ItemTypes.Food:
+                    {
+                        GUI.Box(new Rect(4.25f*screenSize.x, 4.5f*screenSize.y, 3f*screenSize.x, 3f*screenSize.y), selectedItem.Description+
+                            "\nValue: "+selectedItem.Value+
+                            "\nAmount: "+selectedItem.Amount+
+                            "\nHeal: "+selectedItem.Heal);
 
+                        // current health is lower than our max health, we can eat it
+                        if (PlayerHandler.playerHandlerInstance.attributes[0].curValue <
+                            PlayerHandler.playerHandlerInstance.attributes[0].maxValue)
+                        {
+                            // button to eat
+                            if (GUI.Button(new Rect(6.25f * screenSize.x, 7.25f * screenSize.y, 1f * screenSize.x, 0.25f * screenSize.y), "Eat"))
+                            {
+                                PlayerHandler.playerHandlerInstance.attributes[0].curValue = Mathf.Clamp(
+                                    PlayerHandler.playerHandlerInstance.attributes[0].curValue += selectedItem.Heal,
+                                    0, PlayerHandler.playerHandlerInstance.attributes[0].maxValue);
+                                if (selectedItem.Amount > 1)
+                                { selectedItem.Amount--; }
+                                else
+                                {
+                                    playerInv.Remove(selectedItem);
+                                    selectedItem = null;
+                                    return; // protect from weird errors by continuing further on
+                                }
+                            }
+                        }
+                        break;
+                    }
+                case ItemTypes.Weapon:
+                    {
+                        GUI.Box(new Rect(4.25f * screenSize.x, 4.5f * screenSize.y, 3f * screenSize.x, 3f * screenSize.y), selectedItem.Description +
+                           "\nValue: " + selectedItem.Value +
+                           "\nDamage: " + selectedItem.Damage);
+
+                        // have nothing in our current item slot, or the item is different
+                        if (equipmentSlots[0].currentItem == null || selectedItem.Name != equipmentSlots[0].currentItem.name)
+                        {
+                            if (GUI.Button(new Rect(6.25f * screenSize.x, 7.25f * screenSize.y, 1f * screenSize.x, 0.25f * screenSize.y), "Equip"))
+                            {
+                                if (equipmentSlots[0].currentItem != null)
+                                { Destroy(equipmentSlots[0].currentItem); }
+                                GameObject curItem = Instantiate(selectedItem.Prefab, equipmentSlots[0].equipmentLocation);
+                                curItem.name = selectedItem.Name;
+                                equipmentSlots[0].currentItem = curItem;
+                            }
+                        }
+                        // we are already holding the item
+                        else
+                        {
+                            if (GUI.Button(new Rect(6.25f * screenSize.x, 7.25f * screenSize.y, 1f * screenSize.x, 0.25f * screenSize.y), "UnEquip"))
+                            { Destroy(equipmentSlots[0].currentItem); }
+                        }
+                        break;
+                    }
+                case ItemTypes.Apparel:
+                    {
+                        GUI.Box(new Rect(4.25f * screenSize.x, 4.5f * screenSize.y, 3f * screenSize.x, 3f * screenSize.y), selectedItem.Description +
+                            "\nValue: " + selectedItem.Value+
+                            "\nArmour: " + selectedItem.Armour);
+                        // have nothing in our current clothing slot, or the clothing is different
+                        if (equipmentSlots[1].currentItem == null || selectedItem.Name != equipmentSlots[1].currentItem.name)
+                        {
+                            if (GUI.Button(new Rect(6.25f * screenSize.x, 7.25f * screenSize.y, 1f * screenSize.x, 0.25f * screenSize.y), "Don"))
+                            {
+                                if (equipmentSlots[1].currentItem != null)
+                                { Destroy(equipmentSlots[1].currentItem); }
+                                GameObject curItem = Instantiate(selectedItem.Prefab, equipmentSlots[1].equipmentLocation);
+                                curItem.name = selectedItem.Name;
+                                equipmentSlots[1].currentItem = curItem;
+                            }
+                        }
+                        // we are already holding the item
+                        else
+                        {
+                            if (GUI.Button(new Rect(6.25f * screenSize.x, 7.25f * screenSize.y, 1f * screenSize.x, 0.25f * screenSize.y), "Doff"))
+                            { Destroy(equipmentSlots[1].currentItem); }
+                        }
+                        break;
+                    }
+                case ItemTypes.Crafting:
+                    {
+                        GUI.Box(new Rect(4.25f * screenSize.x, 4.5f * screenSize.y, 3f * screenSize.x, 3f * screenSize.y), selectedItem.Description +
+                           "\nValue: " + selectedItem.Value +
+                           "\nAmount: " + selectedItem.Amount);
+                        if (GUI.Button(new Rect(6.25f * screenSize.x, 7.25f * screenSize.y, 1f * screenSize.x, 0.25f * screenSize.y), "Use"))
+                        {
+                            Debug.LogWarning("Not Written");
+                        }
+                        break;
+                    }
+                case ItemTypes.Ingredient:
+                    {
+                        GUI.Box(new Rect(4.25f * screenSize.x, 4.5f * screenSize.y, 3f * screenSize.x, 3f * screenSize.y), selectedItem.Description +
+                           "\nValue: " + selectedItem.Value +
+                           "\nAmount: " + selectedItem.Amount);
+                        if (GUI.Button(new Rect(6.25f * screenSize.x, 7.25f * screenSize.y, 1f * screenSize.x, 0.25f * screenSize.y), "Eat"))
+                        {
+                            Debug.LogWarning("Not Written");
+                        }
+                        break;
+                    }
+                case ItemTypes.Potion:
+                    {
+                        GUI.Box(new Rect(4.25f * screenSize.x, 4.5f * screenSize.y, 3f * screenSize.x, 3f * screenSize.y), selectedItem.Description +
+                           "\nValue: " + selectedItem.Value +
+                           "\nAmount: " + selectedItem.Amount +
+                           "\nHeal: " + selectedItem.Heal);
+                        if (GUI.Button(new Rect(6.25f * screenSize.x, 7.25f * screenSize.y, 1f * screenSize.x, 0.25f * screenSize.y), "Drink"))
+                        {
+                            Debug.LogWarning("Not Written");
+                        }
+                        break;
+                    }
+                case ItemTypes.Scroll:
+                    {
+                        GUI.Box(new Rect(4.25f * screenSize.x, 4.5f * screenSize.y, 3f * screenSize.x, 3f * screenSize.y), selectedItem.Description +
+                           "\nValue: " + selectedItem.Value +
+                           "\nAmount: " + selectedItem.Amount);
+                        if (GUI.Button(new Rect(6.25f * screenSize.x, 7.25f * screenSize.y, 1f * screenSize.x, 0.25f * screenSize.y), "Use"))
+                        {
+                            Debug.LogWarning("Not Written");
+                        }
+                        break;
+                    }
+                case ItemTypes.Quest:
+                    {
+                        GUI.Box(new Rect(4.25f * screenSize.x, 4.5f * screenSize.y, 3f * screenSize.x, 3f * screenSize.y), selectedItem.Description);
+                        break;
+                    }
+                case ItemTypes.Money:
+                    { break; }
+                default: { Debug.LogWarning("Something went wrong, fam."); break; }
+            }
+            if (selectedItem.Type != ItemTypes.Quest)
+            {
+                // button to eat
+                if (GUI.Button(new Rect(5.25f * screenSize.x, 7.25f * screenSize.y, 1f * screenSize.x, 0.25f * screenSize.y), "Drop"))
+                {
+                    for (int i = 0; i < equipmentSlots.Length; i++)
+                    {
+                        if (equipmentSlots[i].currentItem != null && selectedItem.Name == equipmentSlots[i].currentItem.name)
+                        { Destroy(equipmentSlots[i].currentItem); }
+                    }
+                    // spawn item
+                    GameObject droppedItem = Instantiate(selectedItem.Prefab, dropLocation.position, dropLocation.rotation);
+                    droppedItem.name = selectedItem.Name;
+                    droppedItem.AddComponent<Rigidbody>().useGravity = true;
+                    droppedItem.GetComponent<ItemHandler>().enabled = true;
+
+                    // if it stacks, reduce stack
+                    if (selectedItem.Amount > 1)
+                    { selectedItem.Amount--; }
+                    else // else remove
+                    {
+                        playerInv.Remove(selectedItem);
+                        selectedItem = null;
+                        return; // protect from weird errors by continuing further on
+                    }
+                }
+            }
         }
 
         private void OnGUI()

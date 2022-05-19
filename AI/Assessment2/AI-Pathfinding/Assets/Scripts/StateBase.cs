@@ -5,16 +5,16 @@ using UnityEngine;
 public class StateBase : MonoBehaviour
 {
     public AIMovement aiMovement;
-    public GameObject hunter;
-    public float chaseDist, safeDist;
+    //public GameObject hunter;
+    //public float chaseDist, safeDist;
 
     protected virtual void Start()
     {
         aiMovement = GetComponent<AIMovement>();
-        hunter = FindObjectOfType<HunterStateMachine>().gameObject;
-        safeDist = 5.0f;
-        chaseDist = 4.0f;
+        //hunter = FindObjectOfType<HunterStateMachine>().gameObject;
+        //safeDist = 0.0f;
+        //chaseDist = 0.0f;
 
-        Debug.Log(hunter.name);
+        //Debug.Log(hunter.name);
     }
 }

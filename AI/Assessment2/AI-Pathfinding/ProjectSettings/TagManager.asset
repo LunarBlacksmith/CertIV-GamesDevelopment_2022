@@ -7,6 +7,9 @@ TagManager:
   - Pickup
   - Hunter
   - Seeker
+  - Human
+  - Ogre
+  - Mouse
   layers:
   - Default
   - TransparentFX

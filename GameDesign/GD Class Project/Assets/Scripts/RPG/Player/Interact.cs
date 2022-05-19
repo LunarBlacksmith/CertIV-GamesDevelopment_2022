@@ -44,9 +44,11 @@ public class Interact : MonoBehaviour
                 }
                 #endregion
                 #region Item
-                if (hitInfo.collider.tag == "Item")
+                GameObject temp = hitInfo.collider.gameObject;
+                if (hitInfo.collider.tag == "Item" && temp.GetComponent<ItemHandler>() != null)
                 {
                     Debug.Log("Item");
+                    temp.GetComponent<ItemHandler>().OnCollection();
                 }
                 #endregion
                 #region Chest

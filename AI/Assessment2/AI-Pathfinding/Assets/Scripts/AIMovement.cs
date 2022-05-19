@@ -10,21 +10,83 @@ public class AIMovement : MonoBehaviour
     public NavMeshAgent meshAgent;      // the AI agent that will be utilising the NavMeshSurfaces, etcs
     public List<Transform> pickups;     // "waypoints" to get to
     public int pickupIndex = 0;         // which pickup currently searching for
+    public bool ogre;
+    public bool mouse;
+    public bool humanoid;
+    public int lavaSpeed, gravelSpeed, boostSpeed;
 
-    //public float speed = 4f;            // normal speed of agent
-    public float fleeSpeed = 8f;        // max speed to flee at
-    public float fleeDist = 10f;        // max distance to run away
-    public float distanceCovered = 0f;  // current amount of distance covered while fleeing
+    public float speed;
+    //public float fleeSpeed = 8f;        // max speed to flee at
+    //public float fleeDist = 10f;        // max distance to run away
+    //public float distanceCovered = 0f;  // current amount of distance covered while fleeing
 
     // minimum radius around the goal an agent needs to be before classified as 'arrived'
-    public float minGoalDist = 0.2f;
+    public float minGoalDist = 0.5f;
     #endregion
 
-    private float _mapXBounds = 20f, _mapZBounds = 40f, _mapYBounds = 5f;
+    //private float _mapXBounds = 20f, _mapZBounds = 40f, _mapYBounds = 5f;
+    private Transform _target;
 
     public void Start()
     {
+        humanoid = false;
+        ogre = false;
+        mouse = false;
+
         meshAgent = GetComponent<NavMeshAgent>();
+        meshAgent.speed = speed;
+        humanoid = gameObject.tag == "Human" ? true : false;
+        ogre = gameObject.tag == "Ogre" ? true : false;
+        mouse = gameObject.tag == "Mouse" ? true : false;
+
+        if (mouse)
+        {
+            gravelSpeed = 2;
+            lavaSpeed = 1;
+        }
+        else if (ogre)
+        {
+            lavaSpeed = 1;
+            gravelSpeed = 3;
+        }
+        else if (humanoid)
+        {
+            lavaSpeed = 1;
+            gravelSpeed = 2;
+        }
+        boostSpeed = 10;
+    }
+    public void Update()
+    {
+        ChangeAreaSpeed();
+    }
+
+    private void ChangeAreaSpeed()
+    {
+        NavMeshHit navHit;
+
+        meshAgent.SamplePathPosition(-1, 0.0f, out navHit);
+
+        int lavaMask = 1 << NavMesh.GetAreaFromName("Lava");
+        int gravelMask = 1 << NavMesh.GetAreaFromName("Gravel");
+        int boostMask = 1 << NavMesh.GetAreaFromName("Boost");
+
+        if (navHit.mask == lavaMask)
+        {
+            meshAgent.speed = lavaSpeed;
+        }
+        else if (navHit.mask == gravelMask)
+        {
+            meshAgent.speed = gravelSpeed;
+        }
+        else if (navHit.mask == boostMask)
+        {
+            meshAgent.speed = boostSpeed;
+        }
+        else
+        {
+            meshAgent.speed = speed;
+        }
     }
 
     public void AIMove(Transform goal)
@@ -48,67 +110,49 @@ public class AIMovement : MonoBehaviour
     /// </summary>
     public void PickupUpdate()
     {
-        if (pickups.Count == 0)             // if there are no pickups
-        { return; }                         // exit the method
-        else if (pickups.Count == 1)        // if there is 1 pickup left
-        { 
-            pickupIndex = 0;                // assign the index to that pickup
-
-            Vector3 aiPosition = transform.position;
-            Vector3 currPickupPos = pickups[pickupIndex].transform.position;
-
-            // if we get within minimum distance of the pickup
-            if (Vector2.Distance(aiPosition, currPickupPos) <= minGoalDist)
-            {
-                // add pickup as child of Seeker and disable
-                pickups[pickupIndex].transform.parent = gameObject.transform;
-
-                // remove the last pickup from the list
-                pickups.RemoveAt(pickupIndex);
-            }
-        }                
-        else                                // else..
+        if (pickups.Count == 0) // if there are no pickups
+        { return; }             // exit the method      
+        else
         {
-            Debug.Log("We're in PickupUpdate() 'else'.");
-
-            Vector3 aiPosition = transform.position;
-            Vector3 currPickupPos = pickups[pickupIndex].transform.position;
-
-            pickupIndex = 0;
-
-            // for every pickup in the list
-            for (int i = 1; i < pickups.Count; i++)
+            // checking if target if null so we can set a target
+            if (_target == null)
             {
-                Debug.Log($"meshAgent path corners length: {meshAgent.path.corners.Length}");
-
-                Vector3[] corners1 = meshAgent.path.corners;
-                meshAgent.SetDestination(pickups[i].transform.position);
-                Vector3[] corners2 = meshAgent.path.corners;
-
-                if (corners1.Length == 1 && Vector3.Distance(aiPosition, currPickupPos) > minGoalDist)
-                { pickupIndex = i; }
-                // if the path to the current pickup is longer than the alternative path
-                else if (corners1.Length > corners2.Length)
-                // use the alternative pickup's path
-                { pickupIndex = i; }
-                // if the 2 pickups' paths are equidistant from the seeker
-                else if (corners1.Length == corners2.Length)
+                if (pickups.Count == 1) // if we only have one item find that final item
                 {
                     pickupIndex = 0;
-                    continue; 
-                }   
+                    _target = pickups[0];
+                }
+                else// if we have multiple items find the closest item
+                {
+                    if (Vector3.Distance(transform.position, pickups[pickupIndex].position) < Vector3.Distance(transform.position, pickups[pickupIndex + 1].position))
+                    { pickupIndex = 0; }
+                    else
+                    { pickupIndex = 1; }
+                    _target = pickups[pickupIndex]; // set target to that item
+                }
             }
-
-            // if we get within minimum distance of the current, closest pickup
-            if (Vector2.Distance(aiPosition, currPickupPos) <= minGoalDist)
+            else
             {
-                // add pickup as child of Seeker
-                pickups[pickupIndex].transform.parent = gameObject.transform;
+                Debug.Log($"Current: {_target.name}");
+                meshAgent.SetDestination(_target.position);
 
-                // also take the pickup off list of pickups
-                pickups.RemoveAt(pickupIndex);
+                // if we get within minimum distance of the current, closest pickup
+                if (Vector3.Distance(transform.position, _target.position) <= minGoalDist)
+                {
+                    Debug.Log("We are at the goal.");
+
+                    // add pickup as child of Seeker
+                    pickups[pickupIndex].transform.parent = gameObject.transform;
+
+                    // also take the pickup off list of pickups
+                    pickups.RemoveAt(pickupIndex);
+                    // set to 0 to avoid out of range error
+                    pickupIndex = 0;
+                    // set target to null to trigger new target
+                    _target = null;
+                    return;
+                }
             }
-
         }
     }
 
@@ -138,66 +182,66 @@ public class AIMovement : MonoBehaviour
     /// Using the agent's Transform and the Transform passed, generates a random position away from the passed Transform's position and sets the agent's destination to that position.
     /// </summary>
     /// <param name="fleeingFromObject_p"></param>
-    public void FleeMove(Transform fleeingFromObject_p)
-    {
-        bool _dirNotAwayFromEnemy = true;
-        float _agentX = transform.position.x, _agentZ = transform.position.z;
-        float _hunterX = fleeingFromObject_p.position.x, _hunterZ = fleeingFromObject_p.position.z;
-        Vector3 newPosition; // declare variable for random position outside of do/while scope
+    //public void FleeMove(Transform fleeingFromObject_p)
+    //{
+    //    bool _dirNotAwayFromEnemy = true;
+    //    float _agentX = transform.position.x, _agentZ = transform.position.z;
+    //    float _hunterX = fleeingFromObject_p.position.x, _hunterZ = fleeingFromObject_p.position.z;
+    //    Vector3 newPosition; // declare variable for random position outside of do/while scope
 
-        do
-        {
-            // generate new random position within the map's bounds
-            newPosition = GetRandomGoalInBounds();
+    //    do
+    //    {
+    //        // generate new random position within the map's bounds
+    //        newPosition = GetRandomGoalInBounds();
 
-            // if the random position is between the hunter and seeker then it is 'towards' the
-            // enemy, in which case we need to generate a new position that is away from the enemy
-            if (_hunterX >= _agentX)
-            {
-                if (newPosition.x >= _agentX)
-                { _dirNotAwayFromEnemy = true; }
-                else
-                {_dirNotAwayFromEnemy = false; }
-            }
-            else if (_hunterX <= _agentX)
-            {
-                if (newPosition.x <= _agentX)
-                { _dirNotAwayFromEnemy = true; }
-                else
-                { _dirNotAwayFromEnemy = false; }
-            }
-            else if (_hunterZ >= _agentZ)
-            {
-                if (newPosition.z >= _agentZ)
-                { _dirNotAwayFromEnemy = true; }
-                else
-                { _dirNotAwayFromEnemy = false; }
-            }
-            else if (_hunterZ <= _agentZ)
-            {
-                if (newPosition.z <= _agentZ)
-                { _dirNotAwayFromEnemy = true; }
-                else
-                { _dirNotAwayFromEnemy = false; }
-            }
+    //        // if the random position is between the hunter and seeker then it is 'towards' the
+    //        // enemy, in which case we need to generate a new position that is away from the enemy
+    //        if (_hunterX >= _agentX)
+    //        {
+    //            if (newPosition.x >= _agentX)
+    //            { _dirNotAwayFromEnemy = true; }
+    //            else
+    //            {_dirNotAwayFromEnemy = false; }
+    //        }
+    //        else if (_hunterX <= _agentX)
+    //        {
+    //            if (newPosition.x <= _agentX)
+    //            { _dirNotAwayFromEnemy = true; }
+    //            else
+    //            { _dirNotAwayFromEnemy = false; }
+    //        }
+    //        else if (_hunterZ >= _agentZ)
+    //        {
+    //            if (newPosition.z >= _agentZ)
+    //            { _dirNotAwayFromEnemy = true; }
+    //            else
+    //            { _dirNotAwayFromEnemy = false; }
+    //        }
+    //        else if (_hunterZ <= _agentZ)
+    //        {
+    //            if (newPosition.z <= _agentZ)
+    //            { _dirNotAwayFromEnemy = true; }
+    //            else
+    //            { _dirNotAwayFromEnemy = false; }
+    //        }
 
-        } while (_dirNotAwayFromEnemy);
+    //    } while (_dirNotAwayFromEnemy);
 
-        // once the new position is away from the enemy, set the caller NavMeshAgent's destination to it
-        meshAgent.SetDestination(newPosition);
-    }
+    //    // once the new position is away from the enemy, set the caller NavMeshAgent's destination to it
+    //    meshAgent.SetDestination(newPosition);
+    //}
 
     /// <summary>
     /// Gets the private values of the Map's x, y, z coordinates and generates a random position between their positive and negative values, with y being generated between -0.5 and the positive variable.
     /// </summary>
     /// <returns></returns>
-    public Vector3 GetRandomGoalInBounds()
-    {
-        Vector3 randomGoal = new Vector3(
-                Random.Range(-_mapXBounds,  _mapXBounds),
-                Random.Range(-0.5f,         _mapYBounds),
-                Random.Range(-_mapZBounds,  _mapZBounds)
-                );
-        return randomGoal;
-    }
+    //public Vector3 GetRandomGoalInBounds()
+    //{
+    //    Vector3 randomGoal = new Vector3(
+    //            Random.Range(-_mapXBounds,  _mapXBounds),
+    //            Random.Range(-0.5f,         _mapYBounds),
+    //            Random.Range(-_mapZBounds,  _mapZBounds)
+    //            );
+    //    return randomGoal;
+    //}
 }
