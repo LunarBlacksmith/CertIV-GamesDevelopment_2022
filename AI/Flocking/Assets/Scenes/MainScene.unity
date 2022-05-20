@@ -206,6 +206,58 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &939638066
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 939638068}
+  - component: {fileID: 939638067}
+  m_Layer: 0
+  m_Name: Flock - Blue
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &939638067
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 939638066}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 107a62043d366ba42997a43b363a7da7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  agentPrefab: {fileID: 1028721528322323358, guid: 928ea0ee65844a048811330eef1f4053, type: 3}
+  agents: []
+  behaviour: {fileID: 11400000, guid: 89d28313dac163548895bfd9d9cdb6c7, type: 2}
+  startingCount: 50
+  agentDensity: 0.08
+  driveFactor: 10
+  maxSpeed: 6
+  neighbourRadius: 3.33
+  avoidanceRadiusMultiplier: 0.736
+--- !u!4 &939638068
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 939638066}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.22676653, y: 0.11843597, z: -1.4211329}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1615197362
 GameObject:
   m_ObjectHideFlags: 0
@@ -217,7 +269,7 @@ GameObject:
   - component: {fileID: 1615197364}
   - component: {fileID: 1615197363}
   m_Layer: 0
-  m_Name: Flock
+  m_Name: Flock - Purple
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -235,15 +287,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 107a62043d366ba42997a43b363a7da7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  agentPrefab: {fileID: 1028721528322323358, guid: 928ea0ee65844a048811330eef1f4053, type: 3}
+  agentPrefab: {fileID: 1028721528322323358, guid: 0c76ab9a9c143a849b9de4c36b7f8efc, type: 3}
   agents: []
-  behaviour: {fileID: 11400000, guid: be6c503691be22b409978e61dd2e58fc, type: 2}
-  startingCount: 250
+  behaviour: {fileID: 11400000, guid: 9afc3049096a61649a1bf52de1ef95aa, type: 2}
+  startingCount: 150
   agentDensity: 0.08
   driveFactor: 10
-  maxSpeed: 5
-  neighbourRadius: 1.5
-  avoidanceRadiusMultiplier: 0.5
+  maxSpeed: 3
+  neighbourRadius: 3
+  avoidanceRadiusMultiplier: 0.4
 --- !u!4 &1615197364
 Transform:
   m_ObjectHideFlags: 0

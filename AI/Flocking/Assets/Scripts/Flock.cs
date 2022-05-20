@@ -59,7 +59,7 @@ public class Flock : MonoBehaviour
 
             // FOR TESTING
             // changing colour, the more neighbours the more red the agent is
-            agent.GetComponent<SpriteRenderer>().color = Color.Lerp(Color.white, Color.red, context.Count / 6f);
+            //agent.GetComponent<SpriteRenderer>().color = Color.Lerp(Color.white, Color.red, context.Count / 6f);
 
             // using behaviour to calculate the direction the agent should move in
             Vector2 move = behaviour.CalculateMove(agent, context, this);

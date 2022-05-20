@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Flock/Behaviour/Cohesion")]
-public class CohesionBehaviour : FlockBehaviour
+public class CohesionBehaviour : FilteredFlockBehaviour
 {
     public override Vector2 CalculateMove(FlockAgent agent_p, List<Transform> context_p, Flock flock_p)
     {
@@ -13,9 +13,10 @@ public class CohesionBehaviour : FlockBehaviour
         { return Vector2.zero; }
 
         Vector2 cohesionMove = Vector2.zero;
+        List<Transform> filteredContext = filter == null ? context_p : filter.Filter(agent_p, context_p);
 
         int count = 0;
-        foreach (Transform item in context_p)
+        foreach (Transform item in filteredContext)
         {
             //if (Vector2.SqrMagnitude(item.position-agent_p.transform.position) <= )
             //{
