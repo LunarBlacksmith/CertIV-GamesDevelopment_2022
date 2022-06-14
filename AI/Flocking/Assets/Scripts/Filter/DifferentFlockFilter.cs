@@ -14,7 +14,7 @@ public class DifferentFlockFilter : ContextFilter
             if (itemAgent != null)
             {
                 if (itemAgent.AgentFlock != agent_p.AgentFlock)
-                    { filtered.Add(item); }
+                { filtered.Add(item); }
             }
         }
         return filtered;

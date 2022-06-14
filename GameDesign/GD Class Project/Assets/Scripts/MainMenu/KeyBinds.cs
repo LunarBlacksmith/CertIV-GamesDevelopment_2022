@@ -20,13 +20,12 @@ public class KeyBinds : MonoBehaviour
 
     void Start()
     {
-        if (PlayerPrefs.HasKey("First/Load"))
+        if (!PlayerPrefs.HasKey("FirstLoad"))
         {
             for (int i = 0; i < baseSetup.Length; i++)
             {
                 //add key according to the saved string or default value
                 keys.Add(baseSetup[i].keyName, (KeyCode)System.Enum.Parse(typeof(KeyCode),baseSetup[i].defaultKey));
-
             }
             HandleTextFile.WriteSaveFile();
             PlayerPrefs.SetString("FirstLoad", "");
@@ -46,12 +45,8 @@ public class KeyBinds : MonoBehaviour
 
     public void SaveKeys()
     {
-        /*foreach (var keyEntry in keys)
-        {
-            //PlayerPrefs is our inbuilt way to save and load values from our registry editor
-            PlayerPrefs.SetString(keyEntry.Key, keyEntry.Value.ToString());
-        }
-        PlayerPrefs.Save();*/
+        //press return button
+        HandleTextFile.WriteSaveFile();
     }
     public void ChangeKey(GameObject clickedKey_p)
     {

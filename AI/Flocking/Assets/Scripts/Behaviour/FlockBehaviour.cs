@@ -8,6 +8,4 @@ public abstract class FlockBehaviour : ScriptableObject
         FlockAgent agent_p, 
         List<Transform> context_p, 
         Flock flock_p);
-
-
 }
