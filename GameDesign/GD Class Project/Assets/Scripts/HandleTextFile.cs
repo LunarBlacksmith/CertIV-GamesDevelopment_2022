@@ -18,7 +18,9 @@ public class HandleTextFile
     static string path = "Assets/Resources/Save/Keybinds.txt";
 
     //Unity Editor allows me to create a tool in my Menus
+#if UNITY_EDITOR
     [MenuItem("Tool/Save/Write File")]
+#endif
     //This is a public static behaviour that we can call in our scripts
     public static void WriteSaveFile()
     {
@@ -34,12 +36,16 @@ public class HandleTextFile
         //writing is done
         sWriter.Close();
 
+#if UNITY_EDITOR
         //re-import the file to update the reference in the editor
         AssetDatabase.ImportAsset(path);
         TextAsset asset = Resources.Load("Save/Keybinds.txt") as TextAsset;
+#endif
     }
 
+#if UNITY_EDITOR
     [MenuItem("Tool/Save/Read File")]
+#endif
     public static void ReadSaveFile()
     {
         //Read text from file
